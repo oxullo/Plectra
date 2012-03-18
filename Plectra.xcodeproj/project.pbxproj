@@ -1,0 +1,448 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		16B030621516337600CCA510 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 16B030611516337600CCA510 /* Cocoa.framework */; };
+		16B0306C1516337600CCA510 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 16B0306A1516337600CCA510 /* InfoPlist.strings */; };
+		16B0306E1516337600CCA510 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 16B0306D1516337600CCA510 /* main.m */; };
+		16B030721516337600CCA510 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 16B030701516337600CCA510 /* Credits.rtf */; };
+		16B030751516337600CCA510 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 16B030741516337600CCA510 /* AppDelegate.m */; };
+		16B030781516337600CCA510 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 16B030761516337600CCA510 /* MainMenu.xib */; };
+		16B030801516337700CCA510 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 16B0307F1516337700CCA510 /* SenTestingKit.framework */; };
+		16B030811516337700CCA510 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 16B030611516337600CCA510 /* Cocoa.framework */; };
+		16B030891516337700CCA510 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 16B030871516337700CCA510 /* InfoPlist.strings */; };
+		16B0308C1516337700CCA510 /* PlectraTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 16B0308B1516337700CCA510 /* PlectraTests.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		16B030821516337700CCA510 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 16B030541516337600CCA510 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 16B0305C1516337600CCA510;
+			remoteInfo = Plectra;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		16B0305D1516337600CCA510 /* Plectra.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Plectra.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		16B030611516337600CCA510 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
+		16B030641516337600CCA510 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
+		16B030651516337600CCA510 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		16B030661516337600CCA510 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		16B030691516337600CCA510 /* Plectra-Info.plist */ = {isa = PBXFileReference; path = "Plectra-Info.plist"; sourceTree = "<group>"; };
+		16B0306B1516337600CCA510 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		16B0306D1516337600CCA510 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		16B0306F1516337600CCA510 /* Plectra-Prefix.pch */ = {isa = PBXFileReference; path = "Plectra-Prefix.pch"; sourceTree = "<group>"; };
+		16B030711516337600CCA510 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = en.lproj/Credits.rtf; sourceTree = "<group>"; };
+		16B030731516337600CCA510 /* AppDelegate.h */ = {isa = PBXFileReference; path = AppDelegate.h; sourceTree = "<group>"; };
+		16B030741516337600CCA510 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		16B030771516337600CCA510 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		16B0307E1516337700CCA510 /* PlectraTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PlectraTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
+		16B0307F1516337700CCA510 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
+		16B030861516337700CCA510 /* PlectraTests-Info.plist */ = {isa = PBXFileReference; path = "PlectraTests-Info.plist"; sourceTree = "<group>"; };
+		16B030881516337700CCA510 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		16B0308A1516337700CCA510 /* PlectraTests.h */ = {isa = PBXFileReference; path = PlectraTests.h; sourceTree = "<group>"; };
+		16B0308B1516337700CCA510 /* PlectraTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PlectraTests.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		16B0305A1516337600CCA510 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				16B030621516337600CCA510 /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		16B0307A1516337700CCA510 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				16B030801516337700CCA510 /* SenTestingKit.framework in Frameworks */,
+				16B030811516337700CCA510 /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		16B030521516337600CCA510 = {
+			isa = PBXGroup;
+			children = (
+				16B030671516337600CCA510 /* Plectra */,
+				16B030841516337700CCA510 /* PlectraTests */,
+				16B030601516337600CCA510 /* Frameworks */,
+				16B0305E1516337600CCA510 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		16B0305E1516337600CCA510 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				16B0305D1516337600CCA510 /* Plectra.app */,
+				16B0307E1516337700CCA510 /* PlectraTests.octest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		16B030601516337600CCA510 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				16B030611516337600CCA510 /* Cocoa.framework */,
+				16B0307F1516337700CCA510 /* SenTestingKit.framework */,
+				16B030631516337600CCA510 /* Other Frameworks */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		16B030631516337600CCA510 /* Other Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				16B030641516337600CCA510 /* AppKit.framework */,
+				16B030651516337600CCA510 /* CoreData.framework */,
+				16B030661516337600CCA510 /* Foundation.framework */,
+			);
+			name = "Other Frameworks";
+			sourceTree = "<group>";
+		};
+		16B030671516337600CCA510 /* Plectra */ = {
+			isa = PBXGroup;
+			children = (
+				16B030731516337600CCA510 /* AppDelegate.h */,
+				16B030741516337600CCA510 /* AppDelegate.m */,
+				16B030761516337600CCA510 /* MainMenu.xib */,
+				16B030681516337600CCA510 /* Supporting Files */,
+			);
+			path = Plectra;
+			sourceTree = "<group>";
+		};
+		16B030681516337600CCA510 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				16B030691516337600CCA510 /* Plectra-Info.plist */,
+				16B0306A1516337600CCA510 /* InfoPlist.strings */,
+				16B0306D1516337600CCA510 /* main.m */,
+				16B0306F1516337600CCA510 /* Plectra-Prefix.pch */,
+				16B030701516337600CCA510 /* Credits.rtf */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		16B030841516337700CCA510 /* PlectraTests */ = {
+			isa = PBXGroup;
+			children = (
+				16B0308A1516337700CCA510 /* PlectraTests.h */,
+				16B0308B1516337700CCA510 /* PlectraTests.m */,
+				16B030851516337700CCA510 /* Supporting Files */,
+			);
+			path = PlectraTests;
+			sourceTree = "<group>";
+		};
+		16B030851516337700CCA510 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				16B030861516337700CCA510 /* PlectraTests-Info.plist */,
+				16B030871516337700CCA510 /* InfoPlist.strings */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		16B0305C1516337600CCA510 /* Plectra */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 16B0308F1516337700CCA510 /* Build configuration list for PBXNativeTarget "Plectra" */;
+			buildPhases = (
+				16B030591516337600CCA510 /* Sources */,
+				16B0305A1516337600CCA510 /* Frameworks */,
+				16B0305B1516337600CCA510 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Plectra;
+			productName = Plectra;
+			productReference = 16B0305D1516337600CCA510 /* Plectra.app */;
+			productType = "com.apple.product-type.application";
+		};
+		16B0307D1516337700CCA510 /* PlectraTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 16B030921516337700CCA510 /* Build configuration list for PBXNativeTarget "PlectraTests" */;
+			buildPhases = (
+				16B030791516337700CCA510 /* Sources */,
+				16B0307A1516337700CCA510 /* Frameworks */,
+				16B0307B1516337700CCA510 /* Resources */,
+				16B0307C1516337700CCA510 /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				16B030831516337700CCA510 /* PBXTargetDependency */,
+			);
+			name = PlectraTests;
+			productName = PlectraTests;
+			productReference = 16B0307E1516337700CCA510 /* PlectraTests.octest */;
+			productType = "com.apple.product-type.bundle";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		16B030541516337600CCA510 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0420;
+			};
+			buildConfigurationList = 16B030571516337600CCA510 /* Build configuration list for PBXProject "Plectra" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 16B030521516337600CCA510;
+			productRefGroup = 16B0305E1516337600CCA510 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				16B0305C1516337600CCA510 /* Plectra */,
+				16B0307D1516337700CCA510 /* PlectraTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		16B0305B1516337600CCA510 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				16B0306C1516337600CCA510 /* InfoPlist.strings in Resources */,
+				16B030721516337600CCA510 /* Credits.rtf in Resources */,
+				16B030781516337600CCA510 /* MainMenu.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		16B0307B1516337700CCA510 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				16B030891516337700CCA510 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		16B0307C1516337700CCA510 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		16B030591516337600CCA510 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				16B0306E1516337600CCA510 /* main.m in Sources */,
+				16B030751516337600CCA510 /* AppDelegate.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		16B030791516337700CCA510 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				16B0308C1516337700CCA510 /* PlectraTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		16B030831516337700CCA510 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 16B0305C1516337600CCA510 /* Plectra */;
+			targetProxy = 16B030821516337700CCA510 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		16B0306A1516337600CCA510 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				16B0306B1516337600CCA510 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		16B030701516337600CCA510 /* Credits.rtf */ = {
+			isa = PBXVariantGroup;
+			children = (
+				16B030711516337600CCA510 /* en */,
+			);
+			name = Credits.rtf;
+			sourceTree = "<group>";
+		};
+		16B030761516337600CCA510 /* MainMenu.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				16B030771516337600CCA510 /* en */,
+			);
+			name = MainMenu.xib;
+			sourceTree = "<group>";
+		};
+		16B030871516337700CCA510 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				16B030881516337700CCA510 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		16B0308D1516337700CCA510 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		16B0308E1516337700CCA510 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		16B030901516337700CCA510 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Plectra/Plectra-Prefix.pch";
+				INFOPLIST_FILE = "Plectra/Plectra-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		16B030911516337700CCA510 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Plectra/Plectra-Prefix.pch";
+				INFOPLIST_FILE = "Plectra/Plectra-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+		16B030931516337700CCA510 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Plectra.app/Contents/MacOS/Plectra";
+				FRAMEWORK_SEARCH_PATHS = "$(DEVELOPER_LIBRARY_DIR)/Frameworks";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Plectra/Plectra-Prefix.pch";
+				INFOPLIST_FILE = "PlectraTests/PlectraTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Debug;
+		};
+		16B030941516337700CCA510 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Plectra.app/Contents/MacOS/Plectra";
+				FRAMEWORK_SEARCH_PATHS = "$(DEVELOPER_LIBRARY_DIR)/Frameworks";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Plectra/Plectra-Prefix.pch";
+				INFOPLIST_FILE = "PlectraTests/PlectraTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		16B030571516337600CCA510 /* Build configuration list for PBXProject "Plectra" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				16B0308D1516337700CCA510 /* Debug */,
+				16B0308E1516337700CCA510 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		16B0308F1516337700CCA510 /* Build configuration list for PBXNativeTarget "Plectra" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				16B030901516337700CCA510 /* Debug */,
+				16B030911516337700CCA510 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		16B030921516337700CCA510 /* Build configuration list for PBXNativeTarget "PlectraTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				16B030931516337700CCA510 /* Debug */,
+				16B030941516337700CCA510 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 16B030541516337600CCA510 /* Project object */;
+}
