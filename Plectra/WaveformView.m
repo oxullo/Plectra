@@ -205,22 +205,31 @@
     [[NSColor whiteColor] set];
     NSRectFill ( [self bounds] );
     */
+    float height = [self bounds].size.height;
     
+    [[NSColor grayColor] set];
+
     NSBezierPath *path = [NSBezierPath bezierPath];
-    [path setLineWidth:1.5];
-    
-    [path moveToPoint:NSMakePoint(0, 50)];
+    [path setLineWidth:1];
+    [path moveToPoint:NSMakePoint(0, height / 2)];
+    [path lineToPoint:NSMakePoint([self bounds].size.width, height / 2)];
+    [path stroke];
+
+    [[NSColor blackColor] set]; 
 
     for (int i=0 ; i < [amplitudes count] ; ++i) {
         float ampl = [[amplitudes objectAtIndex:i] floatValue];
-        float y = ampl / maxAmpl * 60 + 60;
+        float y = ampl / maxAmpl * height / 2;
         //NSLog(@"x=%d y=%f", i, y);
-        [path lineToPoint:NSMakePoint(i, y)];
+
+        NSBezierPath *path = [NSBezierPath bezierPath];
+        [path setLineWidth:1];
+        
+        [path moveToPoint:NSMakePoint(i, -y + height / 2)];
+        [path lineToPoint:NSMakePoint(i, y + height / 2)];
+        [path stroke];
     }
 
-    [[NSColor blackColor] set]; 
-    [path stroke];
-    
 //    // fill target rect
 //    NSRect rect1 = NSMakeRect ( 21,21,210,210 );
 //    [white set];
