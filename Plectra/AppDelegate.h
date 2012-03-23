@@ -8,8 +8,13 @@
 
 #import <Cocoa/Cocoa.h>
 
+@class WaveformView;
+
 @interface AppDelegate : NSObject <NSApplicationDelegate>
 
 @property (assign) IBOutlet NSWindow *window;
+@property (assign) IBOutlet WaveformView *waveformView;
+
+- (IBAction)onOpenButtonPressed:(id)sender;
 
 @end

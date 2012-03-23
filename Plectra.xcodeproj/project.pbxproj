@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		166F30CA1516870700CCD277 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 166F30C91516870700CCD277 /* AudioToolbox.framework */; };
 		16B030621516337600CCA510 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 16B030611516337600CCA510 /* Cocoa.framework */; };
 		16B0306C1516337600CCA510 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 16B0306A1516337600CCA510 /* InfoPlist.strings */; };
 		16B0306E1516337600CCA510 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 16B0306D1516337600CCA510 /* main.m */; };
@@ -17,6 +18,7 @@
 		16B030811516337700CCA510 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 16B030611516337600CCA510 /* Cocoa.framework */; };
 		16B030891516337700CCA510 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 16B030871516337700CCA510 /* InfoPlist.strings */; };
 		16B0308C1516337700CCA510 /* PlectraTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 16B0308B1516337700CCA510 /* PlectraTests.m */; };
+		16B0309C151645F700CCA510 /* WaveformView.m in Sources */ = {isa = PBXBuildFile; fileRef = 16B0309B151645F700CCA510 /* WaveformView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -30,25 +32,28 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		166F30C91516870700CCD277 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		16B0305D1516337600CCA510 /* Plectra.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Plectra.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		16B030611516337600CCA510 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		16B030641516337600CCA510 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		16B030651516337600CCA510 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		16B030661516337600CCA510 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		16B030691516337600CCA510 /* Plectra-Info.plist */ = {isa = PBXFileReference; path = "Plectra-Info.plist"; sourceTree = "<group>"; };
+		16B030691516337600CCA510 /* Plectra-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Plectra-Info.plist"; sourceTree = "<group>"; };
 		16B0306B1516337600CCA510 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		16B0306D1516337600CCA510 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		16B0306F1516337600CCA510 /* Plectra-Prefix.pch */ = {isa = PBXFileReference; path = "Plectra-Prefix.pch"; sourceTree = "<group>"; };
+		16B0306F1516337600CCA510 /* Plectra-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Plectra-Prefix.pch"; sourceTree = "<group>"; };
 		16B030711516337600CCA510 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = en.lproj/Credits.rtf; sourceTree = "<group>"; };
-		16B030731516337600CCA510 /* AppDelegate.h */ = {isa = PBXFileReference; path = AppDelegate.h; sourceTree = "<group>"; };
+		16B030731516337600CCA510 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		16B030741516337600CCA510 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		16B030771516337600CCA510 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		16B0307E1516337700CCA510 /* PlectraTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PlectraTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		16B0307F1516337700CCA510 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
-		16B030861516337700CCA510 /* PlectraTests-Info.plist */ = {isa = PBXFileReference; path = "PlectraTests-Info.plist"; sourceTree = "<group>"; };
+		16B030861516337700CCA510 /* PlectraTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "PlectraTests-Info.plist"; sourceTree = "<group>"; };
 		16B030881516337700CCA510 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		16B0308A1516337700CCA510 /* PlectraTests.h */ = {isa = PBXFileReference; path = PlectraTests.h; sourceTree = "<group>"; };
+		16B0308A1516337700CCA510 /* PlectraTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PlectraTests.h; sourceTree = "<group>"; };
 		16B0308B1516337700CCA510 /* PlectraTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PlectraTests.m; sourceTree = "<group>"; };
+		16B0309A151645F700CCA510 /* WaveformView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WaveformView.h; sourceTree = "<group>"; };
+		16B0309B151645F700CCA510 /* WaveformView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WaveformView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,6 +61,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				166F30CA1516870700CCD277 /* AudioToolbox.framework in Frameworks */,
 				16B030621516337600CCA510 /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -75,6 +81,7 @@
 		16B030521516337600CCA510 = {
 			isa = PBXGroup;
 			children = (
+				166F30C91516870700CCD277 /* AudioToolbox.framework */,
 				16B030671516337600CCA510 /* Plectra */,
 				16B030841516337700CCA510 /* PlectraTests */,
 				16B030601516337600CCA510 /* Frameworks */,
@@ -118,6 +125,8 @@
 				16B030741516337600CCA510 /* AppDelegate.m */,
 				16B030761516337600CCA510 /* MainMenu.xib */,
 				16B030681516337600CCA510 /* Supporting Files */,
+				16B0309A151645F700CCA510 /* WaveformView.h */,
+				16B0309B151645F700CCA510 /* WaveformView.m */,
 			);
 			path = Plectra;
 			sourceTree = "<group>";
@@ -262,6 +271,7 @@
 			files = (
 				16B0306E1516337600CCA510 /* main.m in Sources */,
 				16B030751516337600CCA510 /* AppDelegate.m in Sources */,
+				16B0309C151645F700CCA510 /* WaveformView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -433,6 +443,7 @@
 				16B030911516337700CCA510 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		16B030921516337700CCA510 /* Build configuration list for PBXNativeTarget "PlectraTests" */ = {
 			isa = XCConfigurationList;
@@ -441,6 +452,7 @@
 				16B030941516337700CCA510 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
