@@ -17,6 +17,7 @@
     self = [super initWithFrame:frame];
     if (self) {
         amplitudes = [[NSMutableArray alloc] init];
+        maxAmpl = 0.0;
         /*
         for (int i=0 ; i < 500 ; ++i) {
             [amplitudes addObject:[[NSNumber alloc] initWithInt:arc4random() % 100]];
@@ -120,6 +121,7 @@
     SInt64 step = mFrameCount / 1000;
     
     [amplitudes removeAllObjects];
+    maxAmpl = 0.0;
     
     for (SInt64 i=1; i < mFrameCount; i+=step) {
         // move to position
@@ -154,6 +156,10 @@
         AudioBuffer audioBuffer = fillBufList.mBuffers[0];
         Float32 *frame = audioBuffer.mData;
         Float32 val = frame[0];
+        
+        if (fabs(val) > maxAmpl) {
+            maxAmpl = fabs(val);
+        }
         
         NSNumber *amp = [NSNumber numberWithFloat:val];
         [amplitudes addObject:amp];
@@ -192,7 +198,7 @@
 
 - (void)drawRect:(NSRect)dirtyRect
 {
-    NSLog(@"Redraw");
+    NSLog(@"Redraw, maxAmpl=%f", maxAmpl);
 
     /*
     // fill background
@@ -206,7 +212,8 @@
     [path moveToPoint:NSMakePoint(0, 50)];
 
     for (int i=0 ; i < [amplitudes count] ; ++i) {
-        float y = [[amplitudes objectAtIndex:i] floatValue] * 90 + 60;
+        float ampl = [[amplitudes objectAtIndex:i] floatValue];
+        float y = ampl / maxAmpl * 60 + 60;
         //NSLog(@"x=%d y=%f", i, y);
         [path lineToPoint:NSMakePoint(i, y)];
     }

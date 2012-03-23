@@ -12,6 +12,7 @@
 
 @interface WaveformView : NSView {
     NSMutableArray *amplitudes;
+    float maxAmpl;
 }
 
 - (BOOL) openFile:(NSString *)theFile;
