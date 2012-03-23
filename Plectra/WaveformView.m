@@ -8,7 +8,18 @@
 
 #import "WaveformView.h"
 
-#define	CHANNEL_NUM		1
+#define LogPoint(POINT) NSLog(@"%s: (%0.0f, %0.0f)",\
+#POINT, POINT.x, POINT.y)
+
+#define LogSize(SIZE) NSLog(@"%s: %0.0f x %0.0f",\
+#SIZE, SIZE.width, SIZE.height)
+
+#define LogRect(RECT) NSLog(@"%s: (%0.0f, %0.0f) %0.0f x %0.0f",\
+#RECT, RECT.origin.x, RECT.origin.y,\
+RECT.size.width, RECT.size.height)
+
+#define SUBSAMPLE_SAMPLES   800
+
 
 @implementation WaveformView
 
@@ -18,17 +29,18 @@
     if (self) {
         amplitudes = [[NSMutableArray alloc] init];
         maxAmpl = 0.0;
-        /*
-        for (int i=0 ; i < 500 ; ++i) {
-            [amplitudes addObject:[[NSNumber alloc] initWithInt:arc4random() % 100]];
-        }
-        NSLog(@"Amplitudes : %lu", [amplitudes count]);
-         */
+        xMouse = -1;
     }
     
     return self;
 }
 
+- (void) viewWillMoveToWindow:(NSWindow *)newWindow {
+    // In order to receive spam-level mouse notifications such as motion, is advisable
+    // to create a NSTrackingArea which relays the wanted events to the view
+    NSTrackingArea* trackingArea = [[NSTrackingArea alloc] initWithRect:[self bounds] options: (NSTrackingMouseMoved | NSTrackingMouseEnteredAndExited | NSTrackingActiveAlways) owner:self userInfo:nil];
+    [self addTrackingArea:trackingArea];
+}
 
 - (BOOL) openFile:(NSString *)theFile
 {
@@ -68,18 +80,6 @@
 		return NO;
 	}
     
-    /*
-	tFormat.mChannelsPerFrame = CHANNEL_NUM;
-	
-	tFormat.mSampleRate = mSamplingRate;
-	tFormat.mFormatFlags = kAudioFormatFlagsCanonical;
-	tFormat.mFormatID = kAudioFormatLinearPCM;
-	tFormat.mBytesPerPacket = 1;
-	tFormat.mFramesPerPacket = 1;
-	tFormat.mBytesPerFrame = 1;
-	tFormat.mBitsPerChannel = 8;
-    */
-	
     NSLog( @"mSampleRate=%f\n", inputFormat.mSampleRate );
 	NSLog( @"mFormatID=0x%x\n", inputFormat.mFormatID );
 	NSLog( @"mSampleRate=%d\n", inputFormat.mFormatFlags );
@@ -91,7 +91,6 @@
     
     AudioStreamBasicDescription clientFormat = inputFormat;
     
-    //clientFormat.mSampleRate = 44100.0;
     clientFormat.mFormatID = kAudioFormatLinearPCM;
     clientFormat.mFormatFlags = kAudioFormatFlagIsFloat | kAudioFormatFlagIsPacked;
     clientFormat.mBitsPerChannel = 32;
@@ -118,7 +117,7 @@
     fillBufList.mBuffers[0].mDataByteSize = kSrcBufSize;
     fillBufList.mBuffers[0].mData = srcBuffer;
     
-    SInt64 step = mFrameCount / 1000;
+    SInt64 step = mFrameCount / SUBSAMPLE_SAMPLES;
     
     [amplitudes removeAllObjects];
     maxAmpl = 0.0;
@@ -166,93 +165,72 @@
         //NSLog(@"value: %f", val);
     }
     NSLog(@"Array size: %d", (int)[amplitudes count]);
-    /*
-    while (1) 
-	{	
-		AudioBufferList fillBufList;
-		fillBufList.mNumberBuffers = 1;
-		fillBufList.mBuffers[0].mNumberChannels = inputFormat.mChannelsPerFrame;
-		fillBufList.mBuffers[0].mDataByteSize = kSrcBufSize;
-		fillBufList.mBuffers[0].mData = srcBuffer;
-        
-		// client format is always linear PCM - so here we determine how many frames of lpcm
-		// we can read/write given our buffer size
-		UInt32 numFrames = (kSrcBufSize / clientFormat.mBytesPerFrame);
-		
-		// printf("test %d\n", numFrames);
-        
-		err = ExtAudioFileRead (infile, &numFrames, &fillBufList);
-		XThrowIfError (err, "ExtAudioFileRead");	
-		if (!numFrames) {
-			// this is our termination condition
-			break;
-		}
-		
-		err = ExtAudioFileWrite(outfile, numFrames, &fillBufList);	
-		XThrowIfError (err, "ExtAudioFileWrite");	
-	}
-     */
     
     return YES;
 }
 
 - (void)drawRect:(NSRect)dirtyRect
 {
-    NSLog(@"Redraw, maxAmpl=%f", maxAmpl);
-
     /*
     // fill background
     [[NSColor whiteColor] set];
     NSRectFill ( [self bounds] );
     */
-    float height = [self bounds].size.height;
     
     [[NSColor grayColor] set];
 
     NSBezierPath *path = [NSBezierPath bezierPath];
     [path setLineWidth:1];
-    [path moveToPoint:NSMakePoint(0, height / 2)];
-    [path lineToPoint:NSMakePoint([self bounds].size.width, height / 2)];
+    [path moveToPoint:NSMakePoint(0, [self bounds].size.height / 2)];
+    [path lineToPoint:NSMakePoint([self bounds].size.width, [self bounds].size.height / 2)];
     [path stroke];
 
     [[NSColor blackColor] set]; 
 
+    NSDictionary *attributes = [NSDictionary dictionaryWithObjectsAndKeys:[NSFont fontWithName:@"Helvetica" size:8], NSFontAttributeName,[NSColor blackColor], NSForegroundColorAttributeName, nil];
+    
+    NSBezierPath *wavePath = [NSBezierPath bezierPath];
+    [wavePath setLineWidth:1];
+    
     for (int i=0 ; i < [amplitudes count] ; ++i) {
         float ampl = [[amplitudes objectAtIndex:i] floatValue];
-        float y = ampl / maxAmpl * height / 2;
-        //NSLog(@"x=%d y=%f", i, y);
+        float y = ampl / maxAmpl * [self bounds].size.height / 2;
 
-        NSBezierPath *path = [NSBezierPath bezierPath];
-        [path setLineWidth:1];
+        [wavePath moveToPoint:NSMakePoint(i, -y + [self bounds].size.height / 2)];
+        [wavePath lineToPoint:NSMakePoint(i, y + [self bounds].size.height / 2)];
         
-        [path moveToPoint:NSMakePoint(i, -y + height / 2)];
-        [path lineToPoint:NSMakePoint(i, y + height / 2)];
-        [path stroke];
+        if (i % 50 == 0) {
+            NSString *s = [NSString stringWithFormat:@"%d", i];
+            NSAttributedString * currentText=[[NSAttributedString alloc] initWithString:s attributes: attributes];
+            
+            NSSize attrSize = [currentText size];
+            [currentText drawAtPoint:NSMakePoint(i - attrSize.width / 2, 0)];
+        }
     }
-
-//    // fill target rect
-//    NSRect rect1 = NSMakeRect ( 21,21,210,210 );
-//    [white set];
-//    NSRectFill ( rect1 );
-//    
-//    NSBezierPath * path = [NSBezierPath bezierPath];
-//    [path setLineWidth: 4];
-//    
-//    NSPoint startPoint = {  21, 21 };
-//    NSPoint endPoint   = { 128,128 };
-//    
-//    [path  moveToPoint: startPoint];	
-//    
-//    [path curveToPoint: endPoint
-//         controlPoint1: NSMakePoint ( 128, 21 )
-//         controlPoint2: NSMakePoint (  21,128 )];
-//    
-//    [[NSColor whiteColor] set];
-//    [path fill];
-//    
-//    [[NSColor grayColor] set]; 
-//    [path stroke];
+    [wavePath stroke];
+    
+    if (xMouse > -1) {
+        NSBezierPath *cursorPath = [NSBezierPath bezierPath];
+        [cursorPath setLineWidth:1];
+        [[NSColor redColor] set];
+        [cursorPath moveToPoint:NSMakePoint(xMouse, 0)];
+        [cursorPath lineToPoint:NSMakePoint(xMouse, [self bounds].size.height)];
+        [cursorPath stroke];
+    }
 }
 
+- (void)mouseExited:(NSEvent *)theEvent {
+    xMouse = -1;
+    [self setNeedsDisplay:YES];
+}
+
+- (void)mouseMoved:(NSEvent *)theEvent {
+    NSPoint eventLocation = [theEvent locationInWindow];
+    NSPoint center = [self convertPoint:eventLocation fromView:nil];
+    xMouse = center.x;
+
+    // TODO: inform the view of the dirty region, avoiding a complete redraw
+    [self setNeedsDisplay:YES];
+}
 
 @end
