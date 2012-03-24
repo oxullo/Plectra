@@ -8,6 +8,8 @@
 
 #import "AppDelegate.h"
 
+#import "WaveformView.h"
+
 @implementation AppDelegate
 
 @synthesize window = _window;
@@ -20,20 +22,6 @@
 	
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
-    
-//    NSColor * gray  = [NSColor grayColor];
-//    NSColor * white = [NSColor whiteColor];
-//	
-//    [self.waveformView lockFocus];
-//    // fill background
-//    [gray set];
-//    NSRectFill ( [self.waveformView bounds] );
-//    
-//    // fill target rect
-//    NSRect rect1 = NSMakeRect ( 21,21,210,210 );
-//    [white set];
-//    NSRectFill ( rect1 );
-//    [self.waveformView unlockFocus];
 }
 
 - (IBAction)onOpenButtonPressed:(id)sender
@@ -47,7 +35,7 @@
         if ( [oFM fileExistsAtPath:filePath] != YES ) {
             NSBeep();
         } else {
-            [self.waveformView openFile:filePath];
+            [self.waveformView scanFile:filePath];
         }
     }
 

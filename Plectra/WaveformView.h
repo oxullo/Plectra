@@ -11,11 +11,14 @@
 #import <AudioToolbox/ExtendedAudioFile.h>
 
 @interface WaveformView : NSView {
-    NSMutableArray *amplitudes;
-    float maxAmpl;
-    float xMouse;
+    NSMutableArray *_amplitudes;
+    float _maxAbsAmplitude;
+    float _lastMouseX;
+
+@private
+    NSTrackingArea *_trackingArea;
 }
 
-- (BOOL) openFile:(NSString *)theFile;
+- (BOOL) scanFile:(NSString *)filePath;
 
 @end
