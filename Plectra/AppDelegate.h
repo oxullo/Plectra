@@ -19,5 +19,6 @@
 @property (assign) IBOutlet WaveformView *waveformView;
 
 - (IBAction)onOpenButtonPressed:(id)sender;
+- (IBAction)onStopButtonPressed:(id)sender;
 
 @end

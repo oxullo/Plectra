@@ -56,4 +56,9 @@
 
 }
 
+- (IBAction)onStopButtonPressed:(id)sender
+{
+    [_player stop];
+}
+
 @end

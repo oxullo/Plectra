@@ -106,6 +106,8 @@ static void MyAQOutputCallback(void *inUserData, AudioQueueRef inAQ, AudioQueueB
     
     if (self) {
         _playerInfo = (PlayerInfo *)malloc(sizeof(PlayerInfo));
+        _playerInfo->playbackFile = nil;
+        _queue = nil;
     }
     
     return self;
@@ -147,6 +149,7 @@ static void MyAQOutputCallback(void *inUserData, AudioQueueRef inAQ, AudioQueueB
 - (void)playFileWithURL:(NSURL *)theURL
 {
     NSLog(@"Requested playback of %@", theURL);
+    [self stop];
     
     [self check:AudioFileOpenURL((CFURLRef)theURL, kAudioFileReadPermission, 0, &_playerInfo->playbackFile)
         withFailureText:@"AudioFileOpenURL() failed"];
@@ -159,14 +162,13 @@ static void MyAQOutputCallback(void *inUserData, AudioQueueRef inAQ, AudioQueueB
         withFailureText:@"AudioFileGetProperty() failed while attempting to retrieve data format"];
     
     // create a output (playback) queue
-    AudioQueueRef queue;
     [self check:AudioQueueNewOutput(&dataFormat, // ASBD
                                    MyAQOutputCallback, // Callback
                                    _playerInfo, // user data
                                    NULL, // run loop
                                    NULL, // run loop mode
                                    0, // flags (always 0)
-                                   &queue) // output: reference to AudioQueue object
+                                   &_queue) // output: reference to AudioQueue object
         withFailureText:@"AudioQueueNewOutput() failed"];
     
     UInt32 bufferByteSize;
@@ -184,7 +186,7 @@ static void MyAQOutputCallback(void *inUserData, AudioQueueRef inAQ, AudioQueueB
         _playerInfo->packetDescs = NULL; // we don't provide packet descriptions for constant bit rate formats (like linear PCM)
     }
     
-    [self copyEncoderCookieToQueue:queue];
+    [self copyEncoderCookieToQueue:_queue];
     
     AudioQueueBufferRef buffers[PLAYBACK_BUFFERS_NUM];
     _playerInfo->isDone = false;
@@ -193,11 +195,11 @@ static void MyAQOutputCallback(void *inUserData, AudioQueueRef inAQ, AudioQueueB
     int i;
     for (i = 0; i < PLAYBACK_BUFFERS_NUM; ++i)
     {
-        [self check:AudioQueueAllocateBuffer(queue, bufferByteSize, &buffers[i])
+        [self check:AudioQueueAllocateBuffer(_queue, bufferByteSize, &buffers[i])
             withFailureText:@"AudioQueueAllocateBuffer failed"];
         
         // manually invoke callback to fill buffers with data
-        MyAQOutputCallback(_playerInfo, queue, buffers[i]);
+        MyAQOutputCallback(_playerInfo, _queue, buffers[i]);
         
         // EOF (the entire file's contents fit in the buffers)
         if (_playerInfo->isDone) {
@@ -205,9 +207,28 @@ static void MyAQOutputCallback(void *inUserData, AudioQueueRef inAQ, AudioQueueB
         }
     }
     
-    [self check:AudioQueueStart(queue, NULL)
+    [self check:AudioQueueStart(_queue, NULL)
         withFailureText:@"AudioQueueStart failed"];
 
+}
+
+- (void)stop
+{
+    if (_queue) {
+        [self check:AudioQueueStop(_queue, true) withFailureText:@"AudioQueueStop() failed"];
+    }
+    
+    if (_playerInfo->playbackFile) {
+        [self check:AudioFileClose(_playerInfo->playbackFile)
+    withFailureText:@"AudioFileClose() failed"];
+         _playerInfo->playbackFile = nil;
+    }
+    
+    if (_queue) {
+        [self check:AudioQueueDispose(_queue, true)
+    withFailureText:@"AudioQueueDispose() failed"];
+        _queue = nil;
+    }
 }
 
 @end

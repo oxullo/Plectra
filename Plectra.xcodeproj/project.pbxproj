@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		166F30CA1516870700CCD277 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 166F30C91516870700CCD277 /* AudioToolbox.framework */; };
+		1698C2E3151FA7BF007B19ED /* Player.m in Sources */ = {isa = PBXBuildFile; fileRef = 1698C2E2151FA7BF007B19ED /* Player.m */; };
 		16B030621516337600CCA510 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 16B030611516337600CCA510 /* Cocoa.framework */; };
 		16B0306C1516337600CCA510 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 16B0306A1516337600CCA510 /* InfoPlist.strings */; };
 		16B0306E1516337600CCA510 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 16B0306D1516337600CCA510 /* main.m */; };
@@ -33,6 +34,8 @@
 
 /* Begin PBXFileReference section */
 		166F30C91516870700CCD277 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		1698C2E1151FA7BF007B19ED /* Player.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Player.h; sourceTree = "<group>"; };
+		1698C2E2151FA7BF007B19ED /* Player.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Player.m; sourceTree = "<group>"; };
 		16B0305D1516337600CCA510 /* Plectra.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Plectra.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		16B030611516337600CCA510 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		16B030641516337600CCA510 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -123,6 +126,8 @@
 			children = (
 				16B030731516337600CCA510 /* AppDelegate.h */,
 				16B030741516337600CCA510 /* AppDelegate.m */,
+				1698C2E1151FA7BF007B19ED /* Player.h */,
+				1698C2E2151FA7BF007B19ED /* Player.m */,
 				16B030761516337600CCA510 /* MainMenu.xib */,
 				16B030681516337600CCA510 /* Supporting Files */,
 				16B0309A151645F700CCA510 /* WaveformView.h */,
@@ -272,6 +277,7 @@
 				16B0306E1516337600CCA510 /* main.m in Sources */,
 				16B030751516337600CCA510 /* AppDelegate.m in Sources */,
 				16B0309C151645F700CCA510 /* WaveformView.m in Sources */,
+				1698C2E3151FA7BF007B19ED /* Player.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

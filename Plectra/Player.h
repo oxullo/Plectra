@@ -19,8 +19,10 @@ typedef struct PlayerInfo {
 
 @interface Player : NSObject {
     PlayerInfo *_playerInfo;
+    AudioQueueRef _queue;
 }
 
 - (void)playFileWithURL:(NSURL *)theURL;
+- (void)stop;
 
 @end
