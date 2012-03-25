@@ -61,14 +61,12 @@ RECT.size.width, RECT.size.height)
 	NSLog(@"mBitsPerChannel=%d\n", inputFormat.mBitsPerChannel);
 }
 
-- (BOOL) scanFile:(NSString *)filePath
+- (BOOL) scanFileWithURL:(NSURL *)theURL
 {
     ExtAudioFileRef	audioFileRef;
-    SInt64	mFrameCount;
     
-    NSURL *oURL = [NSURL fileURLWithPath:filePath];
-    NSLog(@"Attempt to open %@", oURL);
-	OSStatus err = ExtAudioFileOpenURL((CFURLRef)oURL, &audioFileRef);
+    NSLog(@"Attempt to open %@", theURL);
+	OSStatus err = ExtAudioFileOpenURL((CFURLRef)theURL, &audioFileRef);
     
 	if (err) {
 		NSLog(@"ExtAudioFileOpenURL failed.(err=%d)\n", err);
@@ -76,15 +74,16 @@ RECT.size.width, RECT.size.height)
     }
     
     UInt32 nSize = sizeof(SInt64);
+    SInt64	framesCount;
 	err = ExtAudioFileGetProperty(audioFileRef,
                                   kExtAudioFileProperty_FileLengthFrames,
 								  &nSize,
-								  &mFrameCount);
+								  &framesCount);
 	if (err) {
 		NSLog(@"ExtAudioFileGetProperty failed.(err=%d)\n", err);
 		return NO;
 	}
-	NSLog(@"Frame Count = %d\n", (int)mFrameCount);
+	NSLog(@"Frame Count = %d\n", (int)framesCount);
     
     AudioStreamBasicDescription inputFormat;
 	
@@ -128,12 +127,12 @@ RECT.size.width, RECT.size.height)
     fillBufList.mBuffers[0].mDataByteSize = AUDIOBUFFER_SIZE;
     fillBufList.mBuffers[0].mData = srcBuffer;
     
-    SInt64 step = mFrameCount / SUBSAMPLE_SAMPLES;
+    SInt64 step = framesCount / SUBSAMPLE_SAMPLES;
     
     [_amplitudes removeAllObjects];
     _maxAbsAmplitude = 0.0;
     
-    for (SInt64 i=1; i < mFrameCount; i+=step) {
+    for (SInt64 i=1; i < framesCount; i+=step) {
         // move to position
         err = ExtAudioFileSeek(audioFileRef, i);
         

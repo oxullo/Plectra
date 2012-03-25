@@ -9,11 +9,23 @@
 #import "AppDelegate.h"
 
 #import "WaveformView.h"
+#import "Player.h"
 
 @implementation AppDelegate
 
 @synthesize window = _window;
 @synthesize waveformView = _waveformView;
+
+- (id)init
+{
+    self = [super init];
+    
+    if (self) {
+        _player = [[Player alloc] init];
+    }
+    
+    return self;
+}
 
 - (void)dealloc
 {
@@ -35,7 +47,10 @@
         if ( [oFM fileExistsAtPath:filePath] != YES ) {
             NSBeep();
         } else {
-            [self.waveformView scanFile:filePath];
+            NSURL *fileURL = [[NSURL fileURLWithPath:filePath] autorelease];
+
+            [self.waveformView scanFileWithURL:fileURL];
+            [_player playFileWithURL:fileURL];
         }
     }
 

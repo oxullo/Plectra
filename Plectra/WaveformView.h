@@ -19,6 +19,6 @@
     NSTrackingArea *_trackingArea;
 }
 
-- (BOOL) scanFile:(NSString *)filePath;
+- (BOOL) scanFileWithURL:(NSURL *)theURL;
 
 @end

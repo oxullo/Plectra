@@ -9,8 +9,11 @@
 #import <Cocoa/Cocoa.h>
 
 @class WaveformView;
+@class Player;
 
-@interface AppDelegate : NSObject <NSApplicationDelegate>
+@interface AppDelegate : NSObject <NSApplicationDelegate> {
+    Player *_player;
+}
 
 @property (assign) IBOutlet NSWindow *window;
 @property (assign) IBOutlet WaveformView *waveformView;
