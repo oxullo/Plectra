@@ -18,7 +18,7 @@ typedef struct PlayerInfo {
 } PlayerInfo;
 
 @interface Player : NSObject {
-    PlayerInfo *playerInfo;
+    PlayerInfo *_playerInfo;
 }
 
 - (void)playFileWithURL:(NSURL *)theURL;

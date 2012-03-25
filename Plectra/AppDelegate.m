@@ -47,7 +47,7 @@
         if ( [oFM fileExistsAtPath:filePath] != YES ) {
             NSBeep();
         } else {
-            NSURL *fileURL = [[NSURL fileURLWithPath:filePath] autorelease];
+            NSURL *fileURL = [NSURL fileURLWithPath:filePath];
 
             [self.waveformView scanFileWithURL:fileURL];
             [_player playFileWithURL:fileURL];
