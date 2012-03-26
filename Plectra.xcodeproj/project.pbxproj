@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		166F30CA1516870700CCD277 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 166F30C91516870700CCD277 /* AudioToolbox.framework */; };
 		1698C2E3151FA7BF007B19ED /* Player.m in Sources */ = {isa = PBXBuildFile; fileRef = 1698C2E2151FA7BF007B19ED /* Player.m */; };
+		169A5E831520FF5600FA1F8C /* icon_pause.png in Resources */ = {isa = PBXBuildFile; fileRef = 169A5E811520FF5600FA1F8C /* icon_pause.png */; };
+		169A5E841520FF5600FA1F8C /* icon_play.png in Resources */ = {isa = PBXBuildFile; fileRef = 169A5E821520FF5600FA1F8C /* icon_play.png */; };
 		16B030621516337600CCA510 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 16B030611516337600CCA510 /* Cocoa.framework */; };
 		16B0306C1516337600CCA510 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 16B0306A1516337600CCA510 /* InfoPlist.strings */; };
 		16B0306E1516337600CCA510 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 16B0306D1516337600CCA510 /* main.m */; };
@@ -36,6 +38,8 @@
 		166F30C91516870700CCD277 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		1698C2E1151FA7BF007B19ED /* Player.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Player.h; sourceTree = "<group>"; };
 		1698C2E2151FA7BF007B19ED /* Player.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Player.m; sourceTree = "<group>"; };
+		169A5E811520FF5600FA1F8C /* icon_pause.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_pause.png; sourceTree = "<group>"; };
+		169A5E821520FF5600FA1F8C /* icon_play.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_play.png; sourceTree = "<group>"; };
 		16B0305D1516337600CCA510 /* Plectra.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Plectra.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		16B030611516337600CCA510 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		16B030641516337600CCA510 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -81,9 +85,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		169A5E801520FF5600FA1F8C /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				169A5E811520FF5600FA1F8C /* icon_pause.png */,
+				169A5E821520FF5600FA1F8C /* icon_play.png */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
 		16B030521516337600CCA510 = {
 			isa = PBXGroup;
 			children = (
+				169A5E801520FF5600FA1F8C /* Resources */,
 				166F30C91516870700CCD277 /* AudioToolbox.framework */,
 				16B030671516337600CCA510 /* Plectra */,
 				16B030841516337700CCA510 /* PlectraTests */,
@@ -240,6 +254,8 @@
 				16B0306C1516337600CCA510 /* InfoPlist.strings in Resources */,
 				16B030721516337600CCA510 /* Credits.rtf in Resources */,
 				16B030781516337600CCA510 /* MainMenu.xib in Resources */,
+				169A5E831520FF5600FA1F8C /* icon_pause.png in Resources */,
+				169A5E841520FF5600FA1F8C /* icon_play.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

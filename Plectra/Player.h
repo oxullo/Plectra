@@ -17,12 +17,25 @@ typedef struct PlayerInfo {
     Boolean                     isDone; // playback has completed
 } PlayerInfo;
 
+typedef enum PlayerState
+{
+    PLAYER_EMPTY,
+    PLAYER_PAUSED,
+    PLAYER_PLAYING,
+    PLAYER_ERROR
+} PlayerState;
+
 @interface Player : NSObject {
     PlayerInfo *_playerInfo;
     AudioQueueRef _queue;
+    PlayerState _state;
 }
 
+@property (nonatomic, readonly) PlayerState state;
+
 - (void)playFileWithURL:(NSURL *)theURL;
-- (void)stop;
+- (void)pause;
+- (void)resume;
+- (void)reset;
 
 @end

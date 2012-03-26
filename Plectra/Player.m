@@ -100,6 +100,8 @@ static void MyAQOutputCallback(void *inUserData, AudioQueueRef inAQ, AudioQueueB
 
 @implementation Player
 
+@synthesize state = _state;
+
 - (id)init
 {
     self = [super init];
@@ -108,6 +110,7 @@ static void MyAQOutputCallback(void *inUserData, AudioQueueRef inAQ, AudioQueueB
         _playerInfo = (PlayerInfo *)malloc(sizeof(PlayerInfo));
         _playerInfo->playbackFile = nil;
         _queue = nil;
+        _state = PLAYER_EMPTY;
     }
     
     return self;
@@ -149,7 +152,7 @@ static void MyAQOutputCallback(void *inUserData, AudioQueueRef inAQ, AudioQueueB
 - (void)playFileWithURL:(NSURL *)theURL
 {
     NSLog(@"Requested playback of %@", theURL);
-    [self stop];
+    [self reset];
     
     [self check:AudioFileOpenURL((CFURLRef)theURL, kAudioFileReadPermission, 0, &_playerInfo->playbackFile)
         withFailureText:@"AudioFileOpenURL() failed"];
@@ -210,9 +213,10 @@ static void MyAQOutputCallback(void *inUserData, AudioQueueRef inAQ, AudioQueueB
     [self check:AudioQueueStart(_queue, NULL)
         withFailureText:@"AudioQueueStart failed"];
 
+    _state = PLAYER_PLAYING;
 }
 
-- (void)stop
+- (void)reset
 {
     if (_queue) {
         [self check:AudioQueueStop(_queue, true) withFailureText:@"AudioQueueStop() failed"];
@@ -221,7 +225,7 @@ static void MyAQOutputCallback(void *inUserData, AudioQueueRef inAQ, AudioQueueB
     if (_playerInfo->playbackFile) {
         [self check:AudioFileClose(_playerInfo->playbackFile)
     withFailureText:@"AudioFileClose() failed"];
-         _playerInfo->playbackFile = nil;
+        _playerInfo->playbackFile = nil;
     }
     
     if (_queue) {
@@ -229,6 +233,23 @@ static void MyAQOutputCallback(void *inUserData, AudioQueueRef inAQ, AudioQueueB
     withFailureText:@"AudioQueueDispose() failed"];
         _queue = nil;
     }
+
+    _state = PLAYER_EMPTY;
+}
+
+- (void)pause
+{
+    NSAssert(_state == PLAYER_PLAYING, @"Pause requested but not playing");
+    
+    [self check:AudioQueuePause(_queue) withFailureText:@"AudioQueuePause() failed"];
+    _state = PLAYER_PAUSED;
+}
+
+- (void)resume
+{
+    NSAssert(_state == PLAYER_PAUSED, @"Resume requested but not paused");
+    [self check:AudioQueueStart(_queue, NULL) withFailureText:@"AudioQueueStart() failed"];
+    _state = PLAYER_PLAYING;
 }
 
 @end

@@ -18,7 +18,6 @@
 #RECT, RECT.origin.x, RECT.origin.y,\
 RECT.size.width, RECT.size.height)
 
-#define SUBSAMPLE_SAMPLES   800
 #define AUDIOBUFFER_SIZE    32768
 
 
@@ -127,7 +126,8 @@ RECT.size.width, RECT.size.height)
     fillBufList.mBuffers[0].mDataByteSize = AUDIOBUFFER_SIZE;
     fillBufList.mBuffers[0].mData = srcBuffer;
     
-    SInt64 step = framesCount / SUBSAMPLE_SAMPLES;
+    // TODO: something definitely smarter than this
+    SInt64 step = framesCount / [self bounds].size.width;
     
     [_amplitudes removeAllObjects];
     _maxAbsAmplitude = 0.0;

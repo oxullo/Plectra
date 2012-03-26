@@ -18,7 +18,6 @@
 @property (assign) IBOutlet NSWindow *window;
 @property (assign) IBOutlet WaveformView *waveformView;
 
-- (IBAction)onOpenButtonPressed:(id)sender;
-- (IBAction)onStopButtonPressed:(id)sender;
+- (IBAction)onPlayPauseButtonPressed:(id)sender;
 
 @end
