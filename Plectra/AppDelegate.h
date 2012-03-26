@@ -20,5 +20,6 @@
 @property (assign) IBOutlet WaveformView *waveformView;
 
 - (IBAction)onPlayPauseButtonPressed:(id)sender;
+- (IBAction)onOpenMenuSelected:(id)sender;
 
 @end

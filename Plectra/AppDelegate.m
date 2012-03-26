@@ -59,28 +59,32 @@
 {
 }
 
+- (void)openFile
+{
+    NSString *filePath;
+    NSOpenPanel *oOpnPnl = [NSOpenPanel openPanel];
+    NSInteger nResult = [oOpnPnl runModalForTypes:nil];
+    if ( nResult == NSFileHandlingPanelOKButton ) {
+        filePath = [[oOpnPnl filenames] objectAtIndex:0];
+        NSFileManager *oFM = [NSFileManager defaultManager];
+        if ( [oFM fileExistsAtPath:filePath] != YES ) {
+            NSBeep();
+        } else {
+            NSURL *fileURL = [NSURL fileURLWithPath:filePath];
+            
+            [self.waveformView scanFileWithURL:fileURL];
+            [_player playFileWithURL:fileURL];
+        }
+    }
+
+}
+
 - (IBAction)onPlayPauseButtonPressed:(id)sender
 {
     switch (_player.state) {
         case PLAYER_EMPTY:
-        {
-            NSString *filePath;
-            NSOpenPanel *oOpnPnl = [NSOpenPanel openPanel];
-            NSInteger nResult = [oOpnPnl runModalForTypes:nil];
-            if ( nResult == NSFileHandlingPanelOKButton ) {
-                filePath = [[oOpnPnl filenames] objectAtIndex:0];
-                NSFileManager *oFM = [NSFileManager defaultManager];
-                if ( [oFM fileExistsAtPath:filePath] != YES ) {
-                    NSBeep();
-                } else {
-                    NSURL *fileURL = [NSURL fileURLWithPath:filePath];
-                    
-                    [self.waveformView scanFileWithURL:fileURL];
-                    [_player playFileWithURL:fileURL];
-                }
-            }
+            [self openFile];
             break;
-        }
         
         case PLAYER_PAUSED:
             [_player resume];
@@ -94,6 +98,11 @@
             NSAssert(NO, @"bomb");
             break;
     }
+}
+
+- (IBAction)onOpenMenuSelected:(id)sender
+{
+    [self openFile];
 }
 
 @end
