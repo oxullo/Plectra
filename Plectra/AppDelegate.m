@@ -11,6 +11,11 @@
 #import "WaveformView.h"
 #import "Player.h"
 
+@interface AppDelegate ()
+
+- (void)handlePlayerChangedState:(NSNotification *)note;
+@end
+
 @implementation AppDelegate
 
 @synthesize window = _window;
@@ -22,6 +27,7 @@
     
     if (self) {
         _player = [[Player alloc] init];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handlePlayerChangedState:) name:kBNRPlayerChangedStateNotification object:nil];
     }
     
     return self;
@@ -30,8 +36,25 @@
 - (void)dealloc
 {
     [super dealloc];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
-	
+
+- (void)handlePlayerChangedState:(NSNotification *)note
+{
+    switch (_player.state) {
+        case PLAYER_PLAYING:
+            [button setImage:[NSImage imageNamed:@"icon_pause.png"]];
+            break;
+
+        case PLAYER_PAUSED:
+            [button setImage:[NSImage imageNamed:@"icon_play.png"]];
+            break;
+            
+        default:
+            break;
+    }
+}
+
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
 }

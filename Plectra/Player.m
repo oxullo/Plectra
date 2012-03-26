@@ -12,6 +12,9 @@
 
 #define PLAYBACK_BUFFERS_NUM    3
 
+NSString * const kBNRPlayerChangedStateNotification = @"PlayerChangedState";
+
+
 // we only use time here as a guideline
 // we're really trying to get somewhere between 16K and 64K buffers, but not allocate too much if we don't need it
 static void CalculateBytesForTime (AudioFileID inAudioFile, AudioStreamBasicDescription inDesc, Float64 inSeconds, UInt32 *outBufferSize, UInt32 *outNumPackets)
@@ -122,6 +125,12 @@ static void MyAQOutputCallback(void *inUserData, AudioQueueRef inAQ, AudioQueueB
     free(_playerInfo);
 }
 
+- (void)changeState:(PlayerState)newState
+{
+    _state = newState;
+    [[NSNotificationCenter defaultCenter] postNotificationName:kBNRPlayerChangedStateNotification object:self];
+}
+
 - (void)check:(OSStatus)returnCode withFailureText:(NSString *)failureText
 {
     if (returnCode) {
@@ -213,7 +222,7 @@ static void MyAQOutputCallback(void *inUserData, AudioQueueRef inAQ, AudioQueueB
     [self check:AudioQueueStart(_queue, NULL)
         withFailureText:@"AudioQueueStart failed"];
 
-    _state = PLAYER_PLAYING;
+    [self changeState:PLAYER_PLAYING];
 }
 
 - (void)reset
@@ -234,7 +243,7 @@ static void MyAQOutputCallback(void *inUserData, AudioQueueRef inAQ, AudioQueueB
         _queue = nil;
     }
 
-    _state = PLAYER_EMPTY;
+    [self changeState:PLAYER_EMPTY];
 }
 
 - (void)pause
@@ -242,14 +251,14 @@ static void MyAQOutputCallback(void *inUserData, AudioQueueRef inAQ, AudioQueueB
     NSAssert(_state == PLAYER_PLAYING, @"Pause requested but not playing");
     
     [self check:AudioQueuePause(_queue) withFailureText:@"AudioQueuePause() failed"];
-    _state = PLAYER_PAUSED;
+    [self changeState:PLAYER_PAUSED];
 }
 
 - (void)resume
 {
     NSAssert(_state == PLAYER_PAUSED, @"Resume requested but not paused");
     [self check:AudioQueueStart(_queue, NULL) withFailureText:@"AudioQueueStart() failed"];
-    _state = PLAYER_PLAYING;
+    [self changeState:PLAYER_PLAYING];
 }
 
 @end

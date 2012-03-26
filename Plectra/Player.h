@@ -25,6 +25,8 @@ typedef enum PlayerState
     PLAYER_ERROR
 } PlayerState;
 
+extern NSString * const kBNRPlayerChangedStateNotification;
+
 @interface Player : NSObject {
     PlayerInfo *_playerInfo;
     AudioQueueRef _queue;

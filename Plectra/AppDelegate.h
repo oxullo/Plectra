@@ -12,6 +12,7 @@
 @class Player;
 
 @interface AppDelegate : NSObject <NSApplicationDelegate> {
+    IBOutlet NSButton *button;
     Player *_player;
 }
 
