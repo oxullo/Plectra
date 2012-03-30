@@ -14,6 +14,7 @@
 @interface AppDelegate : NSObject <NSApplicationDelegate> {
     IBOutlet NSButton *button;
     Player *_player;
+    NSTimer *_progressUpdateTimer;
 }
 
 @property (assign) IBOutlet NSWindow *window;
@@ -21,5 +22,6 @@
 
 - (IBAction)onPlayPauseButtonPressed:(id)sender;
 - (IBAction)onOpenMenuSelected:(id)sender;
+- (void)updateCurrentTime:(NSTimer *)aNotification;
 
 @end

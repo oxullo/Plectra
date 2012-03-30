@@ -163,6 +163,8 @@ RECT.size.width, RECT.size.height)
     
     ExtAudioFileDispose(audioFileRef);
     
+    _lastProgress = 0.0;
+    
     return YES;
 }
 
@@ -215,6 +217,19 @@ RECT.size.width, RECT.size.height)
         [cursorPath lineToPoint:NSMakePoint(_lastMouseX, [self bounds].size.height)];
         [cursorPath stroke];
     }
+    
+    if (_lastProgress > 0.0) {
+        NSBezierPath *cursorPath = [NSBezierPath bezierPath];
+        [cursorPath setLineWidth:0.5];
+        [[NSColor redColor] set];
+        double xPos = [self bounds].size.width * _lastProgress;
+        [cursorPath moveToPoint:NSMakePoint(xPos, 0)];
+        [cursorPath lineToPoint:NSMakePoint(xPos, [self bounds].size.height)];
+        [cursorPath stroke];
+        
+        [[[NSColor redColor] colorWithAlphaComponent:0.1] set];
+        NSRectFillUsingOperation(NSMakeRect(0, 0, xPos, [self bounds].size.height), NSCompositeSourceAtop);
+    }
 }
 
 - (void)mouseExited:(NSEvent *)theEvent {
@@ -228,6 +243,12 @@ RECT.size.width, RECT.size.height)
     _lastMouseX = center.x;
 
     // TODO: inform the view of the dirty region, avoiding a complete redraw
+    [self setNeedsDisplay:YES];
+}
+
+- (void)updateProgress:(double)theProgress
+{
+    _lastProgress = theProgress;
     [self setNeedsDisplay:YES];
 }
 

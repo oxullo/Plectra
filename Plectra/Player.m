@@ -104,6 +104,7 @@ static void MyAQOutputCallback(void *inUserData, AudioQueueRef inAQ, AudioQueueB
 @implementation Player
 
 @synthesize state = _state;
+@synthesize duration = _duration;
 
 - (id)init
 {
@@ -166,15 +167,14 @@ static void MyAQOutputCallback(void *inUserData, AudioQueueRef inAQ, AudioQueueB
     [self check:AudioFileOpenURL((CFURLRef)theURL, kAudioFileReadPermission, 0, &_playerInfo->playbackFile)
         withFailureText:@"AudioFileOpenURL() failed"];
     
-    // get the audio data format from the file
-    AudioStreamBasicDescription dataFormat;
-    UInt32 propSize = sizeof(dataFormat);
+    UInt32 propSize = sizeof(_dataFormat);
     
-    [self check:AudioFileGetProperty(_playerInfo->playbackFile, kAudioFilePropertyDataFormat, &propSize, &dataFormat)
+    // get the audio data format from the file
+    [self check:AudioFileGetProperty(_playerInfo->playbackFile, kAudioFilePropertyDataFormat, &propSize, &_dataFormat)
         withFailureText:@"AudioFileGetProperty() failed while attempting to retrieve data format"];
     
     // create a output (playback) queue
-    [self check:AudioQueueNewOutput(&dataFormat, // ASBD
+    [self check:AudioQueueNewOutput(&_dataFormat, // ASBD
                                    MyAQOutputCallback, // Callback
                                    _playerInfo, // user data
                                    NULL, // run loop
@@ -183,14 +183,18 @@ static void MyAQOutputCallback(void *inUserData, AudioQueueRef inAQ, AudioQueueB
                                    &_queue) // output: reference to AudioQueue object
         withFailureText:@"AudioQueueNewOutput() failed"];
     
-    UInt32 bufferByteSize;
+    UInt32 propertySize = sizeof(_duration);
+    [self check:AudioFileGetProperty(_playerInfo->playbackFile, kAudioFilePropertyEstimatedDuration, &propertySize, &_duration) withFailureText:@"AudioFileGetProperty() failed"];
     
-    CalculateBytesForTime(_playerInfo->playbackFile, dataFormat,  0.5, &bufferByteSize, &_playerInfo->numPacketsToRead);
+    NSLog(@"Duration: %f", _duration);
+    
+    UInt32 bufferByteSize;
+    CalculateBytesForTime(_playerInfo->playbackFile, _dataFormat,  0.5, &bufferByteSize, &_playerInfo->numPacketsToRead);
 
     // check if we are dealing with a VBR file. ASBDs for VBR files always have 
     // mBytesPerPacket and mFramesPerPacket as 0 since they can fluctuate at any time.
     // If we are dealing with a VBR file, we allocate memory to hold the packet descriptions
-    BOOL isFormatVBR = (dataFormat.mBytesPerPacket == 0 || dataFormat.mFramesPerPacket == 0);
+    BOOL isFormatVBR = (_dataFormat.mBytesPerPacket == 0 || _dataFormat.mFramesPerPacket == 0);
     
     if (isFormatVBR) {
         _playerInfo->packetDescs = (AudioStreamPacketDescription*)malloc(sizeof(AudioStreamPacketDescription) * _playerInfo->numPacketsToRead);
@@ -244,6 +248,7 @@ static void MyAQOutputCallback(void *inUserData, AudioQueueRef inAQ, AudioQueueB
     }
 
     [self changeState:PLAYER_EMPTY];
+    _lastProgress = 0.0;
 }
 
 - (void)pause
@@ -259,6 +264,38 @@ static void MyAQOutputCallback(void *inUserData, AudioQueueRef inAQ, AudioQueueB
     NSAssert(_state == PLAYER_PAUSED, @"Resume requested but not paused");
     [self check:AudioQueueStart(_queue, NULL) withFailureText:@"AudioQueueStart() failed"];
     [self changeState:PLAYER_PLAYING];
+}
+
+- (double)currentTime
+{
+	@synchronized(self)
+	{
+        if (self.state != PLAYER_PLAYING && self.state != PLAYER_PAUSED)
+        {
+            return _lastProgress;
+        }
+        
+        AudioTimeStamp queueTime;
+        Boolean discontinuity;
+        OSStatus err = AudioQueueGetCurrentTime(_queue, NULL, &queueTime, &discontinuity);
+        
+        if (err) {
+            return _lastProgress;
+        }
+        
+        // TODO: WTF
+        double seekTime = 0.0;
+        double progress = seekTime + queueTime.mSampleTime / _dataFormat.mSampleRate;
+        if (progress < 0.0)
+        {
+            progress = 0.0;
+        }
+        
+        _lastProgress = progress;
+        return progress;
+	}
+	
+	return _lastProgress;
 }
 
 @end

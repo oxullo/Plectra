@@ -14,11 +14,11 @@
     NSMutableArray *_amplitudes;
     float _maxAbsAmplitude;
     float _lastMouseX;
-
-@private
     NSTrackingArea *_trackingArea;
+    double _lastProgress;
 }
 
-- (BOOL) scanFileWithURL:(NSURL *)theURL;
+- (BOOL)scanFileWithURL:(NSURL *)theURL;
+- (void)updateProgress:(double)theProgress;
 
 @end

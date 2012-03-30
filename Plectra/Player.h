@@ -31,9 +31,14 @@ extern NSString * const kBNRPlayerChangedStateNotification;
     PlayerInfo *_playerInfo;
     AudioQueueRef _queue;
     PlayerState _state;
+    double _lastProgress;
+    AudioStreamBasicDescription _dataFormat;
+    double _duration;
 }
 
 @property (nonatomic, readonly) PlayerState state;
+@property (readonly) double currentTime;
+@property (readonly) double duration;
 
 - (void)playFileWithURL:(NSURL *)theURL;
 - (void)pause;

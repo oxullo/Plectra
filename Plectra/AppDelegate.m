@@ -28,6 +28,9 @@
     if (self) {
         _player = [[Player alloc] init];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handlePlayerChangedState:) name:kBNRPlayerChangedStateNotification object:nil];
+        
+        _progressUpdateTimer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(updateCurrentTime:) userInfo:nil repeats:YES];
+
     }
     
     return self;
@@ -72,7 +75,7 @@
         } else {
             NSURL *fileURL = [NSURL fileURLWithPath:filePath];
             
-            [self.waveformView scanFileWithURL:fileURL];
+            [_waveformView scanFileWithURL:fileURL];
             [_player playFileWithURL:fileURL];
         }
     }
@@ -103,6 +106,11 @@
 - (IBAction)onOpenMenuSelected:(id)sender
 {
     [self openFile];
+}
+
+- (void)updateCurrentTime:(NSTimer *)aNotification
+{
+    [_waveformView updateProgress:_player.currentTime / _player.duration];
 }
 
 @end
