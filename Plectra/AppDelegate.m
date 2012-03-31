@@ -29,7 +29,7 @@
         _player = [[Player alloc] init];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handlePlayerChangedState:) name:kBNRPlayerChangedStateNotification object:nil];
         
-        _progressUpdateTimer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(updateCurrentTime:) userInfo:nil repeats:YES];
+        _progressUpdateTimer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(updateProgress:) userInfo:nil repeats:YES];
 
     }
     
@@ -44,12 +44,15 @@
 
 - (void)handlePlayerChangedState:(NSNotification *)note
 {
+    NSLog(@"Player changed state to %d", _player.state);
     switch (_player.state) {
         case PLAYER_PLAYING:
             [button setImage:[NSImage imageNamed:@"icon_pause.png"]];
             break;
 
         case PLAYER_PAUSED:
+        case PLAYER_EMPTY:
+            [_waveformView reset];
             [button setImage:[NSImage imageNamed:@"icon_play.png"]];
             break;
             
@@ -86,6 +89,7 @@
 {
     switch (_player.state) {
         case PLAYER_EMPTY:
+        case PLAYER_STOPPING:
             [self openFile];
             break;
         
@@ -108,8 +112,9 @@
     [self openFile];
 }
 
-- (void)updateCurrentTime:(NSTimer *)aNotification
+- (void)updateProgress:(NSTimer *)aNotification
 {
+    [_player checkState];
     [_waveformView updateProgress:_player.currentTime / _player.duration withCurrentTime:_player.currentTime];
 }
 

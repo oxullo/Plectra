@@ -14,6 +14,7 @@ typedef enum PlayerState
     PLAYER_EMPTY,
     PLAYER_PAUSED,
     PLAYER_PLAYING,
+    PLAYER_STOPPING,
     PLAYER_ERROR
 } PlayerState;
 
@@ -24,13 +25,13 @@ extern NSString * const kBNRPlayerChangedStateNotification;
     SInt64 _packetPosition; // current packet index in output file
     UInt32 _numPacketsToRead; // number of packets to read from file
     AudioStreamPacketDescription *_packetDescs; // array of packet descriptions for read buffer
-    Boolean _isDone; // playback has completed
     
     AudioQueueRef _queue;
     PlayerState _state;
     double _lastProgress;
     AudioStreamBasicDescription _dataFormat;
     double _duration;
+    NSDate *_lastStateChange;
 }
 
 @property (nonatomic, readonly) PlayerState state;
@@ -41,5 +42,6 @@ extern NSString * const kBNRPlayerChangedStateNotification;
 - (void)pause;
 - (void)resume;
 - (void)reset;
+- (void)checkState; // TODO: get rid of this shit
 
 @end

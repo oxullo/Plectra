@@ -22,5 +22,6 @@
 
 - (BOOL)scanFileWithURL:(NSURL *)theURL;
 - (void)updateProgress:(double)theProgress withCurrentTime:(double)theCurrentTime;
+- (void)reset;
 
 @end

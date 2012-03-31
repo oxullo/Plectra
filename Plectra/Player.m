@@ -13,12 +13,16 @@
 #define PLAYBACK_BUFFERS_NUM    3
 
 NSString * const kBNRPlayerChangedStateNotification = @"PlayerChangedState";
+Float64 const kBufferForSeconds = 0.5;
+
 
 #pragma mark - Private methods
 @interface Player (private)
 
+- (void)check:(OSStatus)returnCode withFailureText:(NSString *)failureText;
 - (void)handleBufferCompleteForQueue:(AudioQueueRef)inAQ buffer:(AudioQueueBufferRef)inBuffer;
-
+- (void)changeState:(PlayerState)newState;
+- (void)reset;
 @end
 
 // we only use time here as a guideline
@@ -97,14 +101,18 @@ static void AQOutputCallback(void *inUserData, AudioQueueRef inAQ, AudioQueueBuf
     [super dealloc];
 }
 
+#pragma mark - Private methods
+
 - (void)handleBufferCompleteForQueue:(AudioQueueRef)inAQ buffer:(AudioQueueBufferRef)inBuffer
 {
-    if (_isDone) return;
+    if (_state == PLAYER_STOPPING) {
+        return;   
+    }
     
     // read audio data from file into supplied buffer
     UInt32 numBytes;
     UInt32 nPackets = _numPacketsToRead;    
-    
+
     OSStatus err = AudioFileReadPackets(_playbackFile,
                                         false,
                                         &numBytes,
@@ -135,14 +143,17 @@ static void AQOutputCallback(void *inUserData, AudioQueueRef inAQ, AudioQueueBuf
             NSLog(@"AudioQueueStop() failed");
             exit(1);
         }
-        _isDone = true;
+        [self changeState:PLAYER_STOPPING];
     }
 }
 
 - (void)changeState:(PlayerState)newState
 {
-    _state = newState;
-    [[NSNotificationCenter defaultCenter] postNotificationName:kBNRPlayerChangedStateNotification object:self];
+    if (_state != newState) {
+        _state = newState;
+        [[NSNotificationCenter defaultCenter] postNotificationName:kBNRPlayerChangedStateNotification object:self];
+        _lastStateChange = [NSDate date];
+    }
 }
 
 - (void)check:(OSStatus)returnCode withFailureText:(NSString *)failureText
@@ -171,6 +182,31 @@ static void AQOutputCallback(void *inUserData, AudioQueueRef inAQ, AudioQueueBuf
         free(magicCookie);
     }
 }
+
+- (void)reset
+{
+    if (_queue) {
+        [self check:AudioQueueStop(_queue, true) withFailureText:@"AudioQueueStop() failed"];
+    }
+    
+    if (_playbackFile) {
+        [self check:AudioFileClose(_playbackFile)
+    withFailureText:@"AudioFileClose() failed"];
+        _playbackFile = nil;
+    }
+    
+    if (_queue) {
+        [self check:AudioQueueDispose(_queue, true)
+    withFailureText:@"AudioQueueDispose() failed"];
+        _queue = nil;
+    }
+    
+    [self changeState:PLAYER_EMPTY];
+    _lastProgress = 0.0;
+}
+
+
+#pragma mark - Public methods
 
 - (void)playFileWithURL:(NSURL *)theURL
 {
@@ -202,7 +238,7 @@ static void AQOutputCallback(void *inUserData, AudioQueueRef inAQ, AudioQueueBuf
     NSLog(@"Duration: %f", _duration);
     
     UInt32 bufferByteSize;
-    CalculateBytesForTime(_playbackFile, _dataFormat,  0.5, &bufferByteSize, &_numPacketsToRead);
+    CalculateBytesForTime(_playbackFile, _dataFormat,  kBufferForSeconds, &bufferByteSize, &_numPacketsToRead);
 
     // check if we are dealing with a VBR file. ASBDs for VBR files always have 
     // mBytesPerPacket and mFramesPerPacket as 0 since they can fluctuate at any time.
@@ -218,7 +254,6 @@ static void AQOutputCallback(void *inUserData, AudioQueueRef inAQ, AudioQueueBuf
     [self copyEncoderCookieToQueue:_queue];
     
     AudioQueueBufferRef buffers[PLAYBACK_BUFFERS_NUM];
-    _isDone = false;
     _packetPosition = 0;
     
     int i;
@@ -231,37 +266,15 @@ static void AQOutputCallback(void *inUserData, AudioQueueRef inAQ, AudioQueueBuf
         AQOutputCallback(self, _queue, buffers[i]);
         
         // EOF (the entire file's contents fit in the buffers)
-        if (_isDone) {
+        if (_state == PLAYER_STOPPING) {
             break;
         }
     }
     
     [self check:AudioQueueStart(_queue, NULL)
-        withFailureText:@"AudioQueueStart failed"];
-
+withFailureText:@"AudioQueueStart failed"];
+    
     [self changeState:PLAYER_PLAYING];
-}
-
-- (void)reset
-{
-    if (_queue) {
-        [self check:AudioQueueStop(_queue, true) withFailureText:@"AudioQueueStop() failed"];
-    }
-    
-    if (_playbackFile) {
-        [self check:AudioFileClose(_playbackFile)
-    withFailureText:@"AudioFileClose() failed"];
-        _playbackFile = nil;
-    }
-    
-    if (_queue) {
-        [self check:AudioQueueDispose(_queue, true)
-    withFailureText:@"AudioQueueDispose() failed"];
-        _queue = nil;
-    }
-
-    [self changeState:PLAYER_EMPTY];
-    _lastProgress = 0.0;
 }
 
 - (void)pause
@@ -283,7 +296,7 @@ static void AQOutputCallback(void *inUserData, AudioQueueRef inAQ, AudioQueueBuf
 {
 	@synchronized(self)
 	{
-        if (self.state != PLAYER_PLAYING && self.state != PLAYER_PAUSED)
+        if (self.state == PLAYER_EMPTY || self.state == PLAYER_ERROR)
         {
             return _lastProgress;
         }
@@ -296,9 +309,7 @@ static void AQOutputCallback(void *inUserData, AudioQueueRef inAQ, AudioQueueBuf
             return _lastProgress;
         }
         
-        // TODO: WTF
-        double seekTime = 0.0;
-        double progress = seekTime + queueTime.mSampleTime / _dataFormat.mSampleRate;
+        double progress = queueTime.mSampleTime / _dataFormat.mSampleRate;
         if (progress < 0.0)
         {
             progress = 0.0;
@@ -309,6 +320,17 @@ static void AQOutputCallback(void *inUserData, AudioQueueRef inAQ, AudioQueueBuf
 	}
 	
 	return _lastProgress;
+}
+
+- (void)checkState
+{
+    if (_state == PLAYER_STOPPING) {
+        NSTimeInterval ti = [_lastStateChange timeIntervalSinceNow];
+        if (fabs(ti) > kBufferForSeconds) {
+            [self changeState:PLAYER_EMPTY];
+            _lastProgress = 0.0;
+        }
+    }
 }
 
 @end

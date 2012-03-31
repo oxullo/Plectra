@@ -136,8 +136,7 @@ RECT.size.width, RECT.size.height)
     // TODO: something definitely smarter than this
     SInt64 step = framesCount / [self bounds].size.width;
     
-    [_amplitudes removeAllObjects];
-    _maxAbsAmplitude = 0.0;
+    [self reset];
     
     for (SInt64 i=1; i < framesCount; i+=step) {
         // move to position
@@ -285,6 +284,13 @@ RECT.size.width, RECT.size.height)
 {
     _lastProgress = theProgress;
     _lastCurrentTime = theCurrentTime;
+    [self setNeedsDisplay:YES];
+}
+
+- (void)reset
+{
+    [_amplitudes removeAllObjects];
+    _maxAbsAmplitude = 0.0;
     [self setNeedsDisplay:YES];
 }
 

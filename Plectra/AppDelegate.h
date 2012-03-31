@@ -22,6 +22,6 @@
 
 - (IBAction)onPlayPauseButtonPressed:(id)sender;
 - (IBAction)onOpenMenuSelected:(id)sender;
-- (void)updateCurrentTime:(NSTimer *)aNotification;
+- (void)updateProgress:(NSTimer *)aNotification;
 
 @end
