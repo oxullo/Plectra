@@ -14,6 +14,11 @@
 
 NSString * const kBNRPlayerChangedStateNotification = @"PlayerChangedState";
 
+#pragma mark - Private methods
+@interface Player (private)
+- (void)handleBufferCompleteForQueue:(AudioQueueRef)inAQ
+                              buffer:(AudioQueueBufferRef)inBuffer;
+@end
 
 // we only use time here as a guideline
 // we're really trying to get somewhere between 16K and 64K buffers, but not allocate too much if we don't need it
@@ -58,48 +63,15 @@ static void CalculateBytesForTime (AudioFileID inAudioFile, AudioStreamBasicDesc
     *outNumPackets = *outBufferSize / maxPacketSize;
 }
 
-static void MyAQOutputCallback(void *inUserData, AudioQueueRef inAQ, AudioQueueBufferRef inCompleteAQBuffer)
+#pragma mark - AQ Callback
+
+static void AQOutputCallback(void *inUserData, AudioQueueRef inAQ, AudioQueueBufferRef inCompleteAQBuffer)
 {
-    PlayerInfo *aqp = (PlayerInfo*)inUserData;
-    if (aqp->isDone) return;
-    
-    // read audio data from file into supplied buffer
-    UInt32 numBytes;
-    UInt32 nPackets = aqp->numPacketsToRead;    
-    
-    OSStatus err = AudioFileReadPackets(aqp->playbackFile,
-                                    false,
-                                    &numBytes,
-                                    aqp->packetDescs,
-                                    aqp->packetPosition,
-                                    &nPackets,
-                                    inCompleteAQBuffer->mAudioData);
-    if (err) {
-        fprintf(stderr, "AudioFileReadPackets failed\n");
-        exit(1);
-    }
-    
-    // enqueue buffer into the Audio Queue
-    // if nPackets == 0 it means we are EOF (all data has been read from file)
-    if (nPackets > 0)
-    {
-        inCompleteAQBuffer->mAudioDataByteSize = numBytes;      
-        AudioQueueEnqueueBuffer(inAQ,
-                                inCompleteAQBuffer,
-                                (aqp->packetDescs ? nPackets : 0),
-                                aqp->packetDescs);
-        aqp->packetPosition += nPackets;
-    }
-    else
-    {
-        OSStatus err = AudioQueueStop(inAQ, false);
-        if (err) {
-            fprintf(stderr, "AudioQueueStop failed\n");
-            exit(1);
-        }
-        aqp->isDone = true;
-    }
+    Player *player = (Player *)inUserData;
+    [player handleBufferCompleteForQueue:inAQ buffer:inCompleteAQBuffer];
 }
+
+#pragma mark -
 
 @implementation Player
 
@@ -111,8 +83,7 @@ static void MyAQOutputCallback(void *inUserData, AudioQueueRef inAQ, AudioQueueB
     self = [super init];
     
     if (self) {
-        _playerInfo = (PlayerInfo *)malloc(sizeof(PlayerInfo));
-        _playerInfo->playbackFile = nil;
+        _playbackFile = nil;
         _queue = nil;
         _state = PLAYER_EMPTY;
     }
@@ -123,7 +94,49 @@ static void MyAQOutputCallback(void *inUserData, AudioQueueRef inAQ, AudioQueueB
 - (void)dealloc
 {
     [super dealloc];
-    free(_playerInfo);
+}
+
+- (void)handleBufferCompleteForQueue:(AudioQueueRef)inAQ
+                              buffer:(AudioQueueBufferRef)inBuffer
+{
+    if (_isDone) return;
+    
+    // read audio data from file into supplied buffer
+    UInt32 numBytes;
+    UInt32 nPackets = _numPacketsToRead;    
+    
+    OSStatus err = AudioFileReadPackets(_playbackFile,
+                                        false,
+                                        &numBytes,
+                                        _packetDescs,
+                                        _packetPosition,
+                                        &nPackets,
+                                        inBuffer->mAudioData);
+    if (err) {
+        fprintf(stderr, "AudioFileReadPackets failed\n");
+        exit(1);
+    }
+    
+    // enqueue buffer into the Audio Queue
+    // if nPackets == 0 it means we are EOF (all data has been read from file)
+    if (nPackets > 0)
+    {
+        inBuffer->mAudioDataByteSize = numBytes;      
+        AudioQueueEnqueueBuffer(inAQ,
+                                inBuffer,
+                                (_packetDescs ? nPackets : 0),
+                                _packetDescs);
+        _packetPosition += nPackets;
+    }
+    else
+    {
+        OSStatus err = AudioQueueStop(inAQ, false);
+        if (err) {
+            NSLog(@"AudioQueueStop() failed");
+            exit(1);
+        }
+        _isDone = true;
+    }
 }
 
 - (void)changeState:(PlayerState)newState
@@ -144,12 +157,12 @@ static void MyAQOutputCallback(void *inUserData, AudioQueueRef inAQ, AudioQueueB
 - (void)copyEncoderCookieToQueue:(AudioQueueRef)queue
 {
     UInt32 propertySize;
-    OSStatus result = AudioFileGetPropertyInfo(_playerInfo->playbackFile, kAudioFilePropertyMagicCookieData, &propertySize, NULL);
+    OSStatus result = AudioFileGetPropertyInfo(_playbackFile, kAudioFilePropertyMagicCookieData, &propertySize, NULL);
 
     if (result == noErr && propertySize > 0)
     {
         Byte* magicCookie = (UInt8*)malloc(sizeof(UInt8) * propertySize);   
-        [self check:AudioFileGetProperty(_playerInfo->playbackFile, kAudioFilePropertyMagicCookieData, &propertySize, magicCookie)
+        [self check:AudioFileGetProperty(_playbackFile, kAudioFilePropertyMagicCookieData, &propertySize, magicCookie)
          withFailureText:@"get cookie from file failed"];
         
         [self check:AudioQueueSetProperty(queue, kAudioQueueProperty_MagicCookie, magicCookie, propertySize)
@@ -164,19 +177,19 @@ static void MyAQOutputCallback(void *inUserData, AudioQueueRef inAQ, AudioQueueB
     NSLog(@"Requested playback of %@", theURL);
     [self reset];
     
-    [self check:AudioFileOpenURL((CFURLRef)theURL, kAudioFileReadPermission, 0, &_playerInfo->playbackFile)
+    [self check:AudioFileOpenURL((CFURLRef)theURL, kAudioFileReadPermission, 0, &_playbackFile)
         withFailureText:@"AudioFileOpenURL() failed"];
     
     UInt32 propSize = sizeof(_dataFormat);
     
     // get the audio data format from the file
-    [self check:AudioFileGetProperty(_playerInfo->playbackFile, kAudioFilePropertyDataFormat, &propSize, &_dataFormat)
+    [self check:AudioFileGetProperty(_playbackFile, kAudioFilePropertyDataFormat, &propSize, &_dataFormat)
         withFailureText:@"AudioFileGetProperty() failed while attempting to retrieve data format"];
     
     // create a output (playback) queue
     [self check:AudioQueueNewOutput(&_dataFormat, // ASBD
-                                   MyAQOutputCallback, // Callback
-                                   _playerInfo, // user data
+                                   AQOutputCallback, // Callback
+                                   self, // user data
                                    NULL, // run loop
                                    NULL, // run loop mode
                                    0, // flags (always 0)
@@ -184,12 +197,12 @@ static void MyAQOutputCallback(void *inUserData, AudioQueueRef inAQ, AudioQueueB
         withFailureText:@"AudioQueueNewOutput() failed"];
     
     UInt32 propertySize = sizeof(_duration);
-    [self check:AudioFileGetProperty(_playerInfo->playbackFile, kAudioFilePropertyEstimatedDuration, &propertySize, &_duration) withFailureText:@"AudioFileGetProperty() failed"];
+    [self check:AudioFileGetProperty(_playbackFile, kAudioFilePropertyEstimatedDuration, &propertySize, &_duration) withFailureText:@"AudioFileGetProperty() failed"];
     
     NSLog(@"Duration: %f", _duration);
     
     UInt32 bufferByteSize;
-    CalculateBytesForTime(_playerInfo->playbackFile, _dataFormat,  0.5, &bufferByteSize, &_playerInfo->numPacketsToRead);
+    CalculateBytesForTime(_playbackFile, _dataFormat,  0.5, &bufferByteSize, &_numPacketsToRead);
 
     // check if we are dealing with a VBR file. ASBDs for VBR files always have 
     // mBytesPerPacket and mFramesPerPacket as 0 since they can fluctuate at any time.
@@ -197,16 +210,16 @@ static void MyAQOutputCallback(void *inUserData, AudioQueueRef inAQ, AudioQueueB
     BOOL isFormatVBR = (_dataFormat.mBytesPerPacket == 0 || _dataFormat.mFramesPerPacket == 0);
     
     if (isFormatVBR) {
-        _playerInfo->packetDescs = (AudioStreamPacketDescription*)malloc(sizeof(AudioStreamPacketDescription) * _playerInfo->numPacketsToRead);
+        _packetDescs = (AudioStreamPacketDescription*)malloc(sizeof(AudioStreamPacketDescription) * _numPacketsToRead);
     } else {
-        _playerInfo->packetDescs = NULL; // we don't provide packet descriptions for constant bit rate formats (like linear PCM)
+        _packetDescs = NULL; // we don't provide packet descriptions for constant bit rate formats (like linear PCM)
     }
     
     [self copyEncoderCookieToQueue:_queue];
     
     AudioQueueBufferRef buffers[PLAYBACK_BUFFERS_NUM];
-    _playerInfo->isDone = false;
-    _playerInfo->packetPosition = 0;
+    _isDone = false;
+    _packetPosition = 0;
     
     int i;
     for (i = 0; i < PLAYBACK_BUFFERS_NUM; ++i)
@@ -215,10 +228,10 @@ static void MyAQOutputCallback(void *inUserData, AudioQueueRef inAQ, AudioQueueB
             withFailureText:@"AudioQueueAllocateBuffer failed"];
         
         // manually invoke callback to fill buffers with data
-        MyAQOutputCallback(_playerInfo, _queue, buffers[i]);
+        AQOutputCallback(self, _queue, buffers[i]);
         
         // EOF (the entire file's contents fit in the buffers)
-        if (_playerInfo->isDone) {
+        if (_isDone) {
             break;
         }
     }
@@ -235,10 +248,10 @@ static void MyAQOutputCallback(void *inUserData, AudioQueueRef inAQ, AudioQueueB
         [self check:AudioQueueStop(_queue, true) withFailureText:@"AudioQueueStop() failed"];
     }
     
-    if (_playerInfo->playbackFile) {
-        [self check:AudioFileClose(_playerInfo->playbackFile)
+    if (_playbackFile) {
+        [self check:AudioFileClose(_playbackFile)
     withFailureText:@"AudioFileClose() failed"];
-        _playerInfo->playbackFile = nil;
+        _playbackFile = nil;
     }
     
     if (_queue) {

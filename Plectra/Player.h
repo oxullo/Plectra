@@ -9,14 +9,6 @@
 #import <Foundation/Foundation.h>
 #import <AudioToolbox/AudioToolbox.h>
 
-typedef struct PlayerInfo {
-    AudioFileID                 playbackFile; // reference to your output file
-    SInt64                      packetPosition; // current packet index in output file
-    UInt32                      numPacketsToRead; // number of packets to read from file
-    AudioStreamPacketDescription *packetDescs; // array of packet descriptions for read buffer
-    Boolean                     isDone; // playback has completed
-} PlayerInfo;
-
 typedef enum PlayerState
 {
     PLAYER_EMPTY,
@@ -28,7 +20,12 @@ typedef enum PlayerState
 extern NSString * const kBNRPlayerChangedStateNotification;
 
 @interface Player : NSObject {
-    PlayerInfo *_playerInfo;
+    AudioFileID _playbackFile; // reference to your output file
+    SInt64 _packetPosition; // current packet index in output file
+    UInt32 _numPacketsToRead; // number of packets to read from file
+    AudioStreamPacketDescription *_packetDescs; // array of packet descriptions for read buffer
+    Boolean _isDone; // playback has completed
+    
     AudioQueueRef _queue;
     PlayerState _state;
     double _lastProgress;
