@@ -50,9 +50,11 @@
             [button setImage:[NSImage imageNamed:@"icon_pause.png"]];
             break;
 
-        case PLAYER_PAUSED:
         case PLAYER_EMPTY:
+            [_window setTitle:@"Plectra"];
             [_waveformView reset];
+
+        case PLAYER_PAUSED:
             [button setImage:[NSImage imageNamed:@"icon_play.png"]];
             break;
             
@@ -76,6 +78,7 @@
         if ( [oFM fileExistsAtPath:filePath] != YES ) {
             NSBeep();
         } else {
+            [_window setTitle:[filePath lastPathComponent]];
             NSURL *fileURL = [NSURL fileURLWithPath:filePath];
             
             [_waveformView scanFileWithURL:fileURL];
