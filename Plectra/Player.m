@@ -16,8 +16,9 @@ NSString * const kBNRPlayerChangedStateNotification = @"PlayerChangedState";
 
 #pragma mark - Private methods
 @interface Player (private)
-- (void)handleBufferCompleteForQueue:(AudioQueueRef)inAQ
-                              buffer:(AudioQueueBufferRef)inBuffer;
+
+- (void)handleBufferCompleteForQueue:(AudioQueueRef)inAQ buffer:(AudioQueueBufferRef)inBuffer;
+
 @end
 
 // we only use time here as a guideline
@@ -96,8 +97,7 @@ static void AQOutputCallback(void *inUserData, AudioQueueRef inAQ, AudioQueueBuf
     [super dealloc];
 }
 
-- (void)handleBufferCompleteForQueue:(AudioQueueRef)inAQ
-                              buffer:(AudioQueueBufferRef)inBuffer
+- (void)handleBufferCompleteForQueue:(AudioQueueRef)inAQ buffer:(AudioQueueBufferRef)inBuffer
 {
     if (_isDone) return;
     
