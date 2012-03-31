@@ -30,6 +30,7 @@ RECT.size.width, RECT.size.height)
         _amplitudes = [[NSMutableArray alloc] init];
         _maxAbsAmplitude = 0.0;
         _lastMouseX = -1;
+        _isWaveLoaded = NO;
     }
     
     return self;
@@ -171,6 +172,7 @@ RECT.size.width, RECT.size.height)
     
     _lastProgress = 0.0;
     _lastCurrentTime = 0.0;
+    _isWaveLoaded = YES;
     
     return YES;
 }
@@ -257,17 +259,21 @@ RECT.size.width, RECT.size.height)
 }
 
 - (void)mouseExited:(NSEvent *)theEvent {
-    _lastMouseX = -1;
-    [self setNeedsDisplay:YES];
+    if (_isWaveLoaded) {
+        _lastMouseX = -1;
+        [self setNeedsDisplay:YES];
+    }
 }
 
 - (void)mouseMoved:(NSEvent *)theEvent {
-    NSPoint eventLocation = [theEvent locationInWindow];
-    NSPoint center = [self convertPoint:eventLocation fromView:nil];
-    _lastMouseX = center.x;
-
-    // TODO: inform the view of the dirty region, avoiding a complete redraw
-    [self setNeedsDisplay:YES];
+    if (_isWaveLoaded) {
+        NSPoint eventLocation = [theEvent locationInWindow];
+        NSPoint center = [self convertPoint:eventLocation fromView:nil];
+        _lastMouseX = center.x;
+        
+        // TODO: inform the view of the dirty region, avoiding a complete redraw
+        [self setNeedsDisplay:YES];
+    }
 }
 
 - (void)mouseDragged:(NSEvent *)theEvent
@@ -275,10 +281,10 @@ RECT.size.width, RECT.size.height)
     [self mouseMoved:theEvent];
 }
 
-- (void)updateProgress:(double)theProgress withCurrentTime:(double)currentTime
+- (void)updateProgress:(double)theProgress withCurrentTime:(double)theCurrentTime
 {
     _lastProgress = theProgress;
-    _lastCurrentTime = currentTime;
+    _lastCurrentTime = theCurrentTime;
     [self setNeedsDisplay:YES];
 }
 

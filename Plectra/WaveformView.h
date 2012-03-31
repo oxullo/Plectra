@@ -17,9 +17,10 @@
     NSTrackingArea *_trackingArea;
     double _lastProgress;
     double _lastCurrentTime;
+    BOOL _isWaveLoaded;
 }
 
 - (BOOL)scanFileWithURL:(NSURL *)theURL;
-- (void)updateProgress:(double)theProgress withCurrentTime:(double)currentTime;
+- (void)updateProgress:(double)theProgress withCurrentTime:(double)theCurrentTime;
 
 @end
