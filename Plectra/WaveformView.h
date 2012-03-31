@@ -16,9 +16,10 @@
     float _lastMouseX;
     NSTrackingArea *_trackingArea;
     double _lastProgress;
+    double _lastCurrentTime;
 }
 
 - (BOOL)scanFileWithURL:(NSURL *)theURL;
-- (void)updateProgress:(double)theProgress;
+- (void)updateProgress:(double)theProgress withCurrentTime:(double)currentTime;
 
 @end

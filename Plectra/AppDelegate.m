@@ -110,7 +110,7 @@
 
 - (void)updateCurrentTime:(NSTimer *)aNotification
 {
-    [_waveformView updateProgress:_player.currentTime / _player.duration];
+    [_waveformView updateProgress:_player.currentTime / _player.duration withCurrentTime:_player.currentTime];
 }
 
 @end

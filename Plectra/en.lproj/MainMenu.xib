@@ -439,7 +439,7 @@
 						<object class="NSCustomView" id="1053475512">
 							<reference key="NSNextResponder" ref="439893737"/>
 							<int key="NSvFlags">274</int>
-							<string key="NSFrame">{{77, 22}, {760, 80}}</string>
+							<string key="NSFrame">{{62, 20}, {760, 80}}</string>
 							<reference key="NSSuperview" ref="439893737"/>
 							<reference key="NSWindow"/>
 							<string key="NSClassName">WaveformView</string>
@@ -447,7 +447,7 @@
 						<object class="NSButton" id="643885806">
 							<reference key="NSNextResponder" ref="439893737"/>
 							<int key="NSvFlags">268</int>
-							<string key="NSFrame">{{3, 27}, {70, 70}}</string>
+							<string key="NSFrame">{{9, 56}, {44, 44}}</string>
 							<reference key="NSSuperview" ref="439893737"/>
 							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView" ref="1053475512"/>
@@ -480,7 +480,7 @@
 					<reference key="NSWindow"/>
 					<reference key="NSNextKeyView" ref="643885806"/>
 				</object>
-				<string key="NSScreenRect">{{0, 0}, {1680, 1028}}</string>
+				<string key="NSScreenRect">{{0, 0}, {1920, 1058}}</string>
 				<string key="NSMinSize">{837, 124}</string>
 				<string key="NSMaxSize">{837, 124}</string>
 				<bool key="NSAutorecalculatesContentBorderThicknessMinY">NO</bool>
@@ -1039,6 +1039,7 @@
 					<object class="IBObjectRecord">
 						<int key="objectID">533</int>
 						<reference key="object" ref="1053475512"/>
+						<array class="NSMutableArray" key="children"/>
 						<reference key="parent" ref="439893737"/>
 					</object>
 					<object class="IBObjectRecord">
@@ -1117,7 +1118,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">549</int>
+			<int key="maxID">553</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">

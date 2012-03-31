@@ -46,6 +46,12 @@ RECT.size.width, RECT.size.height)
     [super dealloc];
     [self removeTrackingArea:_trackingArea];
     [_trackingArea release];
+    [_amplitudes release];
+}
+
+- (BOOL)mouseDownCanMoveWindow
+{
+    return NO;
 }
 
 - (void)dumpFormatInfo:(AudioStreamBasicDescription)inputFormat
@@ -164,17 +170,16 @@ RECT.size.width, RECT.size.height)
     ExtAudioFileDispose(audioFileRef);
     
     _lastProgress = 0.0;
+    _lastCurrentTime = 0.0;
     
     return YES;
 }
 
 - (void)drawRect:(NSRect)dirtyRect
 {
-    /*
     // fill background
-    [[NSColor whiteColor] set];
-    NSRectFill ([self bounds]);
-    */
+    [[NSColor colorWithCalibratedWhite:0.8 alpha:1.0f] set];
+    NSFrameRectWithWidth([self bounds], 1.0);
     
     [[NSColor grayColor] set];
 
@@ -197,15 +202,6 @@ RECT.size.width, RECT.size.height)
 
         [wavePath moveToPoint:NSMakePoint(i, -y + [self bounds].size.height / 2)];
         [wavePath lineToPoint:NSMakePoint(i, y + [self bounds].size.height / 2)];
-        
-        if (i % 50 == 0) {
-            NSString *s = [NSString stringWithFormat:@"%d", i];
-            NSAttributedString *currentText=[[NSAttributedString alloc] initWithString:s attributes: attributes];
-            
-            NSSize attrSize = [currentText size];
-            [currentText drawAtPoint:NSMakePoint(i - attrSize.width / 2, 0)];
-            [currentText release];
-        }
     }
     [wavePath stroke];
     
@@ -229,6 +225,34 @@ RECT.size.width, RECT.size.height)
         
         [[[NSColor redColor] colorWithAlphaComponent:0.1] set];
         NSRectFillUsingOperation(NSMakeRect(0, 0, xPos, [self bounds].size.height), NSCompositeSourceAtop);
+
+        if (_lastCurrentTime > 0.0) {
+            int hours, minutes, seconds, millis;
+            
+            millis = (int)(_lastCurrentTime * 100) % 100;
+            seconds = (int)_lastCurrentTime;
+            hours = seconds / 3600;
+            minutes = (seconds - (hours*3600)) / 60;
+            seconds = seconds % 60;
+            
+            NSString *s;
+            
+            if (hours > 0) {
+                s = [NSString stringWithFormat:@"%02d:%02d:%02d:%02d", hours, minutes, seconds, millis];
+            } else {
+                s = [NSString stringWithFormat:@"%02d:%02d:%02d", minutes, seconds, millis];
+            }
+            
+            NSAttributedString *currentText=[[NSAttributedString alloc] initWithString:s attributes: attributes];
+            
+            NSSize attrSize = [currentText size];
+            if (xPos + attrSize.width > [self bounds].size.width) {
+                [currentText drawAtPoint:NSMakePoint(xPos - attrSize.width - 2, 1)];
+            } else {
+                [currentText drawAtPoint:NSMakePoint(xPos + 2, 1)];
+            }
+            [currentText release];
+        }
     }
 }
 
@@ -246,9 +270,15 @@ RECT.size.width, RECT.size.height)
     [self setNeedsDisplay:YES];
 }
 
-- (void)updateProgress:(double)theProgress
+- (void)mouseDragged:(NSEvent *)theEvent
+{
+    [self mouseMoved:theEvent];
+}
+
+- (void)updateProgress:(double)theProgress withCurrentTime:(double)currentTime
 {
     _lastProgress = theProgress;
+    _lastCurrentTime = currentTime;
     [self setNeedsDisplay:YES];
 }
 

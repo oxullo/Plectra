@@ -98,7 +98,6 @@
 			isa = PBXGroup;
 			children = (
 				169A5E801520FF5600FA1F8C /* Resources */,
-				166F30C91516870700CCD277 /* AudioToolbox.framework */,
 				16B030671516337600CCA510 /* Plectra */,
 				16B030841516337700CCA510 /* PlectraTests */,
 				16B030601516337600CCA510 /* Frameworks */,
@@ -118,6 +117,7 @@
 		16B030601516337600CCA510 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				166F30C91516870700CCD277 /* AudioToolbox.framework */,
 				16B030611516337600CCA510 /* Cocoa.framework */,
 				16B0307F1516337700CCA510 /* SenTestingKit.framework */,
 				16B030631516337600CCA510 /* Other Frameworks */,
