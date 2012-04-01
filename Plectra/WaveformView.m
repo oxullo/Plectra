@@ -219,13 +219,13 @@ RECT.size.width, RECT.size.height)
         NSBezierPath *cursorPath = [NSBezierPath bezierPath];
         [cursorPath setLineWidth:0.5];
         [[NSColor redColor] set];
-        double xPos = [self bounds].size.width * _lastProgress;
-        [cursorPath moveToPoint:NSMakePoint(xPos, 0)];
-        [cursorPath lineToPoint:NSMakePoint(xPos, [self bounds].size.height)];
+        double xCursorPos = [self bounds].size.width * _lastProgress;
+        [cursorPath moveToPoint:NSMakePoint(xCursorPos, 0)];
+        [cursorPath lineToPoint:NSMakePoint(xCursorPos, [self bounds].size.height)];
         [cursorPath stroke];
         
         [[[NSColor redColor] colorWithAlphaComponent:0.1] set];
-        NSRectFillUsingOperation(NSMakeRect(0, 0, xPos, [self bounds].size.height), NSCompositeSourceAtop);
+        NSRectFillUsingOperation(NSMakeRect(0, 0, xCursorPos, [self bounds].size.height), NSCompositeSourceAtop);
 
         if (_lastCurrentTime > 0.0) {
             int hours, minutes, seconds, millis;
@@ -247,11 +247,18 @@ RECT.size.width, RECT.size.height)
             NSAttributedString *currentText=[[NSAttributedString alloc] initWithString:s attributes: attributes];
             
             NSSize attrSize = [currentText size];
-            if (xPos + attrSize.width > [self bounds].size.width) {
-                [currentText drawAtPoint:NSMakePoint(xPos - attrSize.width - 2, 1)];
+            double xTextPos;
+            
+            if (xCursorPos + attrSize.width > [self bounds].size.width) {
+                xTextPos = xCursorPos - attrSize.width - 3;
             } else {
-                [currentText drawAtPoint:NSMakePoint(xPos + 2, 1)];
+                xTextPos = xCursorPos + 3;
             }
+
+            [[[NSColor whiteColor] colorWithAlphaComponent:0.7] set];
+            NSRectFillUsingOperation(NSMakeRect(xTextPos, 0, attrSize.width, attrSize.height), NSCompositeSourceAtop);
+            [currentText drawAtPoint:NSMakePoint(xTextPos, 1)];
+            
             [currentText release];
         }
     }
