@@ -11,9 +11,10 @@
 #import "WaveformView.h"
 #import "Player.h"
 
-@interface AppDelegate ()
+@interface AppDelegate (private)
 
 - (void)handlePlayerChangedState:(NSNotification *)note;
+- (void)handleWaveformViewSeekRequest:(NSNotification *)note;
 @end
 
 @implementation AppDelegate
@@ -28,7 +29,9 @@
     if (self) {
         _player = [[Player alloc] init];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handlePlayerChangedState:) name:kBNRPlayerChangedStateNotification object:nil];
-        
+
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleWaveformViewSeekRequest:) name:kBNRPlayerSeekRequestNotification object:nil];
+
         _progressUpdateTimer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(updateProgress:) userInfo:nil repeats:YES];
 
     }
@@ -61,6 +64,13 @@
         default:
             break;
     }
+}
+
+- (void)handleWaveformViewSeekRequest:(NSNotification *)note
+{
+    NSDictionary *userInfo = note.userInfo;
+    NSNumber *seekPos = [userInfo objectForKey:@"seekPos"];
+    NSLog(@"Seek requested: %@", seekPos);
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification

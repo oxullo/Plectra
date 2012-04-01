@@ -10,6 +10,8 @@
 
 #import <AudioToolbox/ExtendedAudioFile.h>
 
+extern NSString * const kBNRPlayerSeekRequestNotification;
+
 @interface WaveformView : NSView {
     NSMutableArray *_amplitudes;
     float _maxAbsAmplitude;
@@ -18,6 +20,7 @@
     double _lastProgress;
     double _lastCurrentTime;
     BOOL _isWaveLoaded;
+    double _duration;
 }
 
 - (BOOL)scanFileWithURL:(NSURL *)theURL;
