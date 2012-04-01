@@ -27,6 +27,11 @@ NSString * const kBNRPlayerSeekRequestNotification = @"WaveformViewSeekRequest";
 - (void)notifySeekAtPos:(double)xPos;
 - (void)dumpFormatInfo:(AudioStreamBasicDescription)inputFormat;
 - (void)fetchSongDuration:(NSURL *)theURL;
+- (void)drawMiddleLine;
+- (void)drawWaveform;
+- (void)drawMouseCursor;
+- (void)drawCurrentTimeText:(double)theTime atPos:(NSPoint)thePos;
+- (void)drawProgressBlock;
 
 @end
 
@@ -106,86 +111,10 @@ NSString * const kBNRPlayerSeekRequestNotification = @"WaveformViewSeekRequest";
     [[NSColor colorWithCalibratedWhite:0.8 alpha:1.0f] set];
     NSFrameRectWithWidth([self bounds], 1.0);
     
-    [[NSColor grayColor] set];
-    
-    NSBezierPath *path = [NSBezierPath bezierPath];
-    [path setLineWidth:1];
-    [path moveToPoint:NSMakePoint(0, [self bounds].size.height / 2)];
-    [path lineToPoint:NSMakePoint([self bounds].size.width, [self bounds].size.height / 2)];
-    [path stroke];
-    
-    [[NSColor blackColor] set]; 
-    
-    NSDictionary *attributes = [NSDictionary dictionaryWithObjectsAndKeys:[NSFont fontWithName:@"Helvetica" size:8], NSFontAttributeName,[NSColor blackColor], NSForegroundColorAttributeName, nil];
-    
-    NSBezierPath *wavePath = [NSBezierPath bezierPath];
-    [wavePath setLineWidth:1];
-    
-    for (int i=0 ; i < [_amplitudes count] ; ++i) {
-        float ampl = [[_amplitudes objectAtIndex:i] floatValue];
-        float y = ampl / _maxAbsAmplitude * [self bounds].size.height / 2;
-        
-        [wavePath moveToPoint:NSMakePoint(i, -y + [self bounds].size.height / 2)];
-        [wavePath lineToPoint:NSMakePoint(i, y + [self bounds].size.height / 2)];
-    }
-    [wavePath stroke];
-    
-    if (_lastMouseX > -1) {
-        NSBezierPath *cursorPath = [NSBezierPath bezierPath];
-        [cursorPath setLineWidth:1];
-        [[NSColor redColor] set];
-        [cursorPath moveToPoint:NSMakePoint(_lastMouseX, 0)];
-        [cursorPath lineToPoint:NSMakePoint(_lastMouseX, [self bounds].size.height)];
-        [cursorPath stroke];
-    }
-    
-    if (_lastProgress > 0.0) {
-        NSBezierPath *cursorPath = [NSBezierPath bezierPath];
-        [cursorPath setLineWidth:0.5];
-        [[NSColor redColor] set];
-        double xCursorPos = [self bounds].size.width * _lastProgress;
-        [cursorPath moveToPoint:NSMakePoint(xCursorPos, 0)];
-        [cursorPath lineToPoint:NSMakePoint(xCursorPos, [self bounds].size.height)];
-        [cursorPath stroke];
-        
-        [[[NSColor redColor] colorWithAlphaComponent:0.1] set];
-        NSRectFillUsingOperation(NSMakeRect(0, 0, xCursorPos, [self bounds].size.height), NSCompositeSourceAtop);
-        
-        if (_lastCurrentTime > 0.0) {
-            int hours, minutes, seconds, millis;
-            
-            millis = (int)(_lastCurrentTime * 100) % 100;
-            seconds = (int)_lastCurrentTime;
-            hours = seconds / 3600;
-            minutes = (seconds - (hours*3600)) / 60;
-            seconds = seconds % 60;
-            
-            NSString *s;
-            
-            if (hours > 0) {
-                s = [NSString stringWithFormat:@"%02d:%02d:%02d:%02d", hours, minutes, seconds, millis];
-            } else {
-                s = [NSString stringWithFormat:@"%02d:%02d:%02d", minutes, seconds, millis];
-            }
-            
-            NSAttributedString *currentText=[[NSAttributedString alloc] initWithString:s attributes: attributes];
-            
-            NSSize attrSize = [currentText size];
-            double xTextPos;
-            
-            if (xCursorPos + attrSize.width > [self bounds].size.width) {
-                xTextPos = xCursorPos - attrSize.width - 3;
-            } else {
-                xTextPos = xCursorPos + 3;
-            }
-            
-            [[[NSColor whiteColor] colorWithAlphaComponent:0.7] set];
-            NSRectFillUsingOperation(NSMakeRect(xTextPos, 0, attrSize.width, attrSize.height), NSCompositeSourceAtop);
-            [currentText drawAtPoint:NSMakePoint(xTextPos, 1)];
-            
-            [currentText release];
-        }
-    }
+    [self drawMiddleLine];
+    [self drawWaveform];
+    [self drawMouseCursor];
+    [self drawProgressBlock];
 }
 
 #pragma mark - Public methods
@@ -353,6 +282,106 @@ NSString * const kBNRPlayerSeekRequestNotification = @"WaveformViewSeekRequest";
     NSLog(@"Detected duration: %f", _duration);
     
     AudioFileClose(audioFileID);
+}
+
+- (void)drawMiddleLine
+{
+    [[NSColor grayColor] set];
+    
+    NSBezierPath *path = [NSBezierPath bezierPath];
+    [path setLineWidth:1];
+    [path moveToPoint:NSMakePoint(0, [self bounds].size.height / 2)];
+    [path lineToPoint:NSMakePoint([self bounds].size.width, [self bounds].size.height / 2)];
+    [path stroke];
+}
+
+- (void)drawWaveform
+{
+    [[NSColor blackColor] set]; 
+    
+    NSBezierPath *wavePath = [NSBezierPath bezierPath];
+    [wavePath setLineWidth:1];
+    
+    for (int i=0 ; i < [_amplitudes count] ; ++i) {
+        float ampl = [[_amplitudes objectAtIndex:i] floatValue];
+        float y = ampl / _maxAbsAmplitude * [self bounds].size.height / 2;
+        
+        [wavePath moveToPoint:NSMakePoint(i, -y + [self bounds].size.height / 2)];
+        [wavePath lineToPoint:NSMakePoint(i, y + [self bounds].size.height / 2)];
+    }
+    [wavePath stroke];
+}
+
+- (void)drawMouseCursor
+{
+    if (_lastMouseX > -1) {
+        NSBezierPath *cursorPath = [NSBezierPath bezierPath];
+        [cursorPath setLineWidth:1];
+        [[NSColor redColor] set];
+        [cursorPath moveToPoint:NSMakePoint(_lastMouseX, 0)];
+        [cursorPath lineToPoint:NSMakePoint(_lastMouseX, [self bounds].size.height)];
+        [cursorPath stroke];
+        
+        [self drawCurrentTimeText:_lastMouseX / [self bounds].size.width * _duration atPos:NSMakePoint(_lastMouseX, 60)];
+    }
+}
+
+- (void)drawCurrentTimeText:(double)theTime atPos:(NSPoint)thePos
+{
+    NSDictionary *attributes = [NSDictionary dictionaryWithObjectsAndKeys:[NSFont fontWithName:@"Helvetica" size:8], NSFontAttributeName,[NSColor blackColor], NSForegroundColorAttributeName, nil];
+    
+    int hours, minutes, seconds, millis;
+    
+    millis = (int)(theTime * 100) % 100;
+    seconds = (int)theTime;
+    hours = seconds / 3600;
+    minutes = (seconds - (hours*3600)) / 60;
+    seconds = seconds % 60;
+    
+    NSString *s;
+    
+    if (hours > 0) {
+        s = [NSString stringWithFormat:@"%02d:%02d:%02d:%02d", hours, minutes, seconds, millis];
+    } else {
+        s = [NSString stringWithFormat:@"%02d:%02d:%02d", minutes, seconds, millis];
+    }
+    
+    NSAttributedString *currentText=[[NSAttributedString alloc] initWithString:s attributes: attributes];
+    
+    NSSize attrSize = [currentText size];
+    double xTextPos;
+    
+    if (thePos.x + attrSize.width > [self bounds].size.width) {
+        xTextPos = thePos.x - attrSize.width - 3;
+    } else {
+        xTextPos = thePos.x + 3;
+    }
+    
+    [[[NSColor whiteColor] colorWithAlphaComponent:0.7] set];
+    NSRectFillUsingOperation(NSMakeRect(xTextPos, thePos.y, attrSize.width, attrSize.height), NSCompositeSourceAtop);
+    [currentText drawAtPoint:NSMakePoint(xTextPos, thePos.y)];
+    
+    [currentText release];
+}
+
+- (void)drawProgressBlock
+{
+    if (_lastProgress > 0.0) {
+        NSBezierPath *cursorPath = [NSBezierPath bezierPath];
+        [cursorPath setLineWidth:0.5];
+        [[NSColor redColor] set];
+        double xCursorPos = [self bounds].size.width * _lastProgress;
+        [cursorPath moveToPoint:NSMakePoint(xCursorPos, 0)];
+        [cursorPath lineToPoint:NSMakePoint(xCursorPos, [self bounds].size.height)];
+        [cursorPath stroke];
+        
+        [[[NSColor redColor] colorWithAlphaComponent:0.1] set];
+        NSRectFillUsingOperation(NSMakeRect(0, 0, xCursorPos, [self bounds].size.height), NSCompositeSourceAtop);
+        
+        if (_lastCurrentTime > 0.0) {
+            [self drawCurrentTimeText:_lastCurrentTime atPos:NSMakePoint(xCursorPos, 0)];
+        }
+    }
 }
 
 @end
