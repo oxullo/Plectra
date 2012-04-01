@@ -332,10 +332,10 @@ NSString * const kBNRPlayerSeekRequestNotification = @"WaveformViewSeekRequest";
 
 - (void)notifySeekAtPos:(double)xPos
 {
-    NSNumber *seekPos = [[NSNumber alloc] initWithDouble:xPos / [self bounds].size.width * _duration];
-    NSDictionary *seekPosDict = [NSDictionary dictionaryWithObject:seekPos forKey:@"seekPos"];
-    [[NSNotificationCenter defaultCenter] postNotificationName:kBNRPlayerSeekRequestNotification object:self userInfo:seekPosDict];
-    [seekPos release];
+    NSNumber *seekTime = [[NSNumber alloc] initWithDouble:xPos / [self bounds].size.width * _duration];
+    NSDictionary *seekTimeDict = [NSDictionary dictionaryWithObject:seekTime forKey:@"seekTime"];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kBNRPlayerSeekRequestNotification object:self userInfo:seekTimeDict];
+    [seekTime release];
 }
 
 // TODO: duplicated code, to be integrated among WaveformView and Player

@@ -10,8 +10,6 @@
 
 #import "Player.h"
 
-#define PLAYBACK_BUFFERS_NUM    3
-
 NSString * const kBNRPlayerChangedStateNotification = @"PlayerChangedState";
 Float64 const kBufferForSeconds = 0.5;
 
@@ -91,6 +89,10 @@ static void AQOutputCallback(void *inUserData, AudioQueueRef inAQ, AudioQueueBuf
         _playbackFile = nil;
         _queue = nil;
         _state = PLAYER_EMPTY;
+        
+        for (int i = 0; i < PLAYBACK_BUFFERS_NUM; ++i) {
+            _buffers[i] = NULL;
+        }
     }
     
     return self;
@@ -105,7 +107,7 @@ static void AQOutputCallback(void *inUserData, AudioQueueRef inAQ, AudioQueueBuf
 
 - (void)handleBufferCompleteForQueue:(AudioQueueRef)inAQ buffer:(AudioQueueBufferRef)inBuffer
 {
-    if (_state == PLAYER_STOPPING) {
+    if (_state == PLAYER_STOPPING || _state == PLAYER_SEEKING) {
         return;   
     }
     
@@ -113,36 +115,20 @@ static void AQOutputCallback(void *inUserData, AudioQueueRef inAQ, AudioQueueBuf
     UInt32 numBytes;
     UInt32 nPackets = _numPacketsToRead;    
 
-    OSStatus err = AudioFileReadPackets(_playbackFile,
-                                        false,
-                                        &numBytes,
-                                        _packetDescs,
-                                        _packetPosition,
-                                        &nPackets,
-                                        inBuffer->mAudioData);
-    if (err) {
-        fprintf(stderr, "AudioFileReadPackets failed\n");
-        exit(1);
-    }
+    [self check:AudioFileReadPackets(_playbackFile, false, &numBytes, _packetDescs, _packetPosition, &nPackets, inBuffer->mAudioData) withFailureText:@"AudioFileReadPackets() failed"];
     
     // enqueue buffer into the Audio Queue
     // if nPackets == 0 it means we are EOF (all data has been read from file)
     if (nPackets > 0)
     {
         inBuffer->mAudioDataByteSize = numBytes;      
-        AudioQueueEnqueueBuffer(inAQ,
-                                inBuffer,
-                                (_packetDescs ? nPackets : 0),
-                                _packetDescs);
+        [self check:AudioQueueEnqueueBuffer(inAQ, inBuffer, (_packetDescs ? nPackets : 0), _packetDescs) withFailureText:@"AudioQueueEnqueueBuffer() failed"];
+        
         _packetPosition += nPackets;
     }
     else
     {
-        OSStatus err = AudioQueueStop(inAQ, false);
-        if (err) {
-            NSLog(@"AudioQueueStop() failed");
-            exit(1);
-        }
+        [self check:AudioQueueStop(inAQ, false) withFailureText:@"AudioQueueStop() failed"];
         [self changeState:PLAYER_STOPPING];
     }
 }
@@ -201,8 +187,17 @@ static void AQOutputCallback(void *inUserData, AudioQueueRef inAQ, AudioQueueBuf
         _queue = nil;
     }
     
+    for (int i = 0; i < PLAYBACK_BUFFERS_NUM; ++i) {
+
+        if (_buffers[i] != NULL) {
+            AudioQueueFreeBuffer(_queue, _buffers[i]);
+            _buffers[i] = NULL;
+        }
+    }
+    
     [self changeState:PLAYER_EMPTY];
     _lastProgress = 0.0;
+    _seekTime = 0.0;
 }
 
 
@@ -253,17 +248,15 @@ static void AQOutputCallback(void *inUserData, AudioQueueRef inAQ, AudioQueueBuf
     
     [self copyEncoderCookieToQueue:_queue];
     
-    AudioQueueBufferRef buffers[PLAYBACK_BUFFERS_NUM];
     _packetPosition = 0;
     
-    int i;
-    for (i = 0; i < PLAYBACK_BUFFERS_NUM; ++i)
+    for (int i = 0; i < PLAYBACK_BUFFERS_NUM; ++i)
     {
-        [self check:AudioQueueAllocateBuffer(_queue, bufferByteSize, &buffers[i])
+        [self check:AudioQueueAllocateBuffer(_queue, bufferByteSize, &_buffers[i])
             withFailureText:@"AudioQueueAllocateBuffer failed"];
         
         // manually invoke callback to fill buffers with data
-        AQOutputCallback(self, _queue, buffers[i]);
+        AQOutputCallback(self, _queue, _buffers[i]);
         
         // EOF (the entire file's contents fit in the buffers)
         if (_state == PLAYER_STOPPING) {
@@ -309,7 +302,7 @@ withFailureText:@"AudioQueueStart failed"];
             return _lastProgress;
         }
         
-        double progress = queueTime.mSampleTime / _dataFormat.mSampleRate;
+        double progress = _seekTime + queueTime.mSampleTime / _dataFormat.mSampleRate;
         if (progress < 0.0)
         {
             progress = 0.0;
@@ -331,6 +324,26 @@ withFailureText:@"AudioQueueStart failed"];
             _lastProgress = 0.0;
         }
     }
+}
+
+- (void)seekTo:(double)seekTime
+{
+    [self changeState:PLAYER_SEEKING];
+    UInt32 closestPacketIndex = round(seekTime * _dataFormat.mSampleRate / _dataFormat.mFramesPerPacket);
+
+    _packetPosition = closestPacketIndex;
+    
+    // Stop and Start immediately to seek
+    AudioQueueStop(_queue, true);
+    AudioQueueStart(_queue, NULL);
+
+    [self changeState:PLAYER_PLAYING];
+
+    for (int i = 0; i < PLAYBACK_BUFFERS_NUM; ++i) {
+        AQOutputCallback(self, _queue, _buffers[i]);
+    }
+    
+    _seekTime = seekTime;
 }
 
 @end

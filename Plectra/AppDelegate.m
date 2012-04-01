@@ -69,8 +69,11 @@
 - (void)handleWaveformViewSeekRequest:(NSNotification *)note
 {
     NSDictionary *userInfo = note.userInfo;
-    NSNumber *seekPos = [userInfo objectForKey:@"seekPos"];
-    NSLog(@"Seek requested: %@", seekPos);
+    NSNumber *seekTime = [userInfo objectForKey:@"seekTime"];
+    
+    NSLog(@"Seek requested: %@", seekTime);
+
+    [_player seekTo:[seekTime doubleValue]];
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
@@ -114,9 +117,8 @@
             [_player pause];
             break;
         
-        case PLAYER_ERROR:
-            NSAssert(NO, @"bomb");
-            break;
+        default:
+            NSLog(@"Unhandled onPlayPauseButtonPressed() while in state %d", _player.state);
     }
 }
 

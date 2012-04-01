@@ -9,12 +9,15 @@
 #import <Foundation/Foundation.h>
 #import <AudioToolbox/AudioToolbox.h>
 
+#define PLAYBACK_BUFFERS_NUM    3
+
 typedef enum PlayerState
 {
     PLAYER_EMPTY,
     PLAYER_PAUSED,
     PLAYER_PLAYING,
     PLAYER_STOPPING,
+    PLAYER_SEEKING,
     PLAYER_ERROR
 } PlayerState;
 
@@ -29,7 +32,9 @@ extern NSString * const kBNRPlayerChangedStateNotification;
     AudioQueueRef _queue;
     PlayerState _state;
     double _lastProgress;
+    double _seekTime;
     AudioStreamBasicDescription _dataFormat;
+    AudioQueueBufferRef _buffers[PLAYBACK_BUFFERS_NUM];
     double _duration;
     NSDate *_lastStateChange;
 }
@@ -43,5 +48,6 @@ extern NSString * const kBNRPlayerChangedStateNotification;
 - (void)resume;
 - (void)reset;
 - (void)checkState; // TODO: get rid of this shit
+- (void)seekTo:(double)seekTime;
 
 @end
