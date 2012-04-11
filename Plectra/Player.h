@@ -16,8 +16,10 @@ typedef enum PlayerState
     PLAYER_EMPTY,
     PLAYER_PAUSED,
     PLAYER_PLAYING,
+    PLAYER_PRELOADING,
     PLAYER_STOPPING,
     PLAYER_SEEKING,
+    PLAYER_STOPPED,
     PLAYER_ERROR
 } PlayerState;
 
@@ -47,7 +49,6 @@ extern NSString * const kBNRPlayerChangedStateNotification;
 - (void)pause;
 - (void)resume;
 - (void)reset;
-- (void)checkState; // TODO: get rid of this shit
 - (void)seekTo:(double)seekTime;
 
 @end

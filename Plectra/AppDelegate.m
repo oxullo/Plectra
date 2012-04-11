@@ -57,6 +57,7 @@
             [_window setTitle:@"Plectra"];
             [_waveformView reset];
 
+        case PLAYER_STOPPED:
         case PLAYER_PAUSED:
             [button setImage:[NSImage imageNamed:@"icon_play.png"]];
             break;
@@ -105,10 +106,13 @@
 {
     switch (_player.state) {
         case PLAYER_EMPTY:
-        case PLAYER_STOPPING:
             [self openFile];
             break;
         
+        case PLAYER_STOPPED:
+            [_player seekTo:0];
+            break;
+            
         case PLAYER_PAUSED:
             [_player resume];
             break;
@@ -129,7 +133,6 @@
 
 - (void)updateProgress:(NSTimer *)aNotification
 {
-    [_player checkState];
     [_waveformView updateProgress:_player.currentTime / _player.duration withCurrentTime:_player.currentTime];
 }
 
