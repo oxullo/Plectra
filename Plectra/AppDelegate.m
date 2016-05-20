@@ -83,17 +83,16 @@
 
 - (void)openFile
 {
-    NSString *filePath;
+    NSURL *fileURL;
     NSOpenPanel *oOpnPnl = [NSOpenPanel openPanel];
-    NSInteger nResult = [oOpnPnl runModalForTypes:nil];
+    NSInteger nResult = [oOpnPnl runModal];
     if ( nResult == NSFileHandlingPanelOKButton ) {
-        filePath = [[oOpnPnl filenames] objectAtIndex:0];
+        fileURL = [[oOpnPnl URL] retain];
         NSFileManager *oFM = [NSFileManager defaultManager];
-        if ( [oFM fileExistsAtPath:filePath] != YES ) {
+        if ( [oFM fileExistsAtPath:[fileURL path]] != YES ) {
             NSBeep();
         } else {
-            [_window setTitle:[filePath lastPathComponent]];
-            NSURL *fileURL = [NSURL fileURLWithPath:filePath];
+            [_window setTitle:[fileURL lastPathComponent]];
             
             [_waveformView scanFileWithURL:fileURL];
             [_player playFileWithURL:fileURL];
