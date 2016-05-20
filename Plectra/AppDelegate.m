@@ -81,7 +81,16 @@
 {
 }
 
-- (void)openFile
+- (void)openURL:(NSURL *)fileURL
+{
+    [_player reset];
+    [_window setTitle:[fileURL lastPathComponent]];
+
+    [_waveformView scanFileWithURL:fileURL];
+    [_player playFileWithURL:fileURL];
+}
+
+- (void)openFileRequest
 {
     NSURL *fileURL;
     NSOpenPanel *oOpnPnl = [NSOpenPanel openPanel];
@@ -92,20 +101,27 @@
         if ( [oFM fileExistsAtPath:[fileURL path]] != YES ) {
             NSBeep();
         } else {
-            [_window setTitle:[fileURL lastPathComponent]];
-            
-            [_waveformView scanFileWithURL:fileURL];
-            [_player playFileWithURL:fileURL];
+            [self openURL:fileURL];
         }
     }
 
+}
+
+- (BOOL)application:(NSApplication *)sender openFile:(NSString *)filename
+{
+    NSURL *fileURL = [[NSURL alloc] initFileURLWithPath:filename];
+    NSLog(@"Opening file: %@", filename);
+
+    [self openURL:fileURL];
+
+    return YES;
 }
 
 - (IBAction)onPlayPauseButtonPressed:(id)sender
 {
     switch (_player.state) {
         case PLAYER_EMPTY:
-            [self openFile];
+            [self openFileRequest];
             break;
         
         case PLAYER_STOPPED:
@@ -127,7 +143,7 @@
 
 - (IBAction)onOpenMenuSelected:(id)sender
 {
-    [self openFile];
+    [self openFileRequest];
 }
 
 - (void)updateProgress:(NSTimer *)aNotification
