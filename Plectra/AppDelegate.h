@@ -8,7 +8,6 @@
 
 #import <Cocoa/Cocoa.h>
 #import <AVFoundation/AVPlayer.h>
-#import <AVFoundation/AVPlayerItem.h>
 
 @class WaveformView;
 

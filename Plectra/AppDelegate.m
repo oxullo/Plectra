@@ -6,6 +6,7 @@
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
+#import <AVFoundation/AVPlayerItem.h>
 #import <AVFoundation/AVAsset.h>
 
 #import "AppDelegate.h"
@@ -31,7 +32,8 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
-    [self setPlayer:nil];
+    [self setPlayer:[[[AVPlayer alloc] init] autorelease]];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleWaveformViewSeekRequest:) name:kBNRPlayerSeekRequestNotification object:nil];
     
     _progressUpdateTimer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(updateProgress:) userInfo:nil repeats:YES];
@@ -76,9 +78,11 @@
     [_window setTitle:[fileURL lastPathComponent]];
 
     [_waveformView scanFileWithURL:fileURL];
-    self.player = [AVPlayer playerWithURL:fileURL];
+    
+    AVPlayerItem *playerItem = [AVPlayerItem playerItemWithURL:fileURL];
+    [player replaceCurrentItemWithPlayerItem:playerItem];
 
-    [self.player play];
+    [player play];
     [self.playPauseButton setImage:[NSImage imageNamed:@"icon_pause.png"]];
 }
 
@@ -111,17 +115,17 @@
 
 - (IBAction)onPlayPauseButtonPressed:(id)sender
 {
-    if (self.player == nil) {
+    if (player.currentItem.status != AVPlayerItemStatusReadyToPlay) {
         [self openFileRequest];
     } else {
         if (self.player.rate == 0) {
-            if (CMTimeGetSeconds(self.player.currentTime) == CMTimeGetSeconds(self.player.currentItem.asset.duration)) {
-                [self.player seekToTime:CMTimeMakeWithSeconds(0.f, 60000)];
+            if (CMTimeGetSeconds(self.player.currentTime) == CMTimeGetSeconds(player.currentItem.asset.duration)) {
+                [player seekToTime:CMTimeMakeWithSeconds(0.f, 60000)];
             }
-            [self.player play];
+            [player play];
             [self.playPauseButton setImage:[NSImage imageNamed:@"icon_pause.png"]];
         } else {
-            [self.player pause];
+            [player pause];
             [self.playPauseButton setImage:[NSImage imageNamed:@"icon_play.png"]];
         }
     }
@@ -134,13 +138,11 @@
 
 - (void)updateProgress:(NSTimer *)aNotification
 {
-    if (self.player != nil) {
-        double currentTime = CMTimeGetSeconds(self.player.currentTime);
-        double totalDuration = CMTimeGetSeconds(self.player.currentItem.asset.duration);
-        
-        if (totalDuration != 0) {
-            [_waveformView updateProgress:currentTime / totalDuration withCurrentTime:currentTime];
-        }
+    double currentTime = CMTimeGetSeconds(player.currentTime);
+    double totalDuration = CMTimeGetSeconds(player.currentItem.asset.duration);
+    
+    if (player.currentItem.status == AVPlayerItemStatusReadyToPlay && totalDuration > 0) {
+        [_waveformView updateProgress:currentTime / totalDuration withCurrentTime:currentTime];
     }
 }
 
