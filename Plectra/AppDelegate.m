@@ -35,33 +35,9 @@
     [self setPlayer:[[[AVPlayer alloc] init] autorelease]];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleWaveformViewSeekRequest:) name:kBNRPlayerSeekRequestNotification object:nil];
-    
+
     _progressUpdateTimer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(updateProgress:) userInfo:nil repeats:YES];
 }
-
-/*
-- (void)handlePlayerChangedState:(NSNotification *)note
-{
-    NSLog(@"Player changed state to %d", _player.state);
-    switch (_player.state) {
-        case PLAYER_PLAYING:
-            [button setImage:[NSImage imageNamed:@"icon_pause.png"]];
-            break;
-
-        case PLAYER_EMPTY:
-            [_window setTitle:@"Plectra"];
-            [_waveformView reset];
-
-        case PLAYER_STOPPED:
-        case PLAYER_PAUSED:
-            [button setImage:[NSImage imageNamed:@"icon_play.png"]];
-            break;
-            
-        default:
-            break;
-    }
-}
-*/
 
 - (void)handleWaveformViewSeekRequest:(NSNotification *)note
 {
@@ -73,14 +49,30 @@
     [self setCurrentTime:[seekTime doubleValue]];
 }
 
+- (void)handlePlaybackEnded:(NSNotification *)note
+{
+    [self.playPauseButton setImage:[NSImage imageNamed:@"icon_play.png"]];
+}
+
 - (void)openURL:(NSURL *)fileURL
 {
     [_window setTitle:[fileURL lastPathComponent]];
 
     [_waveformView scanFileWithURL:fileURL];
     
+    if ([player currentItem]) {
+        [[NSNotificationCenter defaultCenter] removeObserver:self
+                                              name:AVPlayerItemDidPlayToEndTimeNotification
+                                              object:[player currentItem]];
+    }
+
     AVPlayerItem *playerItem = [AVPlayerItem playerItemWithURL:fileURL];
     [player replaceCurrentItemWithPlayerItem:playerItem];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(handlePlaybackEnded:)
+                                                 name:AVPlayerItemDidPlayToEndTimeNotification
+                                               object:playerItem];
 
     [player play];
     [self.playPauseButton setImage:[NSImage imageNamed:@"icon_pause.png"]];
