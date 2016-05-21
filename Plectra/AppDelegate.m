@@ -81,6 +81,7 @@
 
     [player play];
     [self.playPauseButton setImage:[NSImage imageNamed:@"icon_pause"]];
+    [[NSDocumentController sharedDocumentController] noteNewRecentDocumentURL:fileURL];
 }
 
 - (void)openFileRequest
