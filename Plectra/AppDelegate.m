@@ -56,7 +56,7 @@
 
 - (void)handlePlaybackEnded:(NSNotification *)note
 {
-    [self.playPauseButton setImage:[NSImage imageNamed:@"icon_play.png"]];
+    [self.playPauseButton setImage:[NSImage imageNamed:@"icon_play"]];
 }
 
 - (void)openURL:(NSURL *)fileURL
@@ -80,7 +80,7 @@
                                              object:playerItem];
 
     [player play];
-    [self.playPauseButton setImage:[NSImage imageNamed:@"icon_pause.png"]];
+    [self.playPauseButton setImage:[NSImage imageNamed:@"icon_pause"]];
 }
 
 - (void)openFileRequest
@@ -123,10 +123,10 @@
                 [self setCurrentTime:0];
             }
             [player play];
-            [self.playPauseButton setImage:[NSImage imageNamed:@"icon_pause.png"]];
+            [self.playPauseButton setImage:[NSImage imageNamed:@"icon_pause"]];
         } else {
             [player pause];
-            [self.playPauseButton setImage:[NSImage imageNamed:@"icon_play.png"]];
+            [self.playPauseButton setImage:[NSImage imageNamed:@"icon_play"]];
         }
     }
 }
