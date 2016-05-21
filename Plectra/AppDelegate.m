@@ -88,6 +88,8 @@
 
     [_waveformView scanFileWithURL:fileURL];
     self.player = [AVPlayer playerWithURL:fileURL];
+
+    [self.player play];
 }
 
 - (void)openFileRequest
@@ -119,34 +121,23 @@
 
 - (IBAction)onPlayPauseButtonPressed:(id)sender
 {
-    /*
-    switch (_player.state) {
-        case PLAYER_EMPTY:
-            [self openFileRequest];
-            break;
-        
-        case PLAYER_STOPPED:
-            [_player seekTo:0];
-            break;
-            
-        case PLAYER_PAUSED:
-            [_player resume];
-            break;
-        
-        case PLAYER_PLAYING:
-            [_player pause];
-            break;
-        
-        default:
-            NSLog(@"Unhandled onPlayPauseButtonPressed() while in state %d", _player.state);
+    if (self.player == nil) {
+        [self openFileRequest];
+    } else {
+        if (self.player.rate == 0) {
+            if (CMTimeGetSeconds(self.player.currentTime) == CMTimeGetSeconds(self.player.currentItem.asset.duration)) {
+                [self.player seekToTime:CMTimeMakeWithSeconds(0.f, 60000)];
+            }
+            [self.player play];
+        } else {
+            [self.player pause];
+        }
     }
-     */
 }
 
 - (IBAction)onOpenMenuSelected:(id)sender
 {
     [self openFileRequest];
-    [self.player play];
 }
 
 - (void)updateProgress:(NSTimer *)aNotification
@@ -154,9 +145,6 @@
     if (self.player != nil) {
         double currentTime = CMTimeGetSeconds(self.player.currentTime);
         double totalDuration = CMTimeGetSeconds(self.player.currentItem.asset.duration);
-        
-        NSLog(@"curtime: %f", currentTime);
-        NSLog(@"duration: %f", totalDuration);
         
         if (totalDuration != 0) {
             [_waveformView updateProgress:currentTime / totalDuration withCurrentTime:currentTime];
