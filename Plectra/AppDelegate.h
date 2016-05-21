@@ -21,6 +21,8 @@
 @property (assign) IBOutlet WaveformView *waveformView;
 @property (assign) IBOutlet NSButton *playPauseButton;
 @property (retain) AVPlayer *player;
+@property (assign) double currentTime;
+
 
 - (IBAction)onPlayPauseButtonPressed:(id)sender;
 - (IBAction)onOpenMenuSelected:(id)sender;

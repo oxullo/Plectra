@@ -70,7 +70,7 @@
     
     NSLog(@"Seek requested: %@", seekTime);
 
-    [self.player seekToTime:CMTimeMakeWithSeconds([seekTime doubleValue], 60000)];
+    [self setCurrentTime:[seekTime doubleValue]];
 }
 
 - (void)openURL:(NSURL *)fileURL
@@ -100,7 +100,6 @@
             [self openURL:fileURL];
         }
     }
-
 }
 
 - (BOOL)application:(NSApplication *)sender openFile:(NSString *)filename
@@ -119,8 +118,8 @@
         [self openFileRequest];
     } else {
         if (self.player.rate == 0) {
-            if (CMTimeGetSeconds(self.player.currentTime) == CMTimeGetSeconds(player.currentItem.asset.duration)) {
-                [player seekToTime:CMTimeMakeWithSeconds(0.f, 60000)];
+            if ([self currentTime] == CMTimeGetSeconds(player.currentItem.asset.duration)) {
+                [self setCurrentTime:0];
             }
             [player play];
             [self.playPauseButton setImage:[NSImage imageNamed:@"icon_pause.png"]];
@@ -138,12 +137,21 @@
 
 - (void)updateProgress:(NSTimer *)aNotification
 {
-    double currentTime = CMTimeGetSeconds(player.currentTime);
     double totalDuration = CMTimeGetSeconds(player.currentItem.asset.duration);
     
     if (player.currentItem.status == AVPlayerItemStatusReadyToPlay && totalDuration > 0) {
-        [_waveformView updateProgress:currentTime / totalDuration withCurrentTime:currentTime];
+        [_waveformView updateProgress:[self currentTime] / totalDuration withCurrentTime:[self currentTime]];
     }
+}
+
+- (double)currentTime
+{
+    return CMTimeGetSeconds([player currentTime]);
+}
+
+- (void)setCurrentTime:(double)time
+{
+    [player seekToTime:CMTimeMakeWithSeconds(time, 1) toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero];
 }
 
 @end
