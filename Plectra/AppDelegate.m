@@ -6,10 +6,10 @@
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
-#import "AppDelegate.h"
+#import <AVFoundation/AVAsset.h>
 
+#import "AppDelegate.h"
 #import "WaveformView.h"
-#import "Player.h"
 
 @interface AppDelegate (private)
 
@@ -27,8 +27,7 @@
     self = [super init];
     
     if (self) {
-        _player = [[Player alloc] init];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handlePlayerChangedState:) name:kBNRPlayerChangedStateNotification object:nil];
+        self.player = nil;
 
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleWaveformViewSeekRequest:) name:kBNRPlayerSeekRequestNotification object:nil];
 
@@ -45,6 +44,7 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
+/*
 - (void)handlePlayerChangedState:(NSNotification *)note
 {
     NSLog(@"Player changed state to %d", _player.state);
@@ -66,6 +66,7 @@
             break;
     }
 }
+*/
 
 - (void)handleWaveformViewSeekRequest:(NSNotification *)note
 {
@@ -74,7 +75,7 @@
     
     NSLog(@"Seek requested: %@", seekTime);
 
-    [_player seekTo:[seekTime doubleValue]];
+    [self.player seekToTime:CMTimeMakeWithSeconds([seekTime doubleValue], 60000)];
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
@@ -83,11 +84,10 @@
 
 - (void)openURL:(NSURL *)fileURL
 {
-    [_player reset];
     [_window setTitle:[fileURL lastPathComponent]];
 
     [_waveformView scanFileWithURL:fileURL];
-    [_player playFileWithURL:fileURL];
+    self.player = [AVPlayer playerWithURL:fileURL];
 }
 
 - (void)openFileRequest
@@ -119,6 +119,7 @@
 
 - (IBAction)onPlayPauseButtonPressed:(id)sender
 {
+    /*
     switch (_player.state) {
         case PLAYER_EMPTY:
             [self openFileRequest];
@@ -139,16 +140,28 @@
         default:
             NSLog(@"Unhandled onPlayPauseButtonPressed() while in state %d", _player.state);
     }
+     */
 }
 
 - (IBAction)onOpenMenuSelected:(id)sender
 {
     [self openFileRequest];
+    [self.player play];
 }
 
 - (void)updateProgress:(NSTimer *)aNotification
 {
-    [_waveformView updateProgress:_player.currentTime / _player.duration withCurrentTime:_player.currentTime];
+    if (self.player != nil) {
+        double currentTime = CMTimeGetSeconds(self.player.currentTime);
+        double totalDuration = CMTimeGetSeconds(self.player.currentItem.asset.duration);
+        
+        NSLog(@"curtime: %f", currentTime);
+        NSLog(@"duration: %f", totalDuration);
+        
+        if (totalDuration != 0) {
+            [_waveformView updateProgress:currentTime / totalDuration withCurrentTime:currentTime];
+        }
+    }
 }
 
 @end

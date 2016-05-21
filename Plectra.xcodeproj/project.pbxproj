@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1663E4DB1CF08CD400E0644E /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1663E4DA1CF08CD400E0644E /* CoreMedia.framework */; };
 		166F30CA1516870700CCD277 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 166F30C91516870700CCD277 /* AudioToolbox.framework */; };
-		1698C2E3151FA7BF007B19ED /* Player.m in Sources */ = {isa = PBXBuildFile; fileRef = 1698C2E2151FA7BF007B19ED /* Player.m */; };
 		169A5E831520FF5600FA1F8C /* icon_pause.png in Resources */ = {isa = PBXBuildFile; fileRef = 169A5E811520FF5600FA1F8C /* icon_pause.png */; };
 		169A5E841520FF5600FA1F8C /* icon_play.png in Resources */ = {isa = PBXBuildFile; fileRef = 169A5E821520FF5600FA1F8C /* icon_play.png */; };
 		16B030621516337600CCA510 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 16B030611516337600CCA510 /* Cocoa.framework */; };
@@ -21,6 +21,7 @@
 		16B030891516337700CCA510 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 16B030871516337700CCA510 /* InfoPlist.strings */; };
 		16B0308C1516337700CCA510 /* PlectraTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 16B0308B1516337700CCA510 /* PlectraTests.m */; };
 		16B0309C151645F700CCA510 /* WaveformView.m in Sources */ = {isa = PBXBuildFile; fileRef = 16B0309B151645F700CCA510 /* WaveformView.m */; };
+		16C00CEA1CEFC12B000FFEE3 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 16C00CE91CEFC12B000FFEE3 /* AVFoundation.framework */; };
 		16D90C5B1527D1FF00553913 /* Plectra.icns in Resources */ = {isa = PBXBuildFile; fileRef = 16D90C5A1527D1FF00553913 /* Plectra.icns */; };
 /* End PBXBuildFile section */
 
@@ -35,9 +36,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1663E4DA1CF08CD400E0644E /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		166F30C91516870700CCD277 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
-		1698C2E1151FA7BF007B19ED /* Player.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Player.h; sourceTree = "<group>"; };
-		1698C2E2151FA7BF007B19ED /* Player.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Player.m; sourceTree = "<group>"; };
 		169A5E811520FF5600FA1F8C /* icon_pause.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_pause.png; sourceTree = "<group>"; };
 		169A5E821520FF5600FA1F8C /* icon_play.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_play.png; sourceTree = "<group>"; };
 		16B0305D1516337600CCA510 /* Plectra.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Plectra.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -60,6 +60,7 @@
 		16B0308B1516337700CCA510 /* PlectraTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PlectraTests.m; sourceTree = "<group>"; };
 		16B0309A151645F700CCA510 /* WaveformView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WaveformView.h; sourceTree = "<group>"; };
 		16B0309B151645F700CCA510 /* WaveformView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WaveformView.m; sourceTree = "<group>"; };
+		16C00CE91CEFC12B000FFEE3 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		16D90C5A1527D1FF00553913 /* Plectra.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = Plectra.icns; path = ../Plectra.icns; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -68,6 +69,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1663E4DB1CF08CD400E0644E /* CoreMedia.framework in Frameworks */,
+				16C00CEA1CEFC12B000FFEE3 /* AVFoundation.framework in Frameworks */,
 				166F30CA1516870700CCD277 /* AudioToolbox.framework in Frameworks */,
 				16B030621516337600CCA510 /* Cocoa.framework in Frameworks */,
 			);
@@ -117,6 +120,8 @@
 		16B030601516337600CCA510 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				1663E4DA1CF08CD400E0644E /* CoreMedia.framework */,
+				16C00CE91CEFC12B000FFEE3 /* AVFoundation.framework */,
 				166F30C91516870700CCD277 /* AudioToolbox.framework */,
 				16B030611516337600CCA510 /* Cocoa.framework */,
 				16B030631516337600CCA510 /* Other Frameworks */,
@@ -139,8 +144,6 @@
 			children = (
 				16B030731516337600CCA510 /* AppDelegate.h */,
 				16B030741516337600CCA510 /* AppDelegate.m */,
-				1698C2E1151FA7BF007B19ED /* Player.h */,
-				1698C2E2151FA7BF007B19ED /* Player.m */,
 				16B030761516337600CCA510 /* MainMenu.xib */,
 				16B030681516337600CCA510 /* Supporting Files */,
 				16B0309A151645F700CCA510 /* WaveformView.h */,
@@ -277,7 +280,6 @@
 				16B0306E1516337600CCA510 /* main.m in Sources */,
 				16B030751516337600CCA510 /* AppDelegate.m in Sources */,
 				16B0309C151645F700CCA510 /* WaveformView.m in Sources */,
-				1698C2E3151FA7BF007B19ED /* Player.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -410,6 +412,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Plectra/Plectra-Prefix.pch";
 				INFOPLIST_FILE = "Plectra/Plectra-Info.plist";
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				PRODUCT_BUNDLE_IDENTIFIER = "org.brainrapers.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
@@ -423,6 +426,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Plectra/Plectra-Prefix.pch";
 				INFOPLIST_FILE = "Plectra/Plectra-Info.plist";
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				PRODUCT_BUNDLE_IDENTIFIER = "org.brainrapers.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
