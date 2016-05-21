@@ -2,7 +2,7 @@
 
 No-frills mp3/aac/ac3/wav/aiff audio player for OSX.
 
-[Plectra](https://raw.github.com/oxullo/Plectra/master/plectra-screenshot.png)
+![Plectra](https://raw.github.com/oxullo/Plectra/master/plectra-screenshot.png)
 
 ## Yet another player?
 
