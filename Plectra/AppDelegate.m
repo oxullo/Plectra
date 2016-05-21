@@ -23,26 +23,18 @@
 @synthesize waveformView = _waveformView;
 @synthesize player;
 
-- (id)init
-{
-    self = [super init];
-    
-    if (self) {
-        player = nil;
-
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleWaveformViewSeekRequest:) name:kBNRPlayerSeekRequestNotification object:nil];
-
-        _progressUpdateTimer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(updateProgress:) userInfo:nil repeats:YES];
-
-    }
-    
-    return self;
-}
-
 - (void)dealloc
 {
     [super dealloc];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (void)applicationDidFinishLaunching:(NSNotification *)aNotification
+{
+    [self setPlayer:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleWaveformViewSeekRequest:) name:kBNRPlayerSeekRequestNotification object:nil];
+    
+    _progressUpdateTimer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(updateProgress:) userInfo:nil repeats:YES];
 }
 
 /*
@@ -77,10 +69,6 @@
     NSLog(@"Seek requested: %@", seekTime);
 
     [self.player seekToTime:CMTimeMakeWithSeconds([seekTime doubleValue], 60000)];
-}
-
-- (void)applicationDidFinishLaunching:(NSNotification *)aNotification
-{
 }
 
 - (void)openURL:(NSURL *)fileURL
