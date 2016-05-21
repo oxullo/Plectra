@@ -4,6 +4,8 @@ No-frills mp3/aac/ac3/wav/aiff audio player for OSX.
 
 ![Plectra](https://raw.github.com/oxullo/Plectra/master/plectra-screenshot.png)
 
+Download it here: https://github.com/oxullo/Plectra/releases
+
 ## Yet another player?
 
 In 2012 I badly missed winamp and I always hated iTunes. This is no winamp
