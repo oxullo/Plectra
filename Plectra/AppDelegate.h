@@ -15,6 +15,7 @@
     IBOutlet NSButton *button;
     AVPlayer *player;
     NSTimer *_progressUpdateTimer;
+    NSString *pendingOpenFile;
 }
 
 @property (assign) IBOutlet NSWindow *window;

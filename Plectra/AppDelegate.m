@@ -37,6 +37,17 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleWaveformViewSeekRequest:) name:kBNRPlayerSeekRequestNotification object:nil];
 
     _progressUpdateTimer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(updateProgress:) userInfo:nil repeats:YES];
+
+    if (pendingOpenFile != nil) {
+        NSURL *fileURL = [[NSURL alloc] initFileURLWithPath:pendingOpenFile];
+
+        dispatch_async(dispatch_get_main_queue(), ^(void) {
+            [self openURL:fileURL];
+        });
+
+        [pendingOpenFile release];
+        pendingOpenFile = nil;
+    }
 }
 
 - (void)handleWaveformViewSeekRequest:(NSNotification *)note
@@ -96,10 +107,9 @@
 
 - (BOOL)application:(NSApplication *)sender openFile:(NSString *)filename
 {
-    NSURL *fileURL = [[NSURL alloc] initFileURLWithPath:filename];
-    NSLog(@"Opening file: %@", filename);
+    NSLog(@"openFile(%@)", filename);
 
-    [self openURL:fileURL];
+    pendingOpenFile = [filename retain];
 
     return YES;
 }
