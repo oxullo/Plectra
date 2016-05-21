@@ -22,6 +22,7 @@
 @property (assign) IBOutlet NSButton *playPauseButton;
 @property (retain) AVPlayer *player;
 @property (assign) double currentTime;
+@property (readonly) double duration;
 
 
 - (IBAction)onPlayPauseButtonPressed:(id)sender;

@@ -118,7 +118,7 @@
         [self openFileRequest];
     } else {
         if (self.player.rate == 0) {
-            if ([self currentTime] == CMTimeGetSeconds(player.currentItem.asset.duration)) {
+            if ([self currentTime] == [self duration]) {
                 [self setCurrentTime:0];
             }
             [player play];
@@ -137,10 +137,8 @@
 
 - (void)updateProgress:(NSTimer *)aNotification
 {
-    double totalDuration = CMTimeGetSeconds(player.currentItem.asset.duration);
-    
-    if (player.currentItem.status == AVPlayerItemStatusReadyToPlay && totalDuration > 0) {
-        [_waveformView updateProgress:[self currentTime] / totalDuration withCurrentTime:[self currentTime]];
+    if (player.currentItem.status == AVPlayerItemStatusReadyToPlay && [self duration] > 0) {
+        [_waveformView updateProgress:[self currentTime] / [self duration] withCurrentTime:[self currentTime]];
     }
 }
 
@@ -152,6 +150,17 @@
 - (void)setCurrentTime:(double)time
 {
     [player seekToTime:CMTimeMakeWithSeconds(time, 1) toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero];
+}
+
+- (double)duration
+{
+    AVPlayerItem *playerItem = [player currentItem];
+    
+    if ([playerItem status] == AVPlayerItemStatusReadyToPlay) {
+        return CMTimeGetSeconds([[playerItem asset] duration]);
+    } else {
+        return 0.f;
+    }
 }
 
 @end
