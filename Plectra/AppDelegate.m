@@ -151,7 +151,7 @@
 
 - (void)setCurrentTime:(double)time
 {
-    [player seekToTime:CMTimeMakeWithSeconds(time, 1)
+    [player seekToTime:CMTimeMakeWithSeconds(time, 1000)
                 toleranceBefore:kCMTimeZero
                 toleranceAfter:kCMTimeZero];
 }
