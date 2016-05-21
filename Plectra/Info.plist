@@ -12,9 +12,34 @@
 				<string>mp3</string>
 			</array>
 			<key>CFBundleTypeIconFile</key>
-			<string>Plectra</string>
+			<string>icon_app</string>
 			<key>CFBundleTypeName</key>
 			<string>MP3 files</string>
+			<key>CFBundleTypeRole</key>
+			<string>Viewer</string>
+		</dict>
+		<dict>
+			<key>CFBundleTypeExtensions</key>
+			<array>
+				<string>m4a</string>
+				<string>aac</string>
+			</array>
+			<key>CFBundleTypeIconFile</key>
+			<string>icon_app</string>
+			<key>CFBundleTypeName</key>
+			<string>AAC files</string>
+			<key>CFBundleTypeRole</key>
+			<string>Viewer</string>
+		</dict>
+		<dict>
+			<key>CFBundleTypeExtensions</key>
+			<array>
+				<string>ac3</string>
+			</array>
+			<key>CFBundleTypeIconFile</key>
+			<string>icon_app</string>
+			<key>CFBundleTypeName</key>
+			<string>AC3 files</string>
 			<key>CFBundleTypeRole</key>
 			<string>Viewer</string>
 		</dict>

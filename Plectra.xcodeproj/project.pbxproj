@@ -12,6 +12,7 @@
 		162536B71CF1022B0017FE25 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 162536B31CF1022B0017FE25 /* AppDelegate.m */; };
 		162536B81CF1022B0017FE25 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 162536B41CF1022B0017FE25 /* MainMenu.xib */; };
 		162536B91CF1022B0017FE25 /* WaveformView.m in Sources */ = {isa = PBXBuildFile; fileRef = 162536B61CF1022B0017FE25 /* WaveformView.m */; };
+		16C294181CF10F2400A752CC /* icon_app.png in Resources */ = {isa = PBXBuildFile; fileRef = 16C294171CF10F2400A752CC /* icon_app.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,7 @@
 		162536B41CF1022B0017FE25 /* MainMenu.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainMenu.xib; sourceTree = "<group>"; };
 		162536B51CF1022B0017FE25 /* WaveformView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WaveformView.h; sourceTree = "<group>"; };
 		162536B61CF1022B0017FE25 /* WaveformView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WaveformView.m; sourceTree = "<group>"; };
+		16C294171CF10F2400A752CC /* icon_app.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon_app.png; path = Plectra/Resources/icon_app.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -40,6 +42,7 @@
 		162536821CF0FDE10017FE25 = {
 			isa = PBXGroup;
 			children = (
+				16C294161CF10EE300A752CC /* Resources */,
 				1625368D1CF0FDE10017FE25 /* Plectra */,
 				1625368C1CF0FDE10017FE25 /* Products */,
 			);
@@ -74,6 +77,14 @@
 				162536921CF0FDE10017FE25 /* main.m */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		16C294161CF10EE300A752CC /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				16C294171CF10F2400A752CC /* icon_app.png */,
+			);
+			name = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -134,6 +145,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				162536951CF0FDE10017FE25 /* Assets.xcassets in Resources */,
+				16C294181CF10F2400A752CC /* icon_app.png in Resources */,
 				162536B81CF1022B0017FE25 /* MainMenu.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -280,6 +292,7 @@
 				1625369E1CF0FDE10017FE25 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
