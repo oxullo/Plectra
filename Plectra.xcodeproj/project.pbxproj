@@ -229,6 +229,11 @@
 			attributes = {
 				LastTestingUpgradeCheck = 0730;
 				LastUpgradeCheck = 0730;
+				TargetAttributes = {
+					16B0305C1516337600CCA510 = {
+						DevelopmentTeam = 6B658EDG27;
+					};
+				};
 			};
 			buildConfigurationList = 16B030571516337600CCA510 /* Build configuration list for PBXProject "Plectra" */;
 			compatibilityVersion = "Xcode 3.2";

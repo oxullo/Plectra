@@ -30,24 +30,13 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (void)applicationDidFinishLaunching:(NSNotification *)aNotification
+- (void)applicationWillFinishLaunching:(NSNotification *)aNotification
 {
     [self setPlayer:[[[AVPlayer alloc] init] autorelease]];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleWaveformViewSeekRequest:) name:kBNRPlayerSeekRequestNotification object:nil];
 
     _progressUpdateTimer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(updateProgress:) userInfo:nil repeats:YES];
-
-    if (pendingOpenFile != nil) {
-        NSURL *fileURL = [[NSURL alloc] initFileURLWithPath:pendingOpenFile];
-
-        dispatch_async(dispatch_get_main_queue(), ^(void) {
-            [self openURL:fileURL];
-        });
-
-        [pendingOpenFile release];
-        pendingOpenFile = nil;
-    }
 }
 
 - (void)handleWaveformViewSeekRequest:(NSNotification *)note
@@ -109,7 +98,12 @@
 {
     NSLog(@"openFile(%@)", filename);
 
-    pendingOpenFile = [filename retain];
+    NSURL *fileURL = [[NSURL alloc] initFileURLWithPath:filename];
+    
+    dispatch_async(dispatch_get_main_queue(), ^(void) {
+        [self openURL:fileURL];
+    });
+    
 
     return YES;
 }
