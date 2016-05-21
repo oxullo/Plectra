@@ -43,6 +43,30 @@
 			<key>CFBundleTypeRole</key>
 			<string>Viewer</string>
 		</dict>
+		<dict>
+			<key>CFBundleTypeExtensions</key>
+			<array>
+				<string>wav</string>
+			</array>
+			<key>CFBundleTypeIconFile</key>
+			<string>icon_app</string>
+			<key>CFBundleTypeName</key>
+			<string>WAV files</string>
+			<key>CFBundleTypeRole</key>
+			<string>Viewer</string>
+		</dict>
+		<dict>
+			<key>CFBundleTypeExtensions</key>
+			<array>
+				<string>aiff</string>
+			</array>
+			<key>CFBundleTypeIconFile</key>
+			<string>icon_app</string>
+			<key>CFBundleTypeName</key>
+			<string>AIFF files</string>
+			<key>CFBundleTypeRole</key>
+			<string>Viewer</string>
+		</dict>
 	</array>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
