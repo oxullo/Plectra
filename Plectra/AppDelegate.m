@@ -21,13 +21,14 @@
 
 @synthesize window = _window;
 @synthesize waveformView = _waveformView;
+@synthesize player;
 
 - (id)init
 {
     self = [super init];
     
     if (self) {
-        self.player = nil;
+        player = nil;
 
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleWaveformViewSeekRequest:) name:kBNRPlayerSeekRequestNotification object:nil];
 
@@ -90,6 +91,7 @@
     self.player = [AVPlayer playerWithURL:fileURL];
 
     [self.player play];
+    [self.playPauseButton setImage:[NSImage imageNamed:@"icon_pause.png"]];
 }
 
 - (void)openFileRequest
@@ -129,8 +131,10 @@
                 [self.player seekToTime:CMTimeMakeWithSeconds(0.f, 60000)];
             }
             [self.player play];
+            [self.playPauseButton setImage:[NSImage imageNamed:@"icon_pause.png"]];
         } else {
             [self.player pause];
+            [self.playPauseButton setImage:[NSImage imageNamed:@"icon_play.png"]];
         }
     }
 }

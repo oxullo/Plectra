@@ -14,12 +14,14 @@
 
 @interface AppDelegate : NSObject <NSApplicationDelegate> {
     IBOutlet NSButton *button;
+    AVPlayer *player;
     NSTimer *_progressUpdateTimer;
 }
 
 @property (assign) IBOutlet NSWindow *window;
 @property (assign) IBOutlet WaveformView *waveformView;
-@property (nonatomic, retain) AVPlayer *player;
+@property (assign) IBOutlet NSButton *playPauseButton;
+@property (retain) AVPlayer *player;
 
 - (IBAction)onPlayPauseButtonPressed:(id)sender;
 - (IBAction)onOpenMenuSelected:(id)sender;
