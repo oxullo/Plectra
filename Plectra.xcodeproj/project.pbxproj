@@ -7,178 +7,71 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1663E4DB1CF08CD400E0644E /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1663E4DA1CF08CD400E0644E /* CoreMedia.framework */; };
-		166F30CA1516870700CCD277 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 166F30C91516870700CCD277 /* AudioToolbox.framework */; };
-		169A5E831520FF5600FA1F8C /* icon_pause.png in Resources */ = {isa = PBXBuildFile; fileRef = 169A5E811520FF5600FA1F8C /* icon_pause.png */; };
-		169A5E841520FF5600FA1F8C /* icon_play.png in Resources */ = {isa = PBXBuildFile; fileRef = 169A5E821520FF5600FA1F8C /* icon_play.png */; };
-		16B030621516337600CCA510 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 16B030611516337600CCA510 /* Cocoa.framework */; };
-		16B0306C1516337600CCA510 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 16B0306A1516337600CCA510 /* InfoPlist.strings */; };
-		16B0306E1516337600CCA510 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 16B0306D1516337600CCA510 /* main.m */; };
-		16B030721516337600CCA510 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 16B030701516337600CCA510 /* Credits.rtf */; };
-		16B030751516337600CCA510 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 16B030741516337600CCA510 /* AppDelegate.m */; };
-		16B030781516337600CCA510 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 16B030761516337600CCA510 /* MainMenu.xib */; };
-		16B030811516337700CCA510 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 16B030611516337600CCA510 /* Cocoa.framework */; };
-		16B030891516337700CCA510 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 16B030871516337700CCA510 /* InfoPlist.strings */; };
-		16B0308C1516337700CCA510 /* PlectraTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 16B0308B1516337700CCA510 /* PlectraTests.m */; };
-		16B0309C151645F700CCA510 /* WaveformView.m in Sources */ = {isa = PBXBuildFile; fileRef = 16B0309B151645F700CCA510 /* WaveformView.m */; };
-		16C00CEA1CEFC12B000FFEE3 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 16C00CE91CEFC12B000FFEE3 /* AVFoundation.framework */; };
-		16D90C5B1527D1FF00553913 /* Plectra.icns in Resources */ = {isa = PBXBuildFile; fileRef = 16D90C5A1527D1FF00553913 /* Plectra.icns */; };
+		162536931CF0FDE10017FE25 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 162536921CF0FDE10017FE25 /* main.m */; };
+		162536951CF0FDE10017FE25 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 162536941CF0FDE10017FE25 /* Assets.xcassets */; };
+		162536B71CF1022B0017FE25 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 162536B31CF1022B0017FE25 /* AppDelegate.m */; };
+		162536B81CF1022B0017FE25 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 162536B41CF1022B0017FE25 /* MainMenu.xib */; };
+		162536B91CF1022B0017FE25 /* WaveformView.m in Sources */ = {isa = PBXBuildFile; fileRef = 162536B61CF1022B0017FE25 /* WaveformView.m */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXContainerItemProxy section */
-		16B030821516337700CCA510 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 16B030541516337600CCA510 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 16B0305C1516337600CCA510;
-			remoteInfo = Plectra;
-		};
-/* End PBXContainerItemProxy section */
-
 /* Begin PBXFileReference section */
-		1663E4DA1CF08CD400E0644E /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
-		166F30C91516870700CCD277 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
-		169A5E811520FF5600FA1F8C /* icon_pause.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_pause.png; sourceTree = "<group>"; };
-		169A5E821520FF5600FA1F8C /* icon_play.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_play.png; sourceTree = "<group>"; };
-		16B0305D1516337600CCA510 /* Plectra.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Plectra.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		16B030611516337600CCA510 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
-		16B030641516337600CCA510 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
-		16B030651516337600CCA510 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
-		16B030661516337600CCA510 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		16B030691516337600CCA510 /* Plectra-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Plectra-Info.plist"; sourceTree = "<group>"; };
-		16B0306B1516337600CCA510 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		16B0306D1516337600CCA510 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		16B0306F1516337600CCA510 /* Plectra-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Plectra-Prefix.pch"; sourceTree = "<group>"; };
-		16B030711516337600CCA510 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = en.lproj/Credits.rtf; sourceTree = "<group>"; };
-		16B030731516337600CCA510 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
-		16B030741516337600CCA510 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		16B030771516337600CCA510 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
-		16B0307E1516337700CCA510 /* PlectraTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PlectraTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		16B030861516337700CCA510 /* PlectraTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "PlectraTests-Info.plist"; sourceTree = "<group>"; };
-		16B030881516337700CCA510 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		16B0308A1516337700CCA510 /* PlectraTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PlectraTests.h; sourceTree = "<group>"; };
-		16B0308B1516337700CCA510 /* PlectraTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PlectraTests.m; sourceTree = "<group>"; };
-		16B0309A151645F700CCA510 /* WaveformView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WaveformView.h; sourceTree = "<group>"; };
-		16B0309B151645F700CCA510 /* WaveformView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WaveformView.m; sourceTree = "<group>"; };
-		16C00CE91CEFC12B000FFEE3 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
-		16D90C5A1527D1FF00553913 /* Plectra.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = Plectra.icns; path = ../Plectra.icns; sourceTree = "<group>"; };
+		1625368B1CF0FDE10017FE25 /* Plectra.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Plectra.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		162536921CF0FDE10017FE25 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		162536941CF0FDE10017FE25 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		162536991CF0FDE10017FE25 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		162536B21CF1022B0017FE25 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		162536B31CF1022B0017FE25 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		162536B41CF1022B0017FE25 /* MainMenu.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainMenu.xib; sourceTree = "<group>"; };
+		162536B51CF1022B0017FE25 /* WaveformView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WaveformView.h; sourceTree = "<group>"; };
+		162536B61CF1022B0017FE25 /* WaveformView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WaveformView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		16B0305A1516337600CCA510 /* Frameworks */ = {
+		162536881CF0FDE10017FE25 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1663E4DB1CF08CD400E0644E /* CoreMedia.framework in Frameworks */,
-				16C00CEA1CEFC12B000FFEE3 /* AVFoundation.framework in Frameworks */,
-				166F30CA1516870700CCD277 /* AudioToolbox.framework in Frameworks */,
-				16B030621516337600CCA510 /* Cocoa.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		16B0307A1516337700CCA510 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				16B030811516337700CCA510 /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		169A5E801520FF5600FA1F8C /* Resources */ = {
+		162536821CF0FDE10017FE25 = {
 			isa = PBXGroup;
 			children = (
-				16D90C5A1527D1FF00553913 /* Plectra.icns */,
-				169A5E811520FF5600FA1F8C /* icon_pause.png */,
-				169A5E821520FF5600FA1F8C /* icon_play.png */,
-			);
-			path = Resources;
-			sourceTree = "<group>";
-		};
-		16B030521516337600CCA510 = {
-			isa = PBXGroup;
-			children = (
-				169A5E801520FF5600FA1F8C /* Resources */,
-				16B030671516337600CCA510 /* Plectra */,
-				16B030841516337700CCA510 /* PlectraTests */,
-				16B030601516337600CCA510 /* Frameworks */,
-				16B0305E1516337600CCA510 /* Products */,
+				1625368D1CF0FDE10017FE25 /* Plectra */,
+				1625368C1CF0FDE10017FE25 /* Products */,
 			);
 			sourceTree = "<group>";
 		};
-		16B0305E1516337600CCA510 /* Products */ = {
+		1625368C1CF0FDE10017FE25 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				16B0305D1516337600CCA510 /* Plectra.app */,
-				16B0307E1516337700CCA510 /* PlectraTests.xctest */,
+				1625368B1CF0FDE10017FE25 /* Plectra.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		16B030601516337600CCA510 /* Frameworks */ = {
+		1625368D1CF0FDE10017FE25 /* Plectra */ = {
 			isa = PBXGroup;
 			children = (
-				1663E4DA1CF08CD400E0644E /* CoreMedia.framework */,
-				16C00CE91CEFC12B000FFEE3 /* AVFoundation.framework */,
-				166F30C91516870700CCD277 /* AudioToolbox.framework */,
-				16B030611516337600CCA510 /* Cocoa.framework */,
-				16B030631516337600CCA510 /* Other Frameworks */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		16B030631516337600CCA510 /* Other Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				16B030641516337600CCA510 /* AppKit.framework */,
-				16B030651516337600CCA510 /* CoreData.framework */,
-				16B030661516337600CCA510 /* Foundation.framework */,
-			);
-			name = "Other Frameworks";
-			sourceTree = "<group>";
-		};
-		16B030671516337600CCA510 /* Plectra */ = {
-			isa = PBXGroup;
-			children = (
-				16B030731516337600CCA510 /* AppDelegate.h */,
-				16B030741516337600CCA510 /* AppDelegate.m */,
-				16B030761516337600CCA510 /* MainMenu.xib */,
-				16B030681516337600CCA510 /* Supporting Files */,
-				16B0309A151645F700CCA510 /* WaveformView.h */,
-				16B0309B151645F700CCA510 /* WaveformView.m */,
+				162536B21CF1022B0017FE25 /* AppDelegate.h */,
+				162536B31CF1022B0017FE25 /* AppDelegate.m */,
+				162536B41CF1022B0017FE25 /* MainMenu.xib */,
+				162536B51CF1022B0017FE25 /* WaveformView.h */,
+				162536B61CF1022B0017FE25 /* WaveformView.m */,
+				162536941CF0FDE10017FE25 /* Assets.xcassets */,
+				162536991CF0FDE10017FE25 /* Info.plist */,
+				162536911CF0FDE10017FE25 /* Supporting Files */,
 			);
 			path = Plectra;
 			sourceTree = "<group>";
 		};
-		16B030681516337600CCA510 /* Supporting Files */ = {
+		162536911CF0FDE10017FE25 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				16B030691516337600CCA510 /* Plectra-Info.plist */,
-				16B0306A1516337600CCA510 /* InfoPlist.strings */,
-				16B0306D1516337600CCA510 /* main.m */,
-				16B0306F1516337600CCA510 /* Plectra-Prefix.pch */,
-				16B030701516337600CCA510 /* Credits.rtf */,
-			);
-			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		16B030841516337700CCA510 /* PlectraTests */ = {
-			isa = PBXGroup;
-			children = (
-				16B0308A1516337700CCA510 /* PlectraTests.h */,
-				16B0308B1516337700CCA510 /* PlectraTests.m */,
-				16B030851516337700CCA510 /* Supporting Files */,
-			);
-			path = PlectraTests;
-			sourceTree = "<group>";
-		};
-		16B030851516337700CCA510 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				16B030861516337700CCA510 /* PlectraTests-Info.plist */,
-				16B030871516337700CCA510 /* InfoPlist.strings */,
+				162536921CF0FDE10017FE25 /* main.m */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -186,13 +79,13 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		16B0305C1516337600CCA510 /* Plectra */ = {
+		1625368A1CF0FDE10017FE25 /* Plectra */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 16B0308F1516337700CCA510 /* Build configuration list for PBXNativeTarget "Plectra" */;
+			buildConfigurationList = 1625369C1CF0FDE10017FE25 /* Build configuration list for PBXNativeTarget "Plectra" */;
 			buildPhases = (
-				16B030591516337600CCA510 /* Sources */,
-				16B0305A1516337600CCA510 /* Frameworks */,
-				16B0305B1516337600CCA510 /* Resources */,
+				162536871CF0FDE10017FE25 /* Sources */,
+				162536881CF0FDE10017FE25 /* Frameworks */,
+				162536891CF0FDE10017FE25 /* Resources */,
 			);
 			buildRules = (
 			);
@@ -200,305 +93,195 @@
 			);
 			name = Plectra;
 			productName = Plectra;
-			productReference = 16B0305D1516337600CCA510 /* Plectra.app */;
+			productReference = 1625368B1CF0FDE10017FE25 /* Plectra.app */;
 			productType = "com.apple.product-type.application";
-		};
-		16B0307D1516337700CCA510 /* PlectraTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 16B030921516337700CCA510 /* Build configuration list for PBXNativeTarget "PlectraTests" */;
-			buildPhases = (
-				16B030791516337700CCA510 /* Sources */,
-				16B0307A1516337700CCA510 /* Frameworks */,
-				16B0307B1516337700CCA510 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				16B030831516337700CCA510 /* PBXTargetDependency */,
-			);
-			name = PlectraTests;
-			productName = PlectraTests;
-			productReference = 16B0307E1516337700CCA510 /* PlectraTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		16B030541516337600CCA510 /* Project object */ = {
+		162536831CF0FDE10017FE25 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastTestingUpgradeCheck = 0730;
 				LastUpgradeCheck = 0730;
+				ORGANIZATIONNAME = "OXullo Intersecans";
 				TargetAttributes = {
-					16B0305C1516337600CCA510 = {
-						DevelopmentTeam = 6B658EDG27;
+					1625368A1CF0FDE10017FE25 = {
+						CreatedOnToolsVersion = 7.3;
 					};
 				};
 			};
-			buildConfigurationList = 16B030571516337600CCA510 /* Build configuration list for PBXProject "Plectra" */;
+			buildConfigurationList = 162536861CF0FDE10017FE25 /* Build configuration list for PBXProject "Plectra" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				Base,
 			);
-			mainGroup = 16B030521516337600CCA510;
-			productRefGroup = 16B0305E1516337600CCA510 /* Products */;
+			mainGroup = 162536821CF0FDE10017FE25;
+			productRefGroup = 1625368C1CF0FDE10017FE25 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				16B0305C1516337600CCA510 /* Plectra */,
-				16B0307D1516337700CCA510 /* PlectraTests */,
+				1625368A1CF0FDE10017FE25 /* Plectra */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		16B0305B1516337600CCA510 /* Resources */ = {
+		162536891CF0FDE10017FE25 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				16B0306C1516337600CCA510 /* InfoPlist.strings in Resources */,
-				16B030721516337600CCA510 /* Credits.rtf in Resources */,
-				16B030781516337600CCA510 /* MainMenu.xib in Resources */,
-				169A5E831520FF5600FA1F8C /* icon_pause.png in Resources */,
-				169A5E841520FF5600FA1F8C /* icon_play.png in Resources */,
-				16D90C5B1527D1FF00553913 /* Plectra.icns in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		16B0307B1516337700CCA510 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				16B030891516337700CCA510 /* InfoPlist.strings in Resources */,
+				162536951CF0FDE10017FE25 /* Assets.xcassets in Resources */,
+				162536B81CF1022B0017FE25 /* MainMenu.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		16B030591516337600CCA510 /* Sources */ = {
+		162536871CF0FDE10017FE25 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				16B0306E1516337600CCA510 /* main.m in Sources */,
-				16B030751516337600CCA510 /* AppDelegate.m in Sources */,
-				16B0309C151645F700CCA510 /* WaveformView.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		16B030791516337700CCA510 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				16B0308C1516337700CCA510 /* PlectraTests.m in Sources */,
+				162536B71CF1022B0017FE25 /* AppDelegate.m in Sources */,
+				162536B91CF1022B0017FE25 /* WaveformView.m in Sources */,
+				162536931CF0FDE10017FE25 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
-/* Begin PBXTargetDependency section */
-		16B030831516337700CCA510 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 16B0305C1516337600CCA510 /* Plectra */;
-			targetProxy = 16B030821516337700CCA510 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
-
-/* Begin PBXVariantGroup section */
-		16B0306A1516337600CCA510 /* InfoPlist.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				16B0306B1516337600CCA510 /* en */,
-			);
-			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
-		16B030701516337600CCA510 /* Credits.rtf */ = {
-			isa = PBXVariantGroup;
-			children = (
-				16B030711516337600CCA510 /* en */,
-			);
-			name = Credits.rtf;
-			sourceTree = "<group>";
-		};
-		16B030761516337600CCA510 /* MainMenu.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				16B030771516337600CCA510 /* en */,
-			);
-			name = MainMenu.xib;
-			sourceTree = "<group>";
-		};
-		16B030871516337700CCA510 /* InfoPlist.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				16B030881516337700CCA510 /* en */,
-			);
-			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
-
 /* Begin XCBuildConfiguration section */
-		16B0308D1516337700CCA510 /* Debug */ = {
+		1625369A1CF0FDE10017FE25 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
 				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
 			};
 			name = Debug;
 		};
-		16B0308E1516337700CCA510 /* Release */ = {
+		1625369B1CF0FDE10017FE25 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				COPY_PHASE_STRIP = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = macosx;
 			};
 			name = Release;
 		};
-		16B030901516337700CCA510 /* Debug */ = {
+		1625369D1CF0FDE10017FE25 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				COMBINE_HIDPI_IMAGES = YES;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Plectra/Plectra-Prefix.pch";
-				INFOPLIST_FILE = "Plectra/Plectra-Info.plist";
+				INFOPLIST_FILE = Plectra/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
-				PRODUCT_BUNDLE_IDENTIFIER = org.brainrapers.plectra;
+				PRODUCT_BUNDLE_IDENTIFIER = org.brainrapers.Plectra;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
 		};
-		16B030911516337700CCA510 /* Release */ = {
+		1625369E1CF0FDE10017FE25 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				COMBINE_HIDPI_IMAGES = YES;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Plectra/Plectra-Prefix.pch";
-				INFOPLIST_FILE = "Plectra/Plectra-Info.plist";
+				INFOPLIST_FILE = Plectra/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
-				PRODUCT_BUNDLE_IDENTIFIER = org.brainrapers.plectra;
+				PRODUCT_BUNDLE_IDENTIFIER = org.brainrapers.Plectra;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				WRAPPER_EXTENSION = app;
-			};
-			name = Release;
-		};
-		16B030931516337700CCA510 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Plectra.app/Contents/MacOS/Plectra";
-				COMBINE_HIDPI_IMAGES = YES;
-				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Plectra/Plectra-Prefix.pch";
-				INFOPLIST_FILE = "PlectraTests/PlectraTests-Info.plist";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.brainrapers.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUNDLE_LOADER)";
-			};
-			name = Debug;
-		};
-		16B030941516337700CCA510 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Plectra.app/Contents/MacOS/Plectra";
-				COMBINE_HIDPI_IMAGES = YES;
-				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Plectra/Plectra-Prefix.pch";
-				INFOPLIST_FILE = "PlectraTests/PlectraTests-Info.plist";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.brainrapers.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUNDLE_LOADER)";
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		16B030571516337600CCA510 /* Build configuration list for PBXProject "Plectra" */ = {
+		162536861CF0FDE10017FE25 /* Build configuration list for PBXProject "Plectra" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				16B0308D1516337700CCA510 /* Debug */,
-				16B0308E1516337700CCA510 /* Release */,
+				1625369A1CF0FDE10017FE25 /* Debug */,
+				1625369B1CF0FDE10017FE25 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		16B0308F1516337700CCA510 /* Build configuration list for PBXNativeTarget "Plectra" */ = {
+		1625369C1CF0FDE10017FE25 /* Build configuration list for PBXNativeTarget "Plectra" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				16B030901516337700CCA510 /* Debug */,
-				16B030911516337700CCA510 /* Release */,
+				1625369D1CF0FDE10017FE25 /* Debug */,
+				1625369E1CF0FDE10017FE25 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		16B030921516337700CCA510 /* Build configuration list for PBXNativeTarget "PlectraTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				16B030931516337700CCA510 /* Debug */,
-				16B030941516337700CCA510 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = 16B030541516337600CCA510 /* Project object */;
+	rootObject = 162536831CF0FDE10017FE25 /* Project object */;
 }

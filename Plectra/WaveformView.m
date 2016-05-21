@@ -61,10 +61,7 @@ NSString * const kBNRPlayerSeekRequestNotification = @"WaveformViewSeekRequest";
 }
 
 - (void)dealloc {
-    [super dealloc];
     [self removeTrackingArea:_trackingArea];
-    [_trackingArea release];
-    [_amplitudes release];
 }
 
 - (BOOL)mouseDownCanMoveWindow
@@ -126,7 +123,7 @@ NSString * const kBNRPlayerSeekRequestNotification = @"WaveformViewSeekRequest";
     ExtAudioFileRef	audioFileRef;
     
     NSLog(@"Attempt to open %@", theURL);
-	OSStatus err = ExtAudioFileOpenURL((CFURLRef)theURL, &audioFileRef);
+	OSStatus err = ExtAudioFileOpenURL((__bridge CFURLRef)theURL, &audioFileRef);
     
 	if (err) {
 		NSLog(@"ExtAudioFileOpenURL failed.(err=%d)\n", err);
@@ -264,7 +261,6 @@ NSString * const kBNRPlayerSeekRequestNotification = @"WaveformViewSeekRequest";
     NSNumber *seekTime = [[NSNumber alloc] initWithDouble:xPos / [self bounds].size.width * _duration];
     NSDictionary *seekTimeDict = [NSDictionary dictionaryWithObject:seekTime forKey:@"seekTime"];
     [[NSNotificationCenter defaultCenter] postNotificationName:kBNRPlayerSeekRequestNotification object:self userInfo:seekTimeDict];
-    [seekTime release];
 }
 
 // TODO: duplicated code, to be integrated among WaveformView and Player
@@ -272,7 +268,7 @@ NSString * const kBNRPlayerSeekRequestNotification = @"WaveformViewSeekRequest";
 {
     AudioFileID audioFileID;
     
-    AudioFileOpenURL((CFURLRef)theURL, kAudioFileReadPermission, 0, &audioFileID);
+    AudioFileOpenURL((__bridge CFURLRef _Nonnull)(theURL), kAudioFileReadPermission, 0, &audioFileID);
     
     UInt32 thePropSize = sizeof(_duration);
     OSStatus err = AudioFileGetProperty(audioFileID, kAudioFilePropertyEstimatedDuration, &thePropSize, &_duration);
@@ -360,8 +356,6 @@ NSString * const kBNRPlayerSeekRequestNotification = @"WaveformViewSeekRequest";
     [[[NSColor whiteColor] colorWithAlphaComponent:0.7] set];
     NSRectFillUsingOperation(NSMakeRect(xTextPos, thePos.y, attrSize.width, attrSize.height), NSCompositeSourceAtop);
     [currentText drawAtPoint:NSMakePoint(xTextPos, thePos.y)];
-    
-    [currentText release];
 }
 
 - (void)drawProgressBlock

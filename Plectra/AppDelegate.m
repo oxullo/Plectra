@@ -24,19 +24,18 @@
 @synthesize waveformView = _waveformView;
 @synthesize player;
 
-- (void)dealloc
-{
-    [super dealloc];
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
 - (void)applicationWillFinishLaunching:(NSNotification *)aNotification
 {
-    [self setPlayer:[[[AVPlayer alloc] init] autorelease]];
+    [self setPlayer:[[AVPlayer alloc] init]];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleWaveformViewSeekRequest:) name:kBNRPlayerSeekRequestNotification object:nil];
 
     _progressUpdateTimer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(updateProgress:) userInfo:nil repeats:YES];
+}
+
+- (void)applicationWillTerminate:(NSNotification *)aNotification
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)handleWaveformViewSeekRequest:(NSNotification *)note
@@ -84,7 +83,7 @@
     NSOpenPanel *oOpnPnl = [NSOpenPanel openPanel];
     NSInteger nResult = [oOpnPnl runModal];
     if ( nResult == NSFileHandlingPanelOKButton ) {
-        fileURL = [[oOpnPnl URL] retain];
+        fileURL = [oOpnPnl URL];
         NSFileManager *oFM = [NSFileManager defaultManager];
         if ( [oFM fileExistsAtPath:[fileURL path]] != YES ) {
             NSBeep();
