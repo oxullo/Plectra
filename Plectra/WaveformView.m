@@ -56,7 +56,12 @@ NSString * const kBNRPlayerSeekRequestNotification = @"WaveformViewSeekRequest";
 - (void) viewWillMoveToWindow:(NSWindow *)newWindow {
     // In order to receive spam-level mouse notifications such as motion, is advisable
     // to create a NSTrackingArea which relays the wanted events to the view
-    _trackingArea = [[NSTrackingArea alloc] initWithRect:[self bounds] options: (NSTrackingMouseMoved | NSTrackingMouseEnteredAndExited | NSTrackingActiveAlways) owner:self userInfo:nil];
+    _trackingArea = [[NSTrackingArea alloc] initWithRect:[self bounds]
+                                                 options: (NSTrackingMouseMoved |
+                                                           NSTrackingMouseEnteredAndExited |
+                                                           NSTrackingActiveAlways)
+                                                 owner:self
+                                                 userInfo:nil];
     [self addTrackingArea:_trackingArea];
 }
 
@@ -259,8 +264,11 @@ NSString * const kBNRPlayerSeekRequestNotification = @"WaveformViewSeekRequest";
 - (void)notifySeekAtPos:(double)xPos
 {
     NSNumber *seekTime = [[NSNumber alloc] initWithDouble:xPos / [self bounds].size.width * _duration];
-    NSDictionary *seekTimeDict = [NSDictionary dictionaryWithObject:seekTime forKey:@"seekTime"];
-    [[NSNotificationCenter defaultCenter] postNotificationName:kBNRPlayerSeekRequestNotification object:self userInfo:seekTimeDict];
+    NSDictionary *seekTimeDict = [NSDictionary dictionaryWithObject:seekTime
+                                                                        forKey:@"seekTime"];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kBNRPlayerSeekRequestNotification
+                                                object:self
+                                                userInfo:seekTimeDict];
 }
 
 // TODO: duplicated code, to be integrated among WaveformView and Player
@@ -271,7 +279,8 @@ NSString * const kBNRPlayerSeekRequestNotification = @"WaveformViewSeekRequest";
     AudioFileOpenURL((__bridge CFURLRef _Nonnull)(theURL), kAudioFileReadPermission, 0, &audioFileID);
     
     UInt32 thePropSize = sizeof(_duration);
-    OSStatus err = AudioFileGetProperty(audioFileID, kAudioFilePropertyEstimatedDuration, &thePropSize, &_duration);
+    OSStatus err = AudioFileGetProperty(audioFileID, kAudioFilePropertyEstimatedDuration,
+                                        &thePropSize, &_duration);
     
     NSAssert(err == 0, @"AudioFileGetProperty() failed");
     
@@ -318,13 +327,16 @@ NSString * const kBNRPlayerSeekRequestNotification = @"WaveformViewSeekRequest";
         [cursorPath lineToPoint:NSMakePoint(_lastMouseX, [self bounds].size.height)];
         [cursorPath stroke];
         
-        [self drawCurrentTimeText:_lastMouseX / [self bounds].size.width * _duration atPos:NSMakePoint(_lastMouseX, 60)];
+        [self drawCurrentTimeText:_lastMouseX / [self bounds].size.width * _duration
+                  atPos:NSMakePoint(_lastMouseX, 60)];
     }
 }
 
 - (void)drawCurrentTimeText:(double)theTime atPos:(NSPoint)thePos
 {
-    NSDictionary *attributes = [NSDictionary dictionaryWithObjectsAndKeys:[NSFont fontWithName:@"Helvetica" size:8], NSFontAttributeName,[NSColor blackColor], NSForegroundColorAttributeName, nil];
+    NSDictionary *attributes = [NSDictionary dictionaryWithObjectsAndKeys:[NSFont
+                    fontWithName:@"Helvetica" size:8], NSFontAttributeName,[NSColor blackColor],
+                                NSForegroundColorAttributeName, nil];
     
     int hours, minutes, seconds, millis;
     
@@ -342,7 +354,8 @@ NSString * const kBNRPlayerSeekRequestNotification = @"WaveformViewSeekRequest";
         s = [NSString stringWithFormat:@"%02d:%02d:%02d", minutes, seconds, millis];
     }
     
-    NSAttributedString *currentText=[[NSAttributedString alloc] initWithString:s attributes: attributes];
+    NSAttributedString *currentText=[[NSAttributedString alloc] initWithString:s
+                                                                    attributes:attributes];
     
     NSSize attrSize = [currentText size];
     double xTextPos;
@@ -354,7 +367,8 @@ NSString * const kBNRPlayerSeekRequestNotification = @"WaveformViewSeekRequest";
     }
     
     [[[NSColor whiteColor] colorWithAlphaComponent:0.7] set];
-    NSRectFillUsingOperation(NSMakeRect(xTextPos, thePos.y, attrSize.width, attrSize.height), NSCompositeSourceAtop);
+    NSRectFillUsingOperation(NSMakeRect(xTextPos, thePos.y, attrSize.width, attrSize.height),
+                             NSCompositeSourceAtop);
     [currentText drawAtPoint:NSMakePoint(xTextPos, thePos.y)];
 }
 
@@ -370,7 +384,8 @@ NSString * const kBNRPlayerSeekRequestNotification = @"WaveformViewSeekRequest";
         [cursorPath stroke];
         
         [[[NSColor redColor] colorWithAlphaComponent:0.1] set];
-        NSRectFillUsingOperation(NSMakeRect(0, 0, xCursorPos, [self bounds].size.height), NSCompositeSourceAtop);
+        NSRectFillUsingOperation(NSMakeRect(0, 0, xCursorPos, [self bounds].size.height),
+                                 NSCompositeSourceAtop);
         
         if (_lastCurrentTime > 0.0) {
             [self drawCurrentTimeText:_lastCurrentTime atPos:NSMakePoint(xCursorPos, 0)];

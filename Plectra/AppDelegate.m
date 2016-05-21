@@ -28,9 +28,15 @@
 {
     [self setPlayer:[[AVPlayer alloc] init]];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleWaveformViewSeekRequest:) name:kBNRPlayerSeekRequestNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                          selector:@selector(handleWaveformViewSeekRequest:)
+                                          name:kBNRPlayerSeekRequestNotification object:nil];
 
-    _progressUpdateTimer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(updateProgress:) userInfo:nil repeats:YES];
+    _progressUpdateTimer = [NSTimer scheduledTimerWithTimeInterval:0.1
+                                    target:self
+                                    selector:@selector(updateProgress:)
+                                    userInfo:nil
+                                    repeats:YES];
 }
 
 - (void)applicationWillTerminate:(NSNotification *)aNotification
@@ -61,8 +67,8 @@
     
     if ([player currentItem]) {
         [[NSNotificationCenter defaultCenter] removeObserver:self
-                                              name:AVPlayerItemDidPlayToEndTimeNotification
-                                              object:[player currentItem]];
+                                                    name:AVPlayerItemDidPlayToEndTimeNotification
+                                                    object:[player currentItem]];
     }
 
     AVPlayerItem *playerItem = [AVPlayerItem playerItemWithURL:fileURL];
@@ -70,8 +76,8 @@
 
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(handlePlaybackEnded:)
-                                                 name:AVPlayerItemDidPlayToEndTimeNotification
-                                               object:playerItem];
+                                             name:AVPlayerItemDidPlayToEndTimeNotification
+                                             object:playerItem];
 
     [player play];
     [self.playPauseButton setImage:[NSImage imageNamed:@"icon_pause.png"]];
@@ -133,7 +139,8 @@
 - (void)updateProgress:(NSTimer *)aNotification
 {
     if (player.currentItem.status == AVPlayerItemStatusReadyToPlay && [self duration] > 0) {
-        [_waveformView updateProgress:[self currentTime] / [self duration] withCurrentTime:[self currentTime]];
+        [_waveformView updateProgress:[self currentTime] / [self duration]
+                       withCurrentTime:[self currentTime]];
     }
 }
 
@@ -144,7 +151,9 @@
 
 - (void)setCurrentTime:(double)time
 {
-    [player seekToTime:CMTimeMakeWithSeconds(time, 1) toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero];
+    [player seekToTime:CMTimeMakeWithSeconds(time, 1)
+                toleranceBefore:kCMTimeZero
+                toleranceAfter:kCMTimeZero];
 }
 
 - (double)duration
