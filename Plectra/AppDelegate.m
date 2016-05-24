@@ -18,10 +18,6 @@
  
  */
 
-
-#import <AVFoundation/AVPlayerItem.h>
-#import <AVFoundation/AVAsset.h>
-
 #import "AppDelegate.h"
 #import "WaveformView.h"
 
@@ -33,13 +29,10 @@
 
 @implementation AppDelegate
 
-@synthesize window = _window;
-@synthesize waveformView = _waveformView;
-@synthesize player;
 
 - (void)applicationWillFinishLaunching:(NSNotification *)aNotification
 {
-    [self setPlayer:[[AVPlayer alloc] init]];
+    _player = [[Player alloc] init];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                           selector:@selector(handleWaveformViewSeekRequest:)
@@ -64,7 +57,7 @@
     
     NSLog(@"Seek requested: %@", seekTime);
 
-    [self setCurrentTime:[seekTime doubleValue]];
+    [_player seek:[seekTime doubleValue]];
 }
 
 - (void)handlePlaybackEnded:(NSNotification *)note
@@ -78,21 +71,9 @@
 
     [_waveformView scanFileWithURL:fileURL];
     
-    if ([player currentItem]) {
-        [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:AVPlayerItemDidPlayToEndTimeNotification
-                                                    object:[player currentItem]];
-    }
-
-    AVPlayerItem *playerItem = [AVPlayerItem playerItemWithURL:fileURL];
-    [player replaceCurrentItemWithPlayerItem:playerItem];
-
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(handlePlaybackEnded:)
-                                             name:AVPlayerItemDidPlayToEndTimeNotification
-                                             object:playerItem];
-
-    [player play];
+    [_player loadURL:fileURL];
+    [_player play];
+    
     [self.playPauseButton setImage:[NSImage imageNamed:@"icon_pause"]];
     [[NSDocumentController sharedDocumentController] noteNewRecentDocumentURL:fileURL];
 }
@@ -119,29 +100,33 @@
 
     NSURL *fileURL = [[NSURL alloc] initFileURLWithPath:filename];
     
-    dispatch_async(dispatch_get_main_queue(), ^(void) {
-        [self openURL:fileURL];
-    });
-    
+    [self openURL:fileURL];
 
     return YES;
 }
 
 - (IBAction)onPlayPauseButtonPressed:(id)sender
 {
-    if (player.currentItem.status != AVPlayerItemStatusReadyToPlay) {
-        [self openFileRequest];
-    } else {
-        if (self.player.rate == 0) {
-            if ([self currentTime] == [self duration]) {
-                [self setCurrentTime:0];
-            }
-            [player play];
+    switch (_player.state) {
+        case kPlayerEmpty:
+            [self openFileRequest];
+            break;
+        
+        case kPlayerPlaybackFinished:
+            [_player seek:0];
+        
+        case kPlayerPaused:
+            [_player play];
             [self.playPauseButton setImage:[NSImage imageNamed:@"icon_pause"]];
-        } else {
-            [player pause];
+            break;
+        
+        case kPlayerPlaying:
+            [_player pause];
             [self.playPauseButton setImage:[NSImage imageNamed:@"icon_play"]];
-        }
+            break;
+            
+        default:
+            break;
     }
 }
 
@@ -152,33 +137,11 @@
 
 - (void)updateProgress:(NSTimer *)aNotification
 {
-    if (player.currentItem.status == AVPlayerItemStatusReadyToPlay && [self duration] > 0) {
-        [_waveformView updateProgress:[self currentTime] / [self duration]
-                       withCurrentTime:[self currentTime]];
+    if (_player.state == kPlayerPlaying) {
+        [_waveformView updateProgress:[_player progress]
+                       withCurrentTime:[_player currentTime]];
     }
 }
 
-- (double)currentTime
-{
-    return CMTimeGetSeconds([player currentTime]);
-}
-
-- (void)setCurrentTime:(double)time
-{
-    [player seekToTime:CMTimeMakeWithSeconds(time, 1000)
-                toleranceBefore:kCMTimeZero
-                toleranceAfter:kCMTimeZero];
-}
-
-- (double)duration
-{
-    AVPlayerItem *playerItem = [player currentItem];
-    
-    if ([playerItem status] == AVPlayerItemStatusReadyToPlay) {
-        return CMTimeGetSeconds([[playerItem asset] duration]);
-    } else {
-        return 0.f;
-    }
-}
 
 @end

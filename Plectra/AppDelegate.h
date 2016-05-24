@@ -19,23 +19,20 @@
  */
 
 #import <Cocoa/Cocoa.h>
-#import <AVFoundation/AVPlayer.h>
+
+#import "Player.h"
 
 @class WaveformView;
 
 @interface AppDelegate : NSObject <NSApplicationDelegate> {
     IBOutlet NSButton *button;
-    AVPlayer *player;
+    Player *_player;
     NSTimer *_progressUpdateTimer;
 }
 
 @property (assign) IBOutlet NSWindow *window;
 @property (assign) IBOutlet WaveformView *waveformView;
 @property (assign) IBOutlet NSButton *playPauseButton;
-@property (retain) AVPlayer *player;
-@property (assign) double currentTime;
-@property (readonly) double duration;
-
 
 - (IBAction)onPlayPauseButtonPressed:(id)sender;
 - (IBAction)onOpenMenuSelected:(id)sender;
