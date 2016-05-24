@@ -38,6 +38,10 @@
                                           selector:@selector(handleWaveformViewSeekRequest:)
                                           name:kBNRPlayerSeekRequestNotification object:nil];
 
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(handlePlaybackEnded:)
+                                                 name:kPlayerPlaybackEndedNotification object:nil];
+
     _progressUpdateTimer = [NSTimer scheduledTimerWithTimeInterval:0.1
                                     target:self
                                     selector:@selector(updateProgress:)

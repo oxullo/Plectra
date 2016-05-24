@@ -11,6 +11,8 @@
 
 #import "Player.h"
 
+NSString * const kPlayerPlaybackEndedNotification = @"PlayerPlaybackEnded";
+
 @implementation Player
 
 - (id)init {
@@ -80,21 +82,28 @@
          toleranceAfter:kCMTimeZero];
 }
 
+- (void)onPlaybackEnded:(NSNotification *)note
+{
+    NSLog(@"Playback ended");
+    [[NSNotificationCenter defaultCenter] postNotificationName:kPlayerPlaybackEndedNotification
+                                          object:self];
+}
+
 - (void)loadURL:(NSURL *)fileURL
 {
-//    if ([_player currentItem]) {
-//        [[NSNotificationCenter defaultCenter] removeObserver:self
-//                                                        name:AVPlayerItemDidPlayToEndTimeNotification
-//                                                      object:[_player currentItem]];
-//    }
+    if ([_player currentItem]) {
+        [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                        name:AVPlayerItemDidPlayToEndTimeNotification
+                                                      object:[_player currentItem]];
+    }
     
     AVPlayerItem *playerItem = [AVPlayerItem playerItemWithURL:fileURL];
     [_player replaceCurrentItemWithPlayerItem:playerItem];
     
-//    [[NSNotificationCenter defaultCenter] addObserver:self
-//                                             selector:@selector(handlePlaybackEnded:)
-//                                                 name:AVPlayerItemDidPlayToEndTimeNotification
-//                                               object:playerItem];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(onPlaybackEnded:)
+                                                 name:AVPlayerItemDidPlayToEndTimeNotification
+                                               object:playerItem];
 }
 
 @end

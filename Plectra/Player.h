@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import <AVFoundation/AVPlayer.h>
 
+extern NSString * const kPlayerPlaybackEndedNotification;
+
 typedef enum {
     kPlayerEmpty,
     kPlayerIdle,
