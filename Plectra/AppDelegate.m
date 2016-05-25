@@ -35,18 +35,18 @@
     _player = [[Player alloc] init];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                          selector:@selector(handleWaveformViewSeekRequest:)
-                                          name:kBNRPlayerSeekRequestNotification object:nil];
+                                             selector:@selector(handleWaveformViewSeekRequest:)
+                                                 name:kBNRPlayerSeekRequestNotification object:nil];
 
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(handlePlaybackEnded:)
                                                  name:kPlayerPlaybackEndedNotification object:nil];
 
     _progressUpdateTimer = [NSTimer scheduledTimerWithTimeInterval:0.1
-                                    target:self
-                                    selector:@selector(updateProgress:)
-                                    userInfo:nil
-                                    repeats:YES];
+                                                            target:self
+                                                          selector:@selector(updateProgress:)
+                                                          userInfo:nil
+                                                           repeats:YES];
 }
 
 - (void)applicationWillTerminate:(NSNotification *)aNotification
@@ -143,7 +143,7 @@
 {
     if (_player.state == kPlayerPlaying) {
         [_waveformView updateProgress:[_player progress]
-                       withCurrentTime:[_player currentTime]];
+                      withCurrentTime:[_player currentTime]];
     }
 }
 

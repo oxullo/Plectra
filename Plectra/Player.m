@@ -18,19 +18,19 @@ NSString * const kPlayerPlaybackEndedNotification = @"PlayerPlaybackEnded";
 - (id)init {
     self = [super init];
     if (self) {
-        _player = [[AVPlayer alloc] init];
+        _avPlayer = [[AVPlayer alloc] init];
     }
     return self;
 }
 
 - (double)currentTime
 {
-    return CMTimeGetSeconds([_player currentTime]);
+    return CMTimeGetSeconds([_avPlayer currentTime]);
 }
 
 - (double)duration
 {
-    AVPlayerItem *playerItem = [_player currentItem];
+    AVPlayerItem *playerItem = [_avPlayer currentItem];
     
     if ([playerItem status] == AVPlayerItemStatusReadyToPlay) {
         return CMTimeGetSeconds([[playerItem asset] duration]);
@@ -50,10 +50,10 @@ NSString * const kPlayerPlaybackEndedNotification = @"PlayerPlaybackEnded";
 
 - (PlayerState)state
 {
-    if (_player.currentItem.status != AVPlayerItemStatusReadyToPlay) {
+    if (_avPlayer.currentItem.status != AVPlayerItemStatusReadyToPlay) {
         return kPlayerEmpty;
     } else {
-        if (_player.rate == 0) {
+        if (_avPlayer.rate == 0) {
             if ([self currentTime] == [self duration]) {
                 return kPlayerPlaybackFinished;
             } else {
@@ -67,17 +67,17 @@ NSString * const kPlayerPlaybackEndedNotification = @"PlayerPlaybackEnded";
 
 - (void)play
 {
-    [_player play];
+    [_avPlayer play];
 }
 
 - (void)pause
 {
-    [_player pause];
+    [_avPlayer pause];
 }
 
 - (void)seek:(double)time
 {
-    [_player seekToTime:CMTimeMakeWithSeconds(time, 1000)
+    [_avPlayer seekToTime:CMTimeMakeWithSeconds(time, 1000)
         toleranceBefore:kCMTimeZero
          toleranceAfter:kCMTimeZero];
 }
@@ -86,19 +86,19 @@ NSString * const kPlayerPlaybackEndedNotification = @"PlayerPlaybackEnded";
 {
     NSLog(@"Playback ended");
     [[NSNotificationCenter defaultCenter] postNotificationName:kPlayerPlaybackEndedNotification
-                                          object:self];
+                                                        object:self];
 }
 
 - (void)loadURL:(NSURL *)fileURL
 {
-    if ([_player currentItem]) {
+    if ([_avPlayer currentItem]) {
         [[NSNotificationCenter defaultCenter] removeObserver:self
                                                         name:AVPlayerItemDidPlayToEndTimeNotification
-                                                      object:[_player currentItem]];
+                                                      object:[_avPlayer currentItem]];
     }
     
     AVPlayerItem *playerItem = [AVPlayerItem playerItemWithURL:fileURL];
-    [_player replaceCurrentItemWithPlayerItem:playerItem];
+    [_avPlayer replaceCurrentItemWithPlayerItem:playerItem];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(onPlaybackEnded:)

@@ -73,8 +73,8 @@ NSString * const kBNRPlayerSeekRequestNotification = @"WaveformViewSeekRequest";
                                                  options: (NSTrackingMouseMoved |
                                                            NSTrackingMouseEnteredAndExited |
                                                            NSTrackingActiveAlways)
-                                                 owner:self
-                                                 userInfo:nil];
+                                                   owner:self
+                                                userInfo:nil];
     [self addTrackingArea:_trackingArea];
 }
 
@@ -278,10 +278,10 @@ NSString * const kBNRPlayerSeekRequestNotification = @"WaveformViewSeekRequest";
 {
     NSNumber *seekTime = [[NSNumber alloc] initWithDouble:xPos / [self bounds].size.width * _duration];
     NSDictionary *seekTimeDict = [NSDictionary dictionaryWithObject:seekTime
-                                                                        forKey:@"seekTime"];
+                                                             forKey:@"seekTime"];
     [[NSNotificationCenter defaultCenter] postNotificationName:kBNRPlayerSeekRequestNotification
-                                                object:self
-                                                userInfo:seekTimeDict];
+                                                        object:self
+                                                      userInfo:seekTimeDict];
 }
 
 // TODO: duplicated code, to be integrated among WaveformView and Player
@@ -341,7 +341,7 @@ NSString * const kBNRPlayerSeekRequestNotification = @"WaveformViewSeekRequest";
         [cursorPath stroke];
         
         [self drawCurrentTimeText:_lastMouseX / [self bounds].size.width * _duration
-                  atPos:NSMakePoint(_lastMouseX, 60)];
+                            atPos:NSMakePoint(_lastMouseX, 60)];
     }
 }
 

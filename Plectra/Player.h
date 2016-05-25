@@ -21,7 +21,7 @@ typedef enum {
 
 
 @interface Player : NSObject {
-    AVPlayer *_player;    
+    AVPlayer *_avPlayer;    
 }
 
 @property (readonly) double currentTime;
