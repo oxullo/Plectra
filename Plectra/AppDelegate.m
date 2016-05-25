@@ -57,28 +57,28 @@
 - (void)handleWaveformViewSeekRequest:(NSNotification *)note
 {
     NSDictionary *userInfo = note.userInfo;
-    NSNumber *seekTime = [userInfo objectForKey:@"seekTime"];
+    NSNumber *seekTime = userInfo[@"seekTime"];
     
     NSLog(@"Seek requested: %@", seekTime);
 
-    [_player seek:[seekTime doubleValue]];
+    [_player seek:seekTime.doubleValue];
 }
 
 - (void)handlePlaybackEnded:(NSNotification *)note
 {
-    [self.playPauseButton setImage:[NSImage imageNamed:@"icon_play"]];
+    (self.playPauseButton).image = [NSImage imageNamed:@"icon_play"];
 }
 
 - (void)openURL:(NSURL *)fileURL
 {
-    [_window setTitle:[fileURL lastPathComponent]];
+    _window.title = fileURL.lastPathComponent;
 
     [_waveformView scanFileWithURL:fileURL];
     
     [_player loadURL:fileURL];
     [_player play];
     
-    [self.playPauseButton setImage:[NSImage imageNamed:@"icon_pause"]];
+    (self.playPauseButton).image = [NSImage imageNamed:@"icon_pause"];
     [[NSDocumentController sharedDocumentController] noteNewRecentDocumentURL:fileURL];
 }
 
@@ -88,9 +88,9 @@
     NSOpenPanel *oOpnPnl = [NSOpenPanel openPanel];
     NSInteger nResult = [oOpnPnl runModal];
     if ( nResult == NSFileHandlingPanelOKButton ) {
-        fileURL = [oOpnPnl URL];
+        fileURL = oOpnPnl.URL;
         NSFileManager *oFM = [NSFileManager defaultManager];
-        if ( [oFM fileExistsAtPath:[fileURL path]] != YES ) {
+        if ( [oFM fileExistsAtPath:fileURL.path] != YES ) {
             NSBeep();
         } else {
             [self openURL:fileURL];
@@ -121,12 +121,12 @@
         
         case kPlayerPaused:
             [_player play];
-            [self.playPauseButton setImage:[NSImage imageNamed:@"icon_pause"]];
+            (self.playPauseButton).image = [NSImage imageNamed:@"icon_pause"];
             break;
         
         case kPlayerPlaying:
             [_player pause];
-            [self.playPauseButton setImage:[NSImage imageNamed:@"icon_play"]];
+            (self.playPauseButton).image = [NSImage imageNamed:@"icon_play"];
             break;
             
         default:
@@ -142,8 +142,8 @@
 - (void)updateProgress:(NSTimer *)aNotification
 {
     if (_player.state == kPlayerPlaying) {
-        [_waveformView updateProgress:[_player progress]
-                      withCurrentTime:[_player currentTime]];
+        [_waveformView updateProgress:_player.progress
+                      withCurrentTime:_player.currentTime];
     }
 }
 

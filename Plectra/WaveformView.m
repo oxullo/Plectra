@@ -53,7 +53,7 @@ NSString * const kBNRPlayerSeekRequestNotification = @"WaveformViewSeekRequest";
 
 #pragma mark - Instance methods overrides
 
-- (id)initWithFrame:(NSRect)frame
+- (instancetype)initWithFrame:(NSRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) {
@@ -69,7 +69,7 @@ NSString * const kBNRPlayerSeekRequestNotification = @"WaveformViewSeekRequest";
 - (void) viewWillMoveToWindow:(NSWindow *)newWindow {
     // In order to receive spam-level mouse notifications such as motion, is advisable
     // to create a NSTrackingArea which relays the wanted events to the view
-    _trackingArea = [[NSTrackingArea alloc] initWithRect:[self bounds]
+    _trackingArea = [[NSTrackingArea alloc] initWithRect:self.bounds
                                                  options: (NSTrackingMouseMoved |
                                                            NSTrackingMouseEnteredAndExited |
                                                            NSTrackingActiveAlways)
@@ -96,7 +96,7 @@ NSString * const kBNRPlayerSeekRequestNotification = @"WaveformViewSeekRequest";
 
 - (void)mouseMoved:(NSEvent *)theEvent {
     if (_isWaveLoaded) {
-        NSPoint eventLocation = [theEvent locationInWindow];
+        NSPoint eventLocation = theEvent.locationInWindow;
         NSPoint center = [self convertPoint:eventLocation fromView:nil];
         _lastMouseX = center.x;
         
@@ -113,7 +113,7 @@ NSString * const kBNRPlayerSeekRequestNotification = @"WaveformViewSeekRequest";
 - (void)mouseUp:(NSEvent *)theEvent
 {
     if (_isWaveLoaded) {
-        NSPoint eventLocation = [theEvent locationInWindow];
+        NSPoint eventLocation = theEvent.locationInWindow;
         NSPoint center = [self convertPoint:eventLocation fromView:nil];
         
         [self notifySeekAtPos:center.x];
@@ -124,7 +124,7 @@ NSString * const kBNRPlayerSeekRequestNotification = @"WaveformViewSeekRequest";
 {
     // fill background
     [[NSColor colorWithCalibratedWhite:0.8 alpha:1.0f] set];
-    NSFrameRectWithWidth([self bounds], 1.0);
+    NSFrameRectWithWidth(self.bounds, 1.0);
     
     [self drawMiddleLine];
     [self drawWaveform];
@@ -203,7 +203,7 @@ NSString * const kBNRPlayerSeekRequestNotification = @"WaveformViewSeekRequest";
     fillBufList.mBuffers[0].mData = srcBuffer;
     
     // TODO: something definitely smarter than this
-    SInt64 step = framesCount / [self bounds].size.width;
+    SInt64 step = framesCount / self.bounds.size.width;
     
     [self reset];
     
@@ -233,7 +233,7 @@ NSString * const kBNRPlayerSeekRequestNotification = @"WaveformViewSeekRequest";
             _maxAbsAmplitude = fabs(val);
         }
         
-        [_amplitudes addObject:[NSNumber numberWithFloat:val]];
+        [_amplitudes addObject:@(val)];
     }
     
     ExtAudioFileDispose(audioFileRef);
@@ -276,9 +276,8 @@ NSString * const kBNRPlayerSeekRequestNotification = @"WaveformViewSeekRequest";
 
 - (void)notifySeekAtPos:(double)xPos
 {
-    NSNumber *seekTime = [[NSNumber alloc] initWithDouble:xPos / [self bounds].size.width * _duration];
-    NSDictionary *seekTimeDict = [NSDictionary dictionaryWithObject:seekTime
-                                                             forKey:@"seekTime"];
+    NSNumber *seekTime = @(xPos / self.bounds.size.width * _duration);
+    NSDictionary *seekTimeDict = @{@"seekTime": seekTime};
     [[NSNotificationCenter defaultCenter] postNotificationName:kBNRPlayerSeekRequestNotification
                                                         object:self
                                                       userInfo:seekTimeDict];
@@ -307,9 +306,9 @@ NSString * const kBNRPlayerSeekRequestNotification = @"WaveformViewSeekRequest";
     [[NSColor grayColor] set];
     
     NSBezierPath *path = [NSBezierPath bezierPath];
-    [path setLineWidth:1];
-    [path moveToPoint:NSMakePoint(0, [self bounds].size.height / 2)];
-    [path lineToPoint:NSMakePoint([self bounds].size.width, [self bounds].size.height / 2)];
+    path.lineWidth = 1;
+    [path moveToPoint:NSMakePoint(0, self.bounds.size.height / 2)];
+    [path lineToPoint:NSMakePoint(self.bounds.size.width, self.bounds.size.height / 2)];
     [path stroke];
 }
 
@@ -318,14 +317,14 @@ NSString * const kBNRPlayerSeekRequestNotification = @"WaveformViewSeekRequest";
     [[NSColor blackColor] set]; 
     
     NSBezierPath *wavePath = [NSBezierPath bezierPath];
-    [wavePath setLineWidth:1];
+    wavePath.lineWidth = 1;
     
-    for (int i=0 ; i < [_amplitudes count] ; ++i) {
-        float ampl = [[_amplitudes objectAtIndex:i] floatValue];
-        float y = ampl / _maxAbsAmplitude * [self bounds].size.height / 2;
+    for (int i=0 ; i < _amplitudes.count ; ++i) {
+        float ampl = [_amplitudes[i] floatValue];
+        float y = ampl / _maxAbsAmplitude * self.bounds.size.height / 2;
         
-        [wavePath moveToPoint:NSMakePoint(i, -y + [self bounds].size.height / 2)];
-        [wavePath lineToPoint:NSMakePoint(i, y + [self bounds].size.height / 2)];
+        [wavePath moveToPoint:NSMakePoint(i, -y + self.bounds.size.height / 2)];
+        [wavePath lineToPoint:NSMakePoint(i, y + self.bounds.size.height / 2)];
     }
     [wavePath stroke];
 }
@@ -334,22 +333,21 @@ NSString * const kBNRPlayerSeekRequestNotification = @"WaveformViewSeekRequest";
 {
     if (_lastMouseX > -1) {
         NSBezierPath *cursorPath = [NSBezierPath bezierPath];
-        [cursorPath setLineWidth:1];
+        cursorPath.lineWidth = 1;
         [[NSColor redColor] set];
         [cursorPath moveToPoint:NSMakePoint(_lastMouseX, 0)];
-        [cursorPath lineToPoint:NSMakePoint(_lastMouseX, [self bounds].size.height)];
+        [cursorPath lineToPoint:NSMakePoint(_lastMouseX, self.bounds.size.height)];
         [cursorPath stroke];
         
-        [self drawCurrentTimeText:_lastMouseX / [self bounds].size.width * _duration
+        [self drawCurrentTimeText:_lastMouseX / self.bounds.size.width * _duration
                             atPos:NSMakePoint(_lastMouseX, 60)];
     }
 }
 
 - (void)drawCurrentTimeText:(double)theTime atPos:(NSPoint)thePos
 {
-    NSDictionary *attributes = [NSDictionary dictionaryWithObjectsAndKeys:[NSFont
-                    fontWithName:@"Helvetica" size:8], NSFontAttributeName,[NSColor blackColor],
-                                NSForegroundColorAttributeName, nil];
+    NSDictionary *attributes = @{NSFontAttributeName: [NSFont
+                    fontWithName:@"Helvetica" size:8],NSForegroundColorAttributeName: [NSColor blackColor]};
     
     int hours, minutes, seconds, millis;
     
@@ -373,7 +371,7 @@ NSString * const kBNRPlayerSeekRequestNotification = @"WaveformViewSeekRequest";
     NSSize attrSize = [currentText size];
     double xTextPos;
     
-    if (thePos.x + attrSize.width > [self bounds].size.width) {
+    if (thePos.x + attrSize.width > self.bounds.size.width) {
         xTextPos = thePos.x - attrSize.width - 3;
     } else {
         xTextPos = thePos.x + 3;
@@ -389,15 +387,15 @@ NSString * const kBNRPlayerSeekRequestNotification = @"WaveformViewSeekRequest";
 {
     if (_lastProgress > 0.0) {
         NSBezierPath *cursorPath = [NSBezierPath bezierPath];
-        [cursorPath setLineWidth:0.5];
+        cursorPath.lineWidth = 0.5;
         [[NSColor redColor] set];
-        double xCursorPos = [self bounds].size.width * _lastProgress;
+        double xCursorPos = self.bounds.size.width * _lastProgress;
         [cursorPath moveToPoint:NSMakePoint(xCursorPos, 0)];
-        [cursorPath lineToPoint:NSMakePoint(xCursorPos, [self bounds].size.height)];
+        [cursorPath lineToPoint:NSMakePoint(xCursorPos, self.bounds.size.height)];
         [cursorPath stroke];
         
         [[[NSColor redColor] colorWithAlphaComponent:0.1] set];
-        NSRectFillUsingOperation(NSMakeRect(0, 0, xCursorPos, [self bounds].size.height),
+        NSRectFillUsingOperation(NSMakeRect(0, 0, xCursorPos, self.bounds.size.height),
                                  NSCompositeSourceAtop);
         
         if (_lastCurrentTime > 0.0) {

@@ -11,13 +11,13 @@
 
 extern NSString * const kPlayerPlaybackEndedNotification;
 
-typedef enum {
+typedef NS_ENUM(unsigned int, PlayerState) {
     kPlayerEmpty,
     kPlayerIdle,
     kPlayerPlaying,
     kPlayerPaused,
     kPlayerPlaybackFinished
-} PlayerState;
+};
 
 
 @interface Player : NSObject {
@@ -28,7 +28,7 @@ typedef enum {
 @property (readonly) double duration;
 @property (readonly) double progress;
 
-- (PlayerState)state;
+@property (readonly) PlayerState state;
 - (void)pause;
 - (void)play;
 - (void)seek:(double)time;

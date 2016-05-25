@@ -15,7 +15,7 @@ NSString * const kPlayerPlaybackEndedNotification = @"PlayerPlaybackEnded";
 
 @implementation Player
 
-- (id)init {
+- (instancetype)init {
     self = [super init];
     if (self) {
         _avPlayer = [[AVPlayer alloc] init];
@@ -30,10 +30,10 @@ NSString * const kPlayerPlaybackEndedNotification = @"PlayerPlaybackEnded";
 
 - (double)duration
 {
-    AVPlayerItem *playerItem = [_avPlayer currentItem];
+    AVPlayerItem *playerItem = _avPlayer.currentItem;
     
-    if ([playerItem status] == AVPlayerItemStatusReadyToPlay) {
-        return CMTimeGetSeconds([[playerItem asset] duration]);
+    if (playerItem.status == AVPlayerItemStatusReadyToPlay) {
+        return CMTimeGetSeconds(playerItem.asset.duration);
     } else {
         return 0.f;
     }
@@ -54,7 +54,7 @@ NSString * const kPlayerPlaybackEndedNotification = @"PlayerPlaybackEnded";
         return kPlayerEmpty;
     } else {
         if (_avPlayer.rate == 0) {
-            if ([self currentTime] == [self duration]) {
+            if (self.currentTime == self.duration) {
                 return kPlayerPlaybackFinished;
             } else {
                 return kPlayerPaused;
@@ -91,10 +91,10 @@ NSString * const kPlayerPlaybackEndedNotification = @"PlayerPlaybackEnded";
 
 - (void)loadURL:(NSURL *)fileURL
 {
-    if ([_avPlayer currentItem]) {
+    if (_avPlayer.currentItem) {
         [[NSNotificationCenter defaultCenter] removeObserver:self
                                                         name:AVPlayerItemDidPlayToEndTimeNotification
-                                                      object:[_avPlayer currentItem]];
+                                                      object:_avPlayer.currentItem];
     }
     
     AVPlayerItem *playerItem = [AVPlayerItem playerItemWithURL:fileURL];
